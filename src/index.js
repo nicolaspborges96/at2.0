@@ -5,14 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
+import { CalculoProvider } from './context/calculo.context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ConfigProvider>
-        <App />
-      </ConfigProvider>
+      <CalculoProvider>
+        <ConfigProvider>
+          <App />
+        </ConfigProvider>
+      </CalculoProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
