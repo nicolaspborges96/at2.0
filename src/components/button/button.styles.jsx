@@ -39,6 +39,7 @@ export const BotaoSvg = styled(BotaoBasico)`
     border-radius: ${props => props.borderRadius};
     padding: ${props => props.padding};
     font-weight: ${props => props.fontWeight};
+    border: ${props => props.border};
 
     &:hover {
         ${props => props.hover}

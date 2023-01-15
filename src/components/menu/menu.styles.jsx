@@ -2,18 +2,15 @@ import styled from "styled-components";
 
 export const MenuContainer = styled.div`
     margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    width: 60%;
-    flex-basis: 50%;
-    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 55%;
+    height: 55%;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    
+    padding: 1rem;
 
-    div {
-        
-        width: 200px;
-        margin: 1rem;
-        height: 100px;
-        background-color: #a5c017;
-    }
+    
 
 `
