@@ -33,7 +33,7 @@ const AnaliseTForm = ({...props}) => {
     const [ formFields, setFormFields ] = useState(defaultFormFields);
     const { faturamento, socios, funcionarios, exterior, fopag, iss, anexoIII, anexoIV, anexoV, lucroP } = formFields;
     const [ sliderIndex, setSliderIndex ] = useState(slider[1]);
-    const { pegaDadosInput } = useContext(CaculoContext);
+    const { pegaInputECalcula } = useContext(CaculoContext);
 
     const onChangeFuncionario = (e) => {
         const { name, value } = e.target;
@@ -66,7 +66,7 @@ const AnaliseTForm = ({...props}) => {
     const onSubmitForm = (ev) => {
         ev.preventDefault();
         
-        pegaDadosInput(formFields);
+        pegaInputECalcula(formFields);
     }
 
     return (

@@ -38,9 +38,10 @@ const verificaFaixa = (faturamento) => {
 
 const calculaAnexoIII = (faturamento, exterior) => {
     const faixa =  verificaFaixa(faturamento);
+    const titulo = 'anexoIII';
 
     const anexo = ALIQUOTAS.find((item, index) => {
-        return item.title == 'anexoIII';
+        return item.title == titulo;
     });
 
     const aliquotas = anexo.items.find((item, index) => {
@@ -50,14 +51,17 @@ const calculaAnexoIII = (faturamento, exterior) => {
     const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
 
     const das = aliquotaEfetiva*faturamento;
+
+    return { das, faixa, aliquotaEfetiva, titulo, faturamento}
     
 }
 
 const calculaAnexoIV = (faturamento, exterior) => {
     const faixa =  verificaFaixa(faturamento);
+    const titulo = 'anexoIV';
 
     const anexo = ALIQUOTAS.find((item, index) => {
-        return item.title == 'anexoIV';
+        return item.title == titulo;
     });
 
     const aliquotas = anexo.items.find((item, index) => {
@@ -68,13 +72,15 @@ const calculaAnexoIV = (faturamento, exterior) => {
 
     const das = aliquotaEfetiva*faturamento;
     
+    return { das, faixa, aliquotaEfetiva, titulo, faturamento}
 }
 
 const calculaAnexoV = (faturamento, exterior) => {
     const faixa =  verificaFaixa(faturamento);
+    const titulo = 'anexoV';
 
     const anexo = ALIQUOTAS.find((item, index) => {
-        return item.title == 'anexoV';
+        return item.title == titulo;
     });
 
     const aliquotas = anexo.items.find((item, index) => {
@@ -85,9 +91,11 @@ const calculaAnexoV = (faturamento, exterior) => {
 
     const das = aliquotaEfetiva*faturamento;
     
+    return { das, faixa, aliquotaEfetiva, titulo, faturamento}
 }
 
 const calculaLucroPresumido = (faturamento, exterior, inputIss) => {
+    const titulo = 'LP';
     let aliqLP = {
         pis: 0.0065,
         cofins: 0.03,
@@ -152,41 +160,58 @@ const calculaLucroPresumido = (faturamento, exterior, inputIss) => {
         } 
     }
 
-    console.log(aliqLP, custoLP, valorLP, totalAliqLP)
-    return { aliqLP, custoLP, valorLP, totalAliqLP }
+    //console.log(aliqLP, custoLP, valorLP, totalAliqLP)
+    return { aliqLP, custoLP, valorLP, totalAliqLP, titulo }
 }
 
 const gerenciaCalculo = (dados) => {
-    
-    if(dados.anexoIII)
-        calculaAnexoIII(dados.faturamento, dados.exterior);
-    
-    if(dados.anexoIV)
-        calculaAnexoIV(dados.faturamento, dados.exterior);
-    
-    if(dados.anexoV)
-        calculaAnexoV(dados.faturamento, dados.exterior);
+    let respostas = [];
 
-    if (dados.lucroP)
-        calculaLucroPresumido(dados.faturamento, dados.exterior, dados.iss);
-
-     
+    if(dados.anexoIII) {
+       const resultadoIII = calculaAnexoIII(dados.faturamento, dados.exterior);
+       respostas.push(resultadoIII);
+    }
+    
+    if(dados.anexoIV) {
+       const resultadoIV = calculaAnexoIV(dados.faturamento, dados.exterior);
+       respostas.push(resultadoIV)
+    }
+    if(dados.anexoV) {
+        const resultadoV = calculaAnexoV(dados.faturamento, dados.exterior);
+        respostas.push(resultadoV);
+    }
+    if (dados.lucroP) {
+        const resultadoLP = calculaLucroPresumido(dados.faturamento, dados.exterior, dados.iss);
+        respostas.push(resultadoLP);
+    }
+       
+    return respostas;
 }
 
 export const CaculoContext = createContext({
-    pegaDadosinput: () => {}
+    pegaInputECalcula: () => {},
+    isCardShown: false,
+    setCardShown: () => {}
 
 });
 
 
 export const CalculoProvider = ({children}) => {
     
-    const pegaDadosInput = (dados) => {
-        
-        gerenciaCalculo(dados)
+    const [isCardShown, setCardShown] = useState(false);
+    const [resultados, setResultados] = useState([]);
+
+    const pegaInputECalcula = (dados) => {
+        setCardShown(true);
+        const output = gerenciaCalculo(dados);
+        setResultados(output);
+
+       return;
     }
+
+
     
-    const value = { pegaDadosInput }
+    const value = { pegaInputECalcula, isCardShown, setCardShown, resultados }
 
     return (
         <CaculoContext.Provider value={value}>{children}</CaculoContext.Provider>
