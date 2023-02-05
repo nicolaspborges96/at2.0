@@ -6,7 +6,8 @@ export const AnaliseTFormStyled = styled.form`
     flex-direction: column;
 
     label {
-        margin: 0.5rem 0 0.5rem;
+        margin: 0.7rem 0 0.3rem;
     }
+    
 `
 

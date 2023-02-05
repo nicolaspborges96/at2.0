@@ -16,7 +16,7 @@ const marks = {
 
 const defaultFormFields = {
     faturamento: '',
-    socios: '',
+    socios: 1,
     funcionarios: 0,
     exterior: 0,
     fopag: 0,
@@ -76,7 +76,7 @@ const AnaliseTForm = ({...props}) => {
                 <FormInput label={'Quantos sócios tem a empresa?'} name='socios' value={socios} onChange={handleChange} />
                 
 
-                <span>A empresa tem funcionários?</span>
+                <label>A empresa tem funcionários?</label>
                 
                 <Radio.Group name='funcionarios' onChange={onChangeFuncionario} value={funcionarios} label={'A empresa tem funcionários?'}>
                     <Radio value={1}>Sim</Radio>
@@ -91,7 +91,7 @@ const AnaliseTForm = ({...props}) => {
                     )
                 }
 
-                <span>A empresa presta serviço para o exterior?</span>
+                <label>A empresa presta serviço para o exterior?</label>
                 <Radio.Group name='exterior' onChange={onChangeExterior} value={exterior} label={'A empresa tem funcionários?'}>
                     <Radio value={1}>Sim</Radio>
                     <Radio value={0}>Não</Radio>
@@ -101,8 +101,12 @@ const AnaliseTForm = ({...props}) => {
                     exterior ? (
                         <></>
                     ) : (
+                        <>
+                        <label>Alíquota de ISS da atividade: </label>
                         <Slider marks={marks} max={5} min={2} trackStyle={{backgroundColor:'#396600'}}  onChange={handleSliderChange} name='iss' value={sliderIndex} 
                             style={{ width:'60%'}}   />
+                        </>
+                        
                     )
                 }
                 <div style={{display: 'flex'}}>
