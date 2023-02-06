@@ -1,18 +1,20 @@
 import styled from 'styled-components';
 
 export const CardBody = styled.div`
-    border: solid 1px #ced4da66;
+    border: solid 1px #c3c8ced4;
     border-radius: 0.5rem;
     padding: 0.6rem;
     margin: 1rem 1rem 1rem;
     display: flex;
     flex-direction: column;
-    min-height: 410px;
+    min-height: 310px;
     min-width: 270px;
 
-    
+    div:last-of-type {
+        align-self: bottom;
+    }
 
-`
+`;
 
 export const CardSegment = styled.div`
     display: ${props => props.display};
@@ -26,6 +28,13 @@ export const CardSegment = styled.div`
     height: ${props => props.height};
     white-space: ${props => props.whiteSpace};
     justify-content: ${props => props.justifyContent};
+    padding: 0.1rem;
     
+`;
 
+export const BlocoResultado = styled.div`
+    margin: auto 0 0 0;
+    background-color: ${props => props.bgColor};
+    border-radius: ${props => props.bdRadius};
+    font-weight: ${props => props.fontWeight};
 `

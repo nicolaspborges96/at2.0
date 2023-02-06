@@ -1,17 +1,11 @@
 import { createContext, useState } from "react";
 import ALIQUOTAS from '../aliquotas.js';
 
-const PROLABORE_MINIMO = {
-    salario: 1302,
-    inss: 143.22,
-    irrf: 0,
-    patronal: 260.4
-}
 
 function calculaProlabore(faturamentoMensal, quantidadeSocios, valorFolha, tipoTributario) {
     let proLabore = {
         valor: 1302,
-        inss: 143.2,
+        inss: 143.22,
         irrf: 0,
         patronal: 0
     };
@@ -107,11 +101,11 @@ const calculaSimples = (faturamento, exterior, socios, folhaFuncionario, titulo)
     const faixa = verificaFaixa(faturamento);
 
     const anexo = ALIQUOTAS.find((item, index) => {
-        return item.title == titulo;
+        return item.title === titulo;
     });
 
     const aliquotas = anexo.items.find((item, index) => {
-        return item.nome == faixa;
+        return item.nome === faixa;
     });
 
     const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
@@ -128,11 +122,11 @@ const calculaFatorR = (faturamento, exterior, socios, folhaFuncionario, infoAnex
     const titulo = 'anexoVR';
 
     const anexo = ALIQUOTAS.find((item, index) => {
-        return item.title == infoAnexo;
+        return item.title === infoAnexo;
     });
 
     const aliquotas = anexo.items.find((item, index) => {
-        return item.nome == faixa;
+        return item.nome === faixa;
     });
 
     const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
@@ -144,8 +138,8 @@ const calculaFatorR = (faturamento, exterior, socios, folhaFuncionario, infoAnex
     return { das, faixa, aliquotaEfetiva, titulo, faturamento, proLabore }
 }
 
-const calculaLucroPresumido = (faturamento, exterior, inputIss) => {
-    const titulo = 'LP';
+const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFuncionario, titulo) => {
+    
     let aliqLP = {
         pis: 0.0065,
         cofins: 0.03,
@@ -187,31 +181,32 @@ const calculaLucroPresumido = (faturamento, exterior, inputIss) => {
     }
 
     for (let i = 0; i < nomesImpostos.length; i++) {
-        if (nomesImpostos[i] == 'pis') {
+        if (nomesImpostos[i] === 'pis') {
             custoLP.pis += aliqLP.pis * faturamento;
             valorLP += custoLP.pis;
             totalAliqLP += aliqLP.pis;
-        } else if (nomesImpostos[i] == 'cofins') {
+        } else if (nomesImpostos[i] === 'cofins') {
             custoLP.cofins += aliqLP.cofins * faturamento;
             valorLP += custoLP.cofins;
             totalAliqLP += aliqLP.cofins;
-        } else if (nomesImpostos[i] == 'irpj') {
+        } else if (nomesImpostos[i] === 'irpj') {
             custoLP.irpj += aliqLP.irpj * faturamento;
             valorLP += custoLP.irpj;
             totalAliqLP += aliqLP.irpj;
-        } else if (nomesImpostos[i] == 'csll') {
+        } else if (nomesImpostos[i] === 'csll') {
             custoLP.csll += aliqLP.csll * faturamento;
             valorLP += custoLP.csll;
             totalAliqLP += aliqLP.csll;
-        } else if (nomesImpostos[i] == 'iss') {
+        } else if (nomesImpostos[i] === 'iss') {
             custoLP.iss += aliqLP.iss * faturamento;
             valorLP += custoLP.iss;
             totalAliqLP += aliqLP.iss;
         }
     }
 
-    //console.log(aliqLP, custoLP, valorLP, totalAliqLP)
-    return { aliqLP, custoLP, valorLP, totalAliqLP, titulo }
+    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo);
+    
+    return { aliqLP, custoLP, valorLP, totalAliqLP, titulo, proLabore, faturamento }
 }
 
 const gerenciaCalculo = (dados) => {
@@ -232,12 +227,13 @@ const gerenciaCalculo = (dados) => {
         const titulo = 'anexoV';
         const tituloComR = 'anexoIII'
         const resultadoV = calculaSimples(dados.faturamento, dados.exterior, dados.socios, dados.fopag, titulo);
-        const resultadoVComR = calculaFatorR(dados.faturamento, dados.exterior, dados.socios, dados.fopag, tituloComR)
+        const resultadoVComR = calculaFatorR(dados.faturamento, dados.exterior, dados.socios, dados.fopag, tituloComR);
         respostas.push(resultadoV);
         respostas.push(resultadoVComR);
     }
     if (dados.lucroP) {
-        const resultadoLP = calculaLucroPresumido(dados.faturamento, dados.exterior, dados.iss);
+        const titulo = 'LP';
+        const resultadoLP = calculaLucroPresumido(dados.faturamento, dados.exterior, dados.iss, dados.socios, dados.fopag, titulo);
         respostas.push(resultadoLP);
     }
 
@@ -257,6 +253,7 @@ export const CalculoProvider = ({ children }) => {
 
     const [isCardShown, setCardShown] = useState(false);
     const [resultados, setResultados] = useState([]);
+    const [scroll, setScroll] = useState(false);
 
     const pegaInputECalcula = (dados) => {
         setCardShown(true);
@@ -268,7 +265,7 @@ export const CalculoProvider = ({ children }) => {
 
 
 
-    const value = { pegaInputECalcula, isCardShown, setCardShown, resultados }
+    const value = { pegaInputECalcula, isCardShown, setCardShown, resultados, scroll, setScroll }
 
     return (
         <CaculoContext.Provider value={value}>{children}</CaculoContext.Provider>

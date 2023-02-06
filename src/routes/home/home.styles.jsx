@@ -7,7 +7,6 @@ export const HomeContainer = styled.div`
     background-color: inherit;
     min-width: 0;
     
-
 `
 
 export const FolderContainer = styled.div`
