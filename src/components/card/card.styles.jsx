@@ -23,6 +23,9 @@ export const CardSegment = styled.div`
     text-align: ${props => props.textAlign};
     font-weight: ${props => props.fontWeight};
     padding: ${props => props.padding};
+    height: ${props => props.height};
+    white-space: ${props => props.whiteSpace};
+    justify-content: ${props => props.justifyContent};
     
 
 `

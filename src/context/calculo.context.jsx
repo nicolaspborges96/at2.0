@@ -16,7 +16,7 @@ function calculaProlabore(faturamentoMensal, quantidadeSocios, valorFolha, tipoT
         patronal: 0
     };
 
-    if (tipoTributario === 'anexoV') {
+    if (tipoTributario === 'anexoVR') {
         let fatorR = (faturamentoMensal * 0.28).toFixed(2);
         let baseDeCalculoIR;
         let tetoInss = 7507.49;
@@ -103,38 +103,15 @@ const verificaFaixa = (faturamento) => {
     return faixa;
 }
 
-const calculaAnexoIII = (faturamento, exterior, socios, folhaFuncionario) => {
+const calculaSimples = (faturamento, exterior, socios, folhaFuncionario, titulo) => {
     const faixa = verificaFaixa(faturamento);
-    const titulo = 'anexoIII';
 
     const anexo = ALIQUOTAS.find((item, index) => {
         return item.title == titulo;
     });
 
     const aliquotas = anexo.items.find((item, index) => {
-        return item.nome == faixa
-    });
-
-    const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
-
-    const das = aliquotaEfetiva * faturamento;
-
-    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo);
-
-    return { das, faixa, aliquotaEfetiva, titulo, faturamento, proLabore }
-
-}
-
-const calculaAnexoIV = (faturamento, exterior, socios, folhaFuncionario) => {
-    const faixa = verificaFaixa(faturamento);
-    const titulo = 'anexoIV';
-
-    const anexo = ALIQUOTAS.find((item, index) => {
-        return item.title == titulo;
-    });
-
-    const aliquotas = anexo.items.find((item, index) => {
-        return item.nome == faixa
+        return item.nome == faixa;
     });
 
     const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
@@ -146,16 +123,16 @@ const calculaAnexoIV = (faturamento, exterior, socios, folhaFuncionario) => {
     return { das, faixa, aliquotaEfetiva, titulo, faturamento, proLabore }
 }
 
-const calculaAnexoV = (faturamento, exterior, socios, folhaFuncionario) => {
+const calculaFatorR = (faturamento, exterior, socios, folhaFuncionario, infoAnexo) => {
     const faixa = verificaFaixa(faturamento);
-    const titulo = 'anexoV';
+    const titulo = 'anexoVR';
 
     const anexo = ALIQUOTAS.find((item, index) => {
-        return item.title == titulo;
+        return item.title == infoAnexo;
     });
 
     const aliquotas = anexo.items.find((item, index) => {
-        return item.nome == faixa
+        return item.nome == faixa;
     });
 
     const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
@@ -241,24 +218,30 @@ const gerenciaCalculo = (dados) => {
     let respostas = [];
 
     if (dados.anexoIII) {
-        const resultadoIII = calculaAnexoIII(dados.faturamento, dados.exterior);
+        const titulo = 'anexoIII';
+        const resultadoIII = calculaSimples(dados.faturamento, dados.exterior, dados.socios, dados.fopag, titulo);
         respostas.push(resultadoIII);
     }
 
     if (dados.anexoIV) {
-        const resultadoIV = calculaAnexoIV(dados.faturamento, dados.exterior);
+        const titulo = 'anexoIV';
+        const resultadoIV = calculaSimples(dados.faturamento, dados.exterior, dados.socios, dados.fopag, titulo);
         respostas.push(resultadoIV)
     }
     if (dados.anexoV) {
-        const resultadoV = calculaAnexoV(dados.faturamento, dados.exterior, dados.socios, dados.fopag);
+        const titulo = 'anexoV';
+        const tituloComR = 'anexoIII'
+        const resultadoV = calculaSimples(dados.faturamento, dados.exterior, dados.socios, dados.fopag, titulo);
+        const resultadoVComR = calculaFatorR(dados.faturamento, dados.exterior, dados.socios, dados.fopag, tituloComR)
         respostas.push(resultadoV);
+        respostas.push(resultadoVComR);
     }
     if (dados.lucroP) {
         const resultadoLP = calculaLucroPresumido(dados.faturamento, dados.exterior, dados.iss);
         respostas.push(resultadoLP);
     }
 
-    console.log(dados)
+    console.log(respostas)
     return respostas;
 }
 
