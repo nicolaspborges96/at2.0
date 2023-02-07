@@ -249,6 +249,13 @@ const gerenciaCalculo = (dados) => {
     return respostas;
 }
 
+const calculaFolha = (dados) => {
+    const faturamento  = dados.faturamento;
+
+    
+
+}
+
 export const CaculoContext = createContext({
     pegaInputECalcula: () => { },
     isCardShown: false,
