@@ -25,3 +25,14 @@ export const SearchInput = styled.input`
 export const SearchButtonContainer = styled.div`
     display: flex;
 `
+export const SelectInput = styled.select`
+    background-color: transparent;
+    border: 1px solid #ebedf2;
+    outline:none;
+    padding: 0.4rem;
+    border-radius: 5px;
+
+    &:focus {
+        border-color: #396600;
+    }
+`

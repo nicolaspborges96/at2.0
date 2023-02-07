@@ -264,6 +264,7 @@ export const CalculoProvider = ({ children }) => {
     const [scroll, setScroll] = useState(false);
 
     const pegaInputECalcula = (dados) => {
+        
         setCardShown(true);
         const output = gerenciaCalculo(dados);
         setResultados(output);
