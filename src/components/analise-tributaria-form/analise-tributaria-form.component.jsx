@@ -68,7 +68,7 @@ const AnaliseTForm = ({ ...props }) => {
         ev.preventDefault();
         pegaInputECalcula(formFields);
         setScroll(true);
-
+        
     }
 
     return (
@@ -121,7 +121,8 @@ const AnaliseTForm = ({ ...props }) => {
 
             </ConfigProvider>
 
-            <Button texto={'Calcular'} type='submit' buttonStyle={BUTTON_TYPE_CLASSES.svg} border={'1px solid #000000'} margin={'1.5rem auto 0'} />
+            <Button texto={'Calcular'} type='submit' buttonStyle={BUTTON_TYPE_CLASSES.svg} border={'1px solid #c3c8ced4'} 
+            margin={'1.5rem auto 0'} bgColor={'#ffffff'} width={'200px'} hover={'border: 1px solid #a5c017; color:#396600'} />
         </AnaliseTFormStyled>
 
     )

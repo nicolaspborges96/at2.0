@@ -18,21 +18,21 @@ const CardDisplay = ({...props}) => {
 
     useEffect(() => {
         scrollToCards();
-    }, [scroll])
+    }, [scroll]);
 
+    
     return (
     <>
         { isCardShown === false ? (
             <></>
         ) : (
-            <CardContainer ref={CardsRef} >
+            <CardContainer ref={CardsRef}  >
                 {
                     resultados.map((resultado, index) => (<Card dados={resultado} key={index} />))
                     
                 }
-                {
-                    setScroll(false)
-                }
+                
+                
             </CardContainer>
         )
         }

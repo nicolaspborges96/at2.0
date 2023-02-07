@@ -14,7 +14,7 @@ const AnaliseT = () => {
                     <ContainerLogo>
                         <LogoHorizontal />
                     </ContainerLogo>
-                    <StyledSpan color='#000000' fontSize='1.3rem' fontWeight='500' margin={'auto 0'} >Análise Tributária</StyledSpan>
+                    <StyledSpan color='#000000' fontSize='1.3rem' fontWeight='600' margin={'auto 0'} >Análise Tributária</StyledSpan>
                 </ContainerHeaderAnaliseT>
                 <AnaliseTForm  />
                 <CardDisplay />

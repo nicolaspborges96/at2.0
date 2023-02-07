@@ -54,9 +54,16 @@ function calculaProlabore(faturamentoMensal, quantidadeSocios, valorFolha, tipoT
 
     } else if (tipoTributario === 'anexoIV' || tipoTributario === 'LP') {
         proLabore.patronal = 260.4;
+        if (quantidadeSocios > 1) {
+            proLabore.inss *= quantidadeSocios;
+            proLabore.patronal *= quantidadeSocios;
+        }
         return proLabore;
 
     } else {
+        if (quantidadeSocios > 1) {
+            proLabore.inss *= quantidadeSocios;
+        }
         return proLabore;
     }
 
@@ -205,6 +212,8 @@ const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFun
     }
 
     const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo);
+    valorLP += proLabore.inss + proLabore.patronal;
+    totalAliqLP += (proLabore.inss + proLabore.patronal)/faturamento;
     
     return { aliqLP, custoLP, valorLP, totalAliqLP, titulo, proLabore, faturamento }
 }
@@ -237,7 +246,6 @@ const gerenciaCalculo = (dados) => {
         respostas.push(resultadoLP);
     }
 
-    console.log(respostas)
     return respostas;
 }
 
