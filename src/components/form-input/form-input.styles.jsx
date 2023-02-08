@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Group =styled.div`
     display:flex;
     flex-direction: column;
-    width: 100%;
+    //width: 70%;
     margin-bottom: 0.3rem;
     font-size: 0.9rem;
     

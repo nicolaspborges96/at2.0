@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const AnaliseTContainer = styled.div`
-    background-color: #ffffff;
+    background-color: inherit;
     display: flex;
     height: 90vh;
     flex-direction: column;
@@ -13,7 +13,7 @@ export const ContainerHeaderAnaliseT = styled.div`
     display: flex;
     
     justify-content: space-evenly;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 `
 export const ContainerLogo = styled.div`
     width: 200px;

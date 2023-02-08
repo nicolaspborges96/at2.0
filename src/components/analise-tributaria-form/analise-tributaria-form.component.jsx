@@ -3,7 +3,7 @@ import FormInput from '../../components/form-input/form-input.component';
 import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
 import { ConfigProvider, Radio, Slider, Checkbox } from 'antd';
 import { useState } from 'react';
-import { AnaliseTFormStyled } from './analise-tributaria-form.styles';
+import { AnaliseTContainerCheckbox, AnaliseTFormStyled } from './analise-tributaria-form.styles';
 import { useContext } from 'react';
 import { CaculoContext } from '../../context/calculo.context';
 import { useRef } from 'react';
@@ -26,13 +26,14 @@ const defaultFormFields = {
     anexoIV: false,
     anexoV: false,
     lucroP: false,
+    autonomo: false
 }
 
 const slider = [2, 3, 4, 5];
 
 const AnaliseTForm = ({ ...props }) => {
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const { faturamento, socios, funcionarios, exterior, fopag, iss, anexoIII, anexoIV, anexoV, lucroP } = formFields;
+    const { faturamento, socios, funcionarios, exterior, fopag, iss, anexoIII, anexoIV, anexoV, lucroP, autonomo } = formFields;
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
     const { pegaInputECalcula, setScroll } = useContext(CaculoContext);
 
@@ -72,6 +73,7 @@ const AnaliseTForm = ({ ...props }) => {
     }
 
     return (
+        
         <AnaliseTFormStyled onSubmit={onSubmitForm} >
             <ConfigProvider theme={{ token: { colorPrimary: '#396600', fontFamily: 'Poppins, sans-serif' } }} >
                 <FormInput label={'Qual o faturamento médio da empresa?'} name='faturamento' value={faturamento} onChange={handleChange} />
@@ -106,17 +108,18 @@ const AnaliseTForm = ({ ...props }) => {
                         <>
                             <label>Alíquota de ISS da atividade: </label>
                             <Slider marks={marks} max={5} min={2} trackStyle={{ backgroundColor: '#396600' }} onChange={handleSliderChange} name='iss' value={sliderIndex}
-                                style={{ width: '60%' }} />
+                                style={{ width: '50%' }} />
                         </>
 
                     )
                 }
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <AnaliseTContainerCheckbox>
                     <Checkbox onChange={handleChangeCheck} name='anexoIII' checked={anexoIII}  >Anexo III</Checkbox>
                     <Checkbox onChange={handleChangeCheck} name='anexoIV' checked={anexoIV}  >Anexo IV</Checkbox>
                     <Checkbox onChange={handleChangeCheck} name='anexoV' checked={anexoV}  >Anexo V</Checkbox>
                     <Checkbox onChange={handleChangeCheck} name='lucroP' checked={lucroP}  >Lucro Presumido</Checkbox>
-                </div>
+                    <Checkbox onChange={handleChangeCheck} name='autonomo' checked={autonomo}  >Autonômo</Checkbox>
+                </AnaliseTContainerCheckbox>
 
 
             </ConfigProvider>

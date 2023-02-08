@@ -2,7 +2,23 @@ import { createContext, useState } from "react";
 import ALIQUOTAS from '../aliquotas.js';
 
 
-function calculaProlabore(faturamentoMensal, quantidadeSocios, valorFolha, tipoTributario) {
+const calculaIRRF = (baseDeCalculoIR) => {
+    let irrf = 0;
+    if ((baseDeCalculoIR) > 1903.98 && (baseDeCalculoIR) <= 2826.65) {
+        irrf = baseDeCalculoIR * 0.075 - 142.8;
+    } else if (baseDeCalculoIR > 2826.65 && baseDeCalculoIR <= 3751.05) {
+        irrf = baseDeCalculoIR * 0.15 - 354.80;
+    } else if (baseDeCalculoIR > 3751.05 && baseDeCalculoIR <= 4664.68) {
+        irrf = baseDeCalculoIR * 0.225 - 636.13;
+    } else if (baseDeCalculoIR > 4664.68) {
+        irrf = baseDeCalculoIR * 0.275 - 869.36;
+    }
+    irrf = parseFloat(irrf.toFixed(2));
+
+    return irrf;
+}
+
+const calculaProlabore = (faturamentoMensal, quantidadeSocios, valorFolha, tipoTributario) => {
     let proLabore = {
         valor: 1302,
         inss: 143.22,
@@ -34,16 +50,8 @@ function calculaProlabore(faturamentoMensal, quantidadeSocios, valorFolha, tipoT
 
         baseDeCalculoIR = proLabore.valor - proLabore.inss;
 
-        if ((baseDeCalculoIR) > 1903.98 && (baseDeCalculoIR) <= 2826.65) {
-            proLabore.irrf = baseDeCalculoIR * 0.075 - 142.8;
-        } else if (baseDeCalculoIR > 2826.65 && baseDeCalculoIR <= 3751.05) {
-            proLabore.irrf = baseDeCalculoIR * 0.15 - 354.80;
-        } else if (baseDeCalculoIR > 3751.05 && baseDeCalculoIR <= 4664.68) {
-            proLabore.irrf = baseDeCalculoIR * 0.225 - 636.13;
-        } else if (baseDeCalculoIR > 4664.68) {
-            proLabore.irrf = baseDeCalculoIR * 0.275 - 869.36;
-        }
-        proLabore.irrf = parseFloat(proLabore.irrf.toFixed(2));
+        
+        proLabore.irrf = calculaIRRF(baseDeCalculoIR);
 
         if (quantidadeSocios > 1) {
             proLabore.inss *= quantidadeSocios;
@@ -218,8 +226,33 @@ const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFun
     return { aliqLP, custoLP, valorLP, totalAliqLP, titulo, proLabore, faturamento }
 }
 
+const calculaAutonomo = (faturamentoInput, exterior, inputIss, titulo) => {
+    let faturamento = Number(faturamentoInput);
+    let inssAut = faturamento * 0.11;
+    if (inssAut > 825.82) {
+        inssAut = 825.82;
+    }
+    let baseIr = faturamento - inssAut;
+    let irrfAut = calculaIRRF(baseIr);
+    let cppAut = faturamento * 0.2;
+    let issAut = faturamento * (inputIss/100);
+    if (exterior) {
+        issAut = 0;
+    }
+    let proLabore = { };
+    let totalAut = inssAut + irrfAut + cppAut + issAut;
+    let pagoEmpregador =faturamento + cppAut;
+    console.log(typeof(pagoEmpregador))
+
+    let aliqFinAut = totalAut / faturamento;
+    
+    return {faturamento, inssAut, irrfAut, cppAut, issAut, proLabore, titulo, aliqFinAut, totalAut, pagoEmpregador};
+}
+
 const gerenciaCalculo = (dados) => {
     let respostas = [];
+
+    console.log(dados)
 
     if (dados.anexoIII) {
         const titulo = 'anexoIII';
@@ -245,15 +278,55 @@ const gerenciaCalculo = (dados) => {
         const resultadoLP = calculaLucroPresumido(dados.faturamento, dados.exterior, dados.iss, dados.socios, dados.fopag, titulo);
         respostas.push(resultadoLP);
     }
+    if (dados.autonomo) {
+        const titulo = 'autonomo';
+        const resultadoAutonomo = calculaAutonomo(dados.faturamento, dados.exterior, dados.iss, titulo);
+        console.log(resultadoAutonomo)
+        respostas.push(resultadoAutonomo)
+    }
 
     return respostas;
 }
 
-const calculaFolha = (dados) => {
-    const faturamento  = dados.faturamento;
-
+const calculaInssClt = (salario) => {
+    //A quantidade de IFs é intecional devido a forma que o inss é calculado. Um valor que entra na ultima faixa, precisa, obrigaoriamente passar
+    //por todos os calculos
+    let inss = 0;
     
+    if (salario <= 1302) {
+        inss = 1302*0.075;
+    } else if (salario > 1302 && salario <= 2571.29) {
+        inss = 1302*0.075;
+        inss += (salario-1302)*0.09;
+    } else if (salario > 2571.29 && salario <= 3856.94) {
+        inss = 1302*0.075;
+        inss += (2571.29-1302)*0.09;
+        inss += (salario - 2571.29)*0.12;
+    } else if (salario > 3856.95 && salario <= 7507.49) {
+        inss = 1302*0.075;
+        inss += (2571.29-1302)*0.09;
+        inss += (3856.95 - 2571.29)*0.12;
+        inss += (salario - 3856.95)*0.14;
+    } else {
+        inss = 877.24;
+    }
 
+    inss = parseFloat(inss.toFixed(2));
+
+    return inss;
+}
+
+
+ 
+const calculaFolha = (dados) => {
+    const salario  = dados.faturamento;
+    const inss = calculaInssClt(salario);
+    const irrf = calculaIRRF(salario);
+    const fgts = salario*0.08;
+
+    const folha = {inss, irrf, fgts}
+
+    return folha;
 }
 
 export const CaculoContext = createContext({
@@ -275,6 +348,8 @@ export const CalculoProvider = ({ children }) => {
         setCardShown(true);
         const output = gerenciaCalculo(dados);
         setResultados(output);
+        const folha = calculaFolha(dados)
+        
 
         return;
     }
