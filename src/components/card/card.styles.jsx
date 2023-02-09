@@ -22,7 +22,7 @@ export const CardBody = styled.div`
 `;
 
 export const CardSegment = styled.div`
-    display: ${props => props.display};
+    //display: ${props => props.display};
     background-color: ${props => props.bgColor};
     margin: ${props => props.margin};
     border-radius: ${props => props.bdRadius};
@@ -32,10 +32,12 @@ export const CardSegment = styled.div`
     padding: ${props => props.padding};
     height: ${props => props.height};
     white-space: ${props => props.whiteSpace};
-    justify-content: ${props => props.justifyContent};
+    //justify-content: ${props => props.justifyContent};
     padding: 0.1rem;
-    font-size: ${props => props.fontSize}
-    
+    font-size: ${props => props.fontSize};
+    color: ${props => props.color};
+    display: flex;
+    justify-content: space-between;    
 `;
 
 export const BlocoResultado = styled.div`
@@ -43,4 +45,5 @@ export const BlocoResultado = styled.div`
     background-color: ${props => props.bgColor};
     border-radius: ${props => props.bdRadius};
     font-weight: ${props => props.fontWeight};
+    
 `

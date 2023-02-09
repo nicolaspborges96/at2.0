@@ -7,12 +7,16 @@ const FolhaDisplay = ({ ...props }) => {
 
     const { resultados, isCardShown } = useContext(CalculoContext);
 
+
     return (
         <>
             {
                 isCardShown ? (
                     <FolhaDisplayContainer>
-                        <FolhaCard  dados={resultados} /> 
+                        {
+                            resultados.map((resultado, index) => (<FolhaCard  dados={resultado} key={index} />))
+                        }
+                         
                     </FolhaDisplayContainer>
                 ) : (
                     <></>

@@ -287,15 +287,18 @@ const gerenciaCalculo = (dados) => {
         respostas.push(resultadoFolha)
     }
 
+    console.log(respostas);
+
     return respostas;
 }
 
 const calculaInssClt = (salario) => {
-    //A quantidade de IFs é intecional devido a forma que o inss é calculado. Um valor que entra na ultima faixa, precisa, obrigaoriamente passar
-    //por todos os calculos
+    
     let inss = 0;
     
-    if (salario <= 1302) {
+    if(salario < 1302) {
+        
+    } else if (salario == 1302) {
         inss = 1302*0.075;
     } else if (salario > 1302 && salario <= 2571.29) {
         inss = 1302*0.075;
@@ -328,8 +331,11 @@ const calculaFolha = (dados, titulo) => {
         irrf = 0;
     }
     const fgts = salario*0.08;
+    const salarioLiquido = salario - inss - irrf;
+    const totalFolha = inss + irrf + fgts;
+    const decTerceiroProp = salarioLiquido/12;
 
-    const folha = {inss, irrf, fgts, titulo}
+    const folha = {inss, irrf, fgts, titulo, salario, salarioLiquido}
 
     return folha;
 }
