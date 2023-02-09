@@ -31,6 +31,7 @@ export const SelectInput = styled.select`
     outline:none;
     padding: 0.4rem;
     border-radius: 5px;
+    margin-left: .5rem;
 
     &:focus {
         border-color: #396600;

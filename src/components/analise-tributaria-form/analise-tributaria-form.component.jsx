@@ -5,7 +5,7 @@ import { ConfigProvider, Radio, Slider, Checkbox } from 'antd';
 import { useState } from 'react';
 import { AnaliseTContainerCheckbox, AnaliseTFormStyled } from './analise-tributaria-form.styles';
 import { useContext } from 'react';
-import { CaculoContext } from '../../context/calculo.context';
+import { CalculoContext } from '../../context/calculo.context';
 import { useRef } from 'react';
 
 const marks = {
@@ -35,7 +35,7 @@ const AnaliseTForm = ({ ...props }) => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { faturamento, socios, funcionarios, exterior, fopag, iss, anexoIII, anexoIV, anexoV, lucroP, autonomo } = formFields;
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
-    const { pegaInputECalcula, setScroll } = useContext(CaculoContext);
+    const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
 
 
     const onChangeFuncionario = (e) => {

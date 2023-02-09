@@ -252,8 +252,6 @@ const calculaAutonomo = (faturamentoInput, exterior, inputIss, titulo) => {
 const gerenciaCalculo = (dados) => {
     let respostas = [];
 
-    console.log(dados)
-
     if (dados.anexoIII) {
         const titulo = 'anexoIII';
         const resultadoIII = calculaSimples(dados.faturamento, dados.exterior, dados.socios, dados.fopag, titulo);
@@ -281,8 +279,12 @@ const gerenciaCalculo = (dados) => {
     if (dados.autonomo) {
         const titulo = 'autonomo';
         const resultadoAutonomo = calculaAutonomo(dados.faturamento, dados.exterior, dados.iss, titulo);
-        console.log(resultadoAutonomo)
         respostas.push(resultadoAutonomo)
+    }
+    if(dados.folha) {
+        const titulo = 'folha';
+        const resultadoFolha = calculaFolha(dados, titulo);
+        respostas.push(resultadoFolha)
     }
 
     return respostas;
@@ -318,18 +320,21 @@ const calculaInssClt = (salario) => {
 
 
  
-const calculaFolha = (dados) => {
-    const salario  = dados.faturamento;
+const calculaFolha = (dados, titulo) => {
+    const salario  = Number(dados.salario);
     const inss = calculaInssClt(salario);
-    const irrf = calculaIRRF(salario);
+    let irrf = calculaIRRF(salario - inss);
+    if(irrf <= 10) {
+        irrf = 0;
+    }
     const fgts = salario*0.08;
 
-    const folha = {inss, irrf, fgts}
+    const folha = {inss, irrf, fgts, titulo}
 
     return folha;
 }
 
-export const CaculoContext = createContext({
+export const CalculoContext = createContext({
     pegaInputECalcula: () => { },
     isCardShown: false,
     setCardShown: () => { }
@@ -344,22 +349,18 @@ export const CalculoProvider = ({ children }) => {
     const [scroll, setScroll] = useState(false);
 
     const pegaInputECalcula = (dados) => {
-        
         setCardShown(true);
         const output = gerenciaCalculo(dados);
         setResultados(output);
-        const folha = calculaFolha(dados)
-        
 
         return;
     }
 
 
-
     const value = { pegaInputECalcula, isCardShown, setCardShown, resultados, scroll, setScroll }
 
     return (
-        <CaculoContext.Provider value={value}>{children}</CaculoContext.Provider>
+        <CalculoContext.Provider value={value}>{children}</CalculoContext.Provider>
     )
 
 }

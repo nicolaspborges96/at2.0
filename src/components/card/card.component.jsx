@@ -1,5 +1,5 @@
 import { useEffect, useContext } from "react";
-import { CaculoContext } from "../../context/calculo.context";
+import { CalculoContext } from "../../context/calculo.context";
 
 import { BlocoResultado, CardBody, CardSegment } from "./card.styles";
 
@@ -30,9 +30,9 @@ const Card = ({ ...props }) => {
 
     const { pis, cofins, csll, irpj, adicionalIR, iss } = Object(custoLP);
 
-    const { inssAut, irrfAut, cppAut, issAut, aliqFinAut, totalAut, pagoEmpregador} = Object(props.dados);
+    const { inssAut, irrfAut, cppAut, issAut, aliqFinAut, totalAut, pagoEmpregador } = Object(props.dados);
 
-    const { scroll, setScroll } = useContext(CaculoContext);
+    const { scroll, setScroll } = useContext(CalculoContext);
 
 
 
@@ -97,7 +97,7 @@ const Card = ({ ...props }) => {
                         <CardSegment display={'flex'} justifyContent={'space-between'} bgColor={'#ced4da66'} fontWeight={'500'} >
                             <span>Salário Bruto</span> {converteNumeroParaMoeda(faturamento)}
                         </CardSegment>
-                        
+
                         <CardSegment margin={'1rem 0 0'} display={'flex'} justifyContent={'space-between'} bgColor={'#ced4da66'} fontWeight={'500'}>
                             <span>Resumo dos Impostos</span>
                         </CardSegment>
@@ -124,7 +124,7 @@ const Card = ({ ...props }) => {
                             <span>{`A contribuição patronal não é paga diretamente pelo autonomo, e sim pelo empregador. Contudo, caso o autônomo 
                             receba ${converteNumeroParaMoeda(faturamento)} o empregador estará pagando de fato ${converteNumeroParaMoeda(pagoEmpregador)}.`}</span>
                         </CardSegment>
-                            
+
                         <BlocoResultado margin={'auto 0 0 0'} bdRadius={'0.3rem'}  >
                             <CardSegment display={'flex'} justifyContent={'space-between'} bgColor={'#ced4da66'}>
                                 <span>Alíquota Final</span>{converteParaPorcentagem(aliqFinAut)}
@@ -137,7 +137,7 @@ const Card = ({ ...props }) => {
                 ) : (
 
                     <>
-                        <CardSegment bgColor={'#78ce1980'} padding={'0.5rem'} textAlign={'center'} fontWeight={'600'} bdRadius={'0.3rem'} 
+                        <CardSegment bgColor={'#78ce1980'} padding={'0.5rem'} textAlign={'center'} fontWeight={'600'} bdRadius={'0.3rem'}
                             whiteSpace={'pre-line'} >{TITULOS[titulo]}</CardSegment>
                         <CardSegment display={'flex'} justifyContent={'space-between'} bgColor={'#ced4da66'} fontWeight={'500'} >
                             <span>Faturamento Mensal</span> {converteNumeroParaMoeda(faturamento)}

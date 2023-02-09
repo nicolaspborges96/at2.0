@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { CaculoContext } from "../../context/calculo.context";
+import { CalculoContext } from "../../context/calculo.context";
 import { CardContainer } from "./card-display.styles";
 import { useState, useRef } from "react";
 import Card from "../card/card.component";
@@ -7,7 +7,7 @@ import Card from "../card/card.component";
 
 const CardDisplay = ({...props}) => {
 
-    const { resultados, isCardShown, setCardShown, scroll, setScroll } = useContext(CaculoContext);
+    const { resultados, isCardShown, setCardShown, scroll, setScroll } = useContext(CalculoContext);
 
     const CardsRef = useRef(null);
 
