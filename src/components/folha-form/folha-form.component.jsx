@@ -4,6 +4,7 @@ import { SelectInput } from '../../components/form-input/form-input.styles';
 import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
 import { useState, useContext } from 'react';
 import { CalculoContext } from '../../context/calculo.context';
+import { Radio } from 'antd';
 
 
 const defaultFormFields = {
@@ -26,6 +27,7 @@ const FolhaForm = () => {
 
     const onSubmitForm = (ev) => {
         ev.preventDefault();
+        console.log(formFields)
         pegaInputECalcula(formFields);
 
     }
@@ -54,12 +56,21 @@ const FolhaForm = () => {
                 <FormInput name='beneficios' value={beneficios} label={'Outros benefícios:'} onChange={handleChange} />
                 <label>
                     Atividade:
-                    <SelectInput name='atividade' value={atividade} onChange={handleChange} >
-                        <option value={'Anexo III'} name='Anexo III'>Anexo III</option>
-                        <option value={'Anexo IV'} name='Anexo IV'>Anexo IV</option>
-                        <option value={'Anexo V'} name='Anexo V'>Anexo V</option>
-                        <option value={'Fator R'} name='Fator R'>Fator R</option>
+                    <Radio.Group onChange={handleChange} >
+                        <Radio.Button value={3} name >Anexo III</Radio.Button>
+                        <Radio.Button value={4} >Anexo IV</Radio.Button>
+                        <Radio.Button value={5} >Anexo V</Radio.Button>
+                        
+                    </Radio.Group>
+                    {/*
+                        <SelectInput name='atividade' value={atividade} onChange={handleChange} >
+                        <option value={'anexoIII'} name='Anexo III'>Anexo III</option>
+                        <option value={'anexoIV'} name='Anexo IV'>Anexo IV</option>
+                        <option value={'anexoV'} name='Anexo V'>Anexo V</option>
+                        <option value={'fatorR'} name='Fator R'>Fator R</option>
                     </SelectInput>
+                    */}
+                    
                 </label>
             </FormFolha>
 
