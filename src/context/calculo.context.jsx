@@ -324,18 +324,23 @@ const calculaInssClt = (salario) => {
 
  
 const calculaFolha = (dados, titulo) => {
-    const salario  = Number(dados.salario);
-    const inss = calculaInssClt(salario);
-    let irrf = calculaIRRF(salario - inss);
+    const faturamento  = Number(dados.faturamento);
+    const inss = calculaInssClt(faturamento);
+    let irrf = calculaIRRF(faturamento - inss);
     if(irrf <= 10) {
         irrf = 0;
     }
-    const fgts = salario*0.08;
-    const salarioLiquido = salario - inss - irrf;
+    const fgts = faturamento*0.08;
+    const faturamentoLiquido = faturamento - inss - irrf;
     const totalFolha = inss + irrf + fgts;
-    const decTerceiroProp = salarioLiquido/12;
+    const decTerceiroProp = faturamentoLiquido/12;
 
-    const folha = {inss, irrf, fgts, titulo, salario, salarioLiquido}
+    const anexo = dados.atividade;
+    if(anexo === 3) {
+
+    }
+
+    const folha = {inss, irrf, fgts, titulo, faturamento, faturamentoLiquido}
 
     return folha;
 }

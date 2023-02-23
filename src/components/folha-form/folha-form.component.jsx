@@ -4,25 +4,32 @@ import { SelectInput } from '../../components/form-input/form-input.styles';
 import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
 import { useState, useContext } from 'react';
 import { CalculoContext } from '../../context/calculo.context';
-import { Radio } from 'antd';
+import { Radio, ConfigProvider } from 'antd';
 
 
 const defaultFormFields = {
     folha: true,
-    salario: '',
+    faturamento: '',
     regime: 'CLT',
     planoSaude: '',
     valeAlimentacao: '',
     valeTransporte: '',
     beneficios: '',
-    atividade: 'Anexo III'
+    atividade: '',
+    anexoIII: true,
+    anexoIV: false,
+    anexoV: false,
+    exterior: false,
+    socios: 1,
+    fopag: 0
+
 }
 
 
 const FolhaForm = () => {
 
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const { salario, regime, planoSaude, valeAlimentacao, valeTransporte, beneficios, atividade } = formFields;
+    const { faturamento, regime, planoSaude, valeAlimentacao, valeTransporte, beneficios, atividade, anexoIII, anexoIV, anexoV } = formFields;
     const { pegaInputECalcula } = useContext(CalculoContext);
 
     const onSubmitForm = (ev) => {
@@ -41,8 +48,9 @@ const FolhaForm = () => {
     return (
 
         <FolhaContainerBody>
+            <ConfigProvider theme={{ token: { colorPrimary: '#396600', fontFamily: 'Poppins, sans-serif' } }} >
             <FormFolha onSubmit={onSubmitForm} >
-                <FormInput label={'Salário mensal (bruto):'} name='salario' value={salario} onChange={handleChange} />
+                <FormInput label={'Salário mensal (bruto):'} name='faturamento' value={faturamento} onChange={handleChange} />
                 <label>
                     Regime:
                     <SelectInput name='regime' value={regime} onChange={handleChange} >
@@ -54,12 +62,12 @@ const FolhaForm = () => {
                 <FormInput name='valeAlimentacao' value={valeAlimentacao} label={'Vale-refeição/alimentação:'} onChange={handleChange} />
                 <FormInput name='valeTransporte' value={valeTransporte} label={'Vale-transporte:'} onChange={handleChange} />
                 <FormInput name='beneficios' value={beneficios} label={'Outros benefícios:'} onChange={handleChange} />
-                <label>
-                    Atividade:
-                    <Radio.Group onChange={handleChange} >
-                        <Radio.Button value={3} name >Anexo III</Radio.Button>
-                        <Radio.Button value={4} >Anexo IV</Radio.Button>
-                        <Radio.Button value={5} >Anexo V</Radio.Button>
+                <label style={{margin:'0 auto'}}>
+                    <span>Atividade: </span>
+                    <Radio.Group onChange={handleChange} name='atividade' >
+                        <Radio.Button value={3} name='anexoIII' >Anexo III</Radio.Button>
+                        <Radio.Button value={4} name='anexoIV' >Anexo IV</Radio.Button>
+                        <Radio.Button value={5} name='anexoV' >Anexo V</Radio.Button>
                         
                     </Radio.Group>
                     {/*
@@ -77,7 +85,7 @@ const FolhaForm = () => {
             <Button texto={'Calcular'} type='submit' buttonStyle={BUTTON_TYPE_CLASSES.svg} border={'1px solid #c3c8ced4'}
                 margin={'1.5rem auto 0'} bgColor={'#ffffff'} width={'200px'} hover={'border: 1px solid #a5c017; color:#396600'}
                 onClick={onSubmitForm} />
-
+            </ConfigProvider>
         </FolhaContainerBody>
     )
 

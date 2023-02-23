@@ -11,14 +11,18 @@ export const FolhaContainerBody = styled.div`
 
 export const FormFolha = styled.form`
     display: grid;
-    grid-column-gap: 4rem;
+    grid-column-gap: 3rem;
     grid-template-columns: repeat(2, 1fr);
-    width: 70%;
+    width: 80%;
     margin: 2rem auto;
     
     
-    padding
     input {
-        margin: 0.3rem 0.7rem 0 0;
+        margin: 0.2rem 0.7rem 0 0;
+    }
+
+    label:last-of-type {
+        grid-column: span 2;
+        margin-top: 0.4rem;
     }
 `

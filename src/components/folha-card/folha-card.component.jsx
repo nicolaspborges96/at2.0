@@ -7,7 +7,7 @@ import { CardSegment } from "../card/card.styles";
 const FolhaCard = ({...props}) => {
 
     const { resultados } = useContext(CalculoContext);
-    const { inss, fgts, irrf, titulo, salario, salarioLiquido } = props.dados;
+    const { inss, fgts, irrf, titulo, faturamento, faturamentoLiquido } = props.dados;
 
     function converteNumeroParaMoeda(number) {
         return Intl.NumberFormat('pt-Br', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(number);
@@ -28,7 +28,7 @@ const FolhaCard = ({...props}) => {
                             <span>CLT</span>
                         </CardSegment>
                         <CardSegment>
-                            <span>Salário</span> {converteNumeroParaMoeda(salario)}
+                            <span>Salário</span> {converteNumeroParaMoeda(faturamento)}
                         </CardSegment>
                         <CardSegment color={'#ff000078'} >
                             <span>(-) INSS</span> {converteNumeroParaMoeda(inss)}
@@ -40,7 +40,7 @@ const FolhaCard = ({...props}) => {
                             <span>(-) IRRF</span> {converteNumeroParaMoeda(irrf)}
                         </CardSegment>
                         <CardSegment>
-                            <span>Salario Liquido</span> {converteNumeroParaMoeda(salarioLiquido)}
+                            <span>Salario Liquido</span> {converteNumeroParaMoeda(faturamentoLiquido)}
                         </CardSegment>
                         <CardSegment></CardSegment>
                         <CardSegment></CardSegment>
