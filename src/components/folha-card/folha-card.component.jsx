@@ -1,13 +1,13 @@
-import { useContext } from "react";
-import { CalculoContext } from "../../context/calculo.context";
+
 import { FolhaCardBody } from "./folha-card.styles";
 import { CardSegment } from "../card/card.styles";
 
 
 const FolhaCard = ({...props}) => {
 
-    const { resultados } = useContext(CalculoContext);
-    const { inss, fgts, irrf, titulo, faturamento, faturamentoLiquido } = props.dados;
+    const { inssClt, fgts, irrfClt, titulo, faturamento, faturamentoLiquido, valeAlimentacao, valeTransporte, 
+            planoSaude, beneficios, decTerceiroProp, remuneracaoLiq, das, inss, irrf, patronal } = props.dados;
+    const key = props.key;
 
     function converteNumeroParaMoeda(number) {
         return Intl.NumberFormat('pt-Br', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(number);
@@ -16,11 +16,10 @@ const FolhaCard = ({...props}) => {
     function converteParaPorcentagem(number) {
         return Intl.NumberFormat('pt-Br', { style: 'percent', minimumFractionDigits: 2 }).format(number);
     }
-    
 
     return (
-        <FolhaCardBody>
-            
+        <FolhaCardBody key={key}>
+            {console.log(props.dados)}
             {
                 titulo === 'folha' ? (
                     <>  
@@ -31,24 +30,53 @@ const FolhaCard = ({...props}) => {
                             <span>Salário</span> {converteNumeroParaMoeda(faturamento)}
                         </CardSegment>
                         <CardSegment color={'#ff000078'} >
-                            <span>(-) INSS</span> {converteNumeroParaMoeda(inss)}
+                            <span>(-) INSS</span> {converteNumeroParaMoeda(inssClt)}
+                        </CardSegment>
+                        <CardSegment color={'#ff000078'}>
+                            <span>(-) IRRF</span> {converteNumeroParaMoeda(irrfClt)}
+                        </CardSegment>
+                        <CardSegment style={{backgroundColor:'#ced4da66', marginBottom:'0.5rem'}}>
+                            <span>Salario Liquido</span> {converteNumeroParaMoeda(faturamentoLiquido)}
                         </CardSegment>
                         <CardSegment>
                             <span>FGTS</span> {converteNumeroParaMoeda(fgts)}
                         </CardSegment>
                         <CardSegment>
-                            <span>(-) IRRF</span> {converteNumeroParaMoeda(irrf)}
+                            <span>13º Proporcional</span> {converteNumeroParaMoeda(decTerceiroProp)}
                         </CardSegment>
                         <CardSegment>
-                            <span>Salario Liquido</span> {converteNumeroParaMoeda(faturamentoLiquido)}
+                            <span>VR/VA</span> {converteNumeroParaMoeda(valeAlimentacao)}
                         </CardSegment>
-                        <CardSegment></CardSegment>
-                        <CardSegment></CardSegment>
-                        <CardSegment></CardSegment>
+                        <CardSegment>
+                            <span>VT</span> {converteNumeroParaMoeda(valeTransporte)}
+                        </CardSegment>
+                        <CardSegment>
+                            <span>Plano de Saúde</span> {converteNumeroParaMoeda(planoSaude)}
+                        </CardSegment>
+                        <CardSegment>
+                            <span>Benefícios</span> {converteNumeroParaMoeda(beneficios)}
+                        </CardSegment>
+                        <CardSegment style={{backgroundColor:'#78ce1980', marginTop:'auto'}}  >
+                            <span>Remuneração liquida</span> {converteNumeroParaMoeda(remuneracaoLiq)}
+                        </CardSegment>
                        
                     </>
                 ) : (
-                    <></>
+                    <>
+                        <CardSegment style={{display: 'block'}} bgColor={'#78ce1980'} padding={'0.5rem'} textAlign={'center'} fontWeight={'600'} bdRadius={'0.3rem'} whiteSpace={'pre-line'} >
+                            <span>PJ</span>
+                        </CardSegment>
+                        <CardSegment>
+                            <span>Salario bruto</span> {converteNumeroParaMoeda(faturamento)}
+                        </CardSegment>
+                        <CardSegment>
+                            <span>(-) DAS</span> {converteNumeroParaMoeda(das)}
+                        </CardSegment>
+                        <CardSegment>
+                            <span>(-) INSS</span> {converteNumeroParaMoeda(inss)}
+                        </CardSegment>
+                        
+                    </>
                 )
             }
         </FolhaCardBody>

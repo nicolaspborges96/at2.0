@@ -34,9 +34,8 @@ const FolhaForm = () => {
 
     const onSubmitForm = (ev) => {
         ev.preventDefault();
-        console.log(formFields)
         pegaInputECalcula(formFields);
-
+        
     }
 
     const handleChange = (event) => {
