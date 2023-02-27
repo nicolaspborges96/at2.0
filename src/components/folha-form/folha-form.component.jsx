@@ -21,7 +21,8 @@ const defaultFormFields = {
     anexoV: false,
     exterior: false,
     socios: 1,
-    fopag: 0
+    fopag: 0,
+    anexo: 3
 
 }
 
@@ -40,13 +41,27 @@ const FolhaForm = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-
+        
         setFormFields({ ...formFields, [name]: value })
     }
 
-    return (
+    const handleRadioChange = (event) => {
+        const { name, value } = event.target;
 
+        if (value === 3) {
+            setFormFields({...formFields, anexoIII: true, anexoIV: false, anexoV: false})
+        } else if (value === 4) {
+            setFormFields({...formFields, anexoIII: false, anexoIV: true, anexoV: false})
+        } else if (value === 5) {
+            setFormFields({...formFields, anexoIII: false, anexoIV: false, anexoV: true})
+        }
+
+    }
+
+    return (
+        
         <FolhaContainerBody>
+            
             <ConfigProvider theme={{ token: { colorPrimary: '#396600', fontFamily: 'Poppins, sans-serif' } }} >
             <FormFolha onSubmit={onSubmitForm} >
                 <FormInput label={'Salário mensal (bruto):'} name='faturamento' value={faturamento} onChange={handleChange} />
@@ -63,20 +78,13 @@ const FolhaForm = () => {
                 <FormInput name='beneficios' value={beneficios} label={'Outros benefícios:'} onChange={handleChange} />
                 <label style={{margin:'0 auto'}}>
                     <span>Atividade: </span>
-                    <Radio.Group onChange={handleChange} name='atividade' >
+                    <Radio.Group onChange={handleRadioChange} name='anexo' >
                         <Radio.Button value={3} name='anexoIII' >Anexo III</Radio.Button>
                         <Radio.Button value={4} name='anexoIV' >Anexo IV</Radio.Button>
                         <Radio.Button value={5} name='anexoV' >Anexo V</Radio.Button>
                         
                     </Radio.Group>
-                    {/*
-                        <SelectInput name='atividade' value={atividade} onChange={handleChange} >
-                        <option value={'anexoIII'} name='Anexo III'>Anexo III</option>
-                        <option value={'anexoIV'} name='Anexo IV'>Anexo IV</option>
-                        <option value={'anexoV'} name='Anexo V'>Anexo V</option>
-                        <option value={'fatorR'} name='Fator R'>Fator R</option>
-                    </SelectInput>
-                    */}
+                    
                     
                 </label>
             </FormFolha>

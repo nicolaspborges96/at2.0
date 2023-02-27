@@ -128,8 +128,9 @@ const calculaSimples = (faturamento, exterior, socios, folhaFuncionario, titulo)
     const das = aliquotaEfetiva * faturamento;
 
     const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo);
+    const { valor, inss, irrf, patronal } = proLabore;
 
-    return { das, faixa, aliquotaEfetiva, titulo, faturamento, proLabore }
+    return { das, faixa, aliquotaEfetiva, titulo, faturamento, valor, inss, irrf, patronal }
 }
 
 const calculaFatorR = (faturamento, exterior, socios, folhaFuncionario, infoAnexo) => {
@@ -150,8 +151,9 @@ const calculaFatorR = (faturamento, exterior, socios, folhaFuncionario, infoAnex
     const das = aliquotaEfetiva * faturamento;
 
     const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo);
+    const { valor, inss, irrf, patronal } = proLabore;
 
-    return { das, faixa, aliquotaEfetiva, titulo, faturamento, proLabore }
+    return { das, faixa, aliquotaEfetiva, titulo, faturamento, valor, inss, irrf, patronal }
 }
 
 const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFuncionario, titulo) => {
@@ -223,8 +225,9 @@ const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFun
     const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo);
     valorLP += proLabore.inss + proLabore.patronal;
     totalAliqLP += (proLabore.inss + proLabore.patronal)/faturamento;
+    const { valor, inss, irrf, patronal } = proLabore;
     
-    return { aliqLP, custoLP, valorLP, totalAliqLP, titulo, proLabore, faturamento }
+    return { aliqLP, custoLP, valorLP, totalAliqLP, titulo, valor, inss, irrf, patronal, faturamento }
 }
 
 const calculaAutonomo = (faturamentoInput, exterior, inputIss, titulo) => {
@@ -286,7 +289,7 @@ const gerenciaCalculo = (dados) => {
         const resultadoFolha = calculaFolha(dados, titulo);
         respostas.push(resultadoFolha)
     }
-
+    console.log(respostas)
     return respostas;
 }
 
@@ -342,9 +345,7 @@ const calculaPJ = (faturamento, anexos, exterior) => {
 
     const das = aliquotaEfetiva * faturamento;
 
-    const proLabore = calculaProlabore(faturamento, 1, 0, titulo);
-
-    return { das, faixa, aliquotaEfetiva, titulo, proLabore }
+    return { das, faixa, aliquotaEfetiva, titulo }
 
 }
  
@@ -363,18 +364,18 @@ const calculaFolha = (dados, titulo) => {
     const faturamentoLiquido = faturamento - inssClt - irrfClt;
     
     const decTerceiroProp = faturamentoLiquido/12;
-    const feriasProp = faturamentoFerias - calculaInssClt(faturamentoFerias) - calculaIRRF(faturamentoFerias);
+    const feriasProp = (faturamentoFerias - calculaInssClt(faturamentoFerias) - calculaIRRF(faturamentoFerias))/12;
     const fgtsExtras = (faturamentoFerias + faturamento)*0.08;
 
     const totalBeneficios = Number(planoSaude) + Number(valeAlimentacao) + Number(valeTransporte) + Number(beneficios);
-    const remuneracaoLiq = faturamentoLiquido + fgts + decTerceiroProp + totalBeneficios;
+    const remuneracaoLiq = faturamentoLiquido + fgts + decTerceiroProp + totalBeneficios + feriasProp;
     const valoresPJ = calculaPJ(remuneracaoLiq, anexo, false);
-    const { das, proLabore  } = valoresPJ;
-    const { inss, irrf, patronal } = proLabore;
+    const { das  } = valoresPJ;
+    
     
     const folha = { inssClt, irrfClt, fgts, titulo, faturamento, faturamentoLiquido, beneficios, planoSaude, 
                     valeAlimentacao, valeTransporte, decTerceiroProp, remuneracaoLiq, feriasProp, fgtsExtras,
-                    das, inss, irrf, patronal }
+                    das, totalBeneficios }
 
     
     return folha;

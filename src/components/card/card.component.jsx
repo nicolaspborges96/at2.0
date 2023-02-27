@@ -23,8 +23,8 @@ function converteParaPorcentagem(number) {
 
 const Card = ({ ...props }) => {
     const key = props.key;
-    const { titulo, das, aliquotaEfetiva, faixa, faturamento, proLabore, custoLP, totalAliqLP, valorLP } = props.dados;
-    const { valor, inss, irrf, patronal } = proLabore;
+    const { titulo, das, aliquotaEfetiva, faixa, faturamento, proLabore, custoLP, totalAliqLP, 
+            valorLP, valor, inss, irrf, patronal } = props.dados;
     const totalSN = das + inss + irrf + patronal;
     const aliquotaFinalSN = totalSN / faturamento;
 

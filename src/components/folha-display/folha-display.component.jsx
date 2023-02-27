@@ -3,6 +3,7 @@ import { CalculoContext } from "../../context/calculo.context";
 import { useContext } from "react";
 import FolhaCard from "../folha-card/folha-card.component";
 import Card from "../card/card.component";
+import { Fragment } from "react";
 
 const FolhaDisplay = ({ ...props }) => {
 
@@ -15,20 +16,19 @@ const FolhaDisplay = ({ ...props }) => {
                 isCardShown ? (
                     <FolhaDisplayContainer>
                         {
-                            resultados.map((resultado, index) => (<FolhaCard  dados={resultado} key={index} />))
-                            /*resultados.map((resultado, index) => (
-                            <>
-                                {
-                                    resultado.titulo === 'folha' ? (
-                                        <FolhaCard  dados={resultado} key={index} />
-                                    ) : (
-                                        <Card dados={resultado} key={index} />
-                                    )
-                                }
-                            </>
-                            ))
-                            */}
-                         
+                            resultados.map((resultado, index) => (
+                                <Fragment key={index} >
+                                    {
+                                        resultado.titulo === 'anexoV' ? (
+                                            <></>
+                                        ) : (
+                                            <FolhaCard dados={resultado} key={index} />
+                                        )
+                                    }
+
+                                </Fragment>))
+                        }
+
                     </FolhaDisplayContainer>
                 ) : (
                     <></>
