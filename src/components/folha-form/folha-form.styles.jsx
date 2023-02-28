@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const FolhaContainerBody = styled.div`
+    border: solid 1px #3a6600c1;
     background-color: #ffffff;
     width: 55%;
     margin: 0 auto;

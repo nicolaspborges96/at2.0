@@ -18,7 +18,7 @@ const calculaIRRF = (baseDeCalculoIR) => {
     return irrf;
 }
 
-const calculaProlabore = (faturamentoMensal, quantidadeSocios, valorFolha, tipoTributario) => {
+const calculaProlabore = (faturamentoMensal, quantidadeSocios, valorFolha, tipoTributario, cppDas) => {
     let proLabore = {
         valor: 1302,
         inss: 143.22,
@@ -27,7 +27,9 @@ const calculaProlabore = (faturamentoMensal, quantidadeSocios, valorFolha, tipoT
     };
 
     if (tipoTributario === 'anexoVR') {
-        let fatorR = (faturamentoMensal * 0.28).toFixed(2);
+        const fgtsFatoR = valorFolha*0.08;
+    
+        let fatorR = ((faturamentoMensal * 0.28) - cppDas - fgtsFatoR).toFixed(2);
         let baseDeCalculoIR;
         let tetoInss = 7507.49;
 
@@ -127,10 +129,12 @@ const calculaSimples = (faturamento, exterior, socios, folhaFuncionario, titulo)
 
     const das = aliquotaEfetiva * faturamento;
 
-    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo);
+    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo, 0);
     const { valor, inss, irrf, patronal } = proLabore;
+    const totalSN = das + inss + irrf + patronal;
+    const aliquotaFinal = totalSN / faturamento;
 
-    return { das, faixa, aliquotaEfetiva, titulo, faturamento, valor, inss, irrf, patronal }
+    return { das, faixa, aliquotaEfetiva, titulo, faturamento, valor, inss, irrf, patronal, totalSN, aliquotaFinal }
 }
 
 const calculaFatorR = (faturamento, exterior, socios, folhaFuncionario, infoAnexo) => {
@@ -148,12 +152,15 @@ const calculaFatorR = (faturamento, exterior, socios, folhaFuncionario, infoAnex
 
     const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
 
-    const das = aliquotaEfetiva * faturamento;
+    const das = aliquotaEfetiva * faturamento;  
+    const cppDas = das*0.434;
 
-    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo);
+    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo, cppDas);
     const { valor, inss, irrf, patronal } = proLabore;
+    const totalSN = das + inss + irrf + patronal;
+    const aliquotaFinal = totalSN / faturamento;
 
-    return { das, faixa, aliquotaEfetiva, titulo, faturamento, valor, inss, irrf, patronal }
+    return { das, faixa, aliquotaEfetiva, titulo, faturamento, valor, inss, irrf, patronal, totalSN, aliquotaFinal }
 }
 
 const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFuncionario, titulo) => {
@@ -177,7 +184,7 @@ const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFun
     }
 
     let valorLP = 0;
-    let totalAliqLP = 0;
+    let aliquotaFinal = 0;
     let nomesImpostos = Object.keys(aliqLP)
 
     if (exterior) {
@@ -202,32 +209,32 @@ const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFun
         if (nomesImpostos[i] === 'pis') {
             custoLP.pis += aliqLP.pis * faturamento;
             valorLP += custoLP.pis;
-            totalAliqLP += aliqLP.pis;
+            aliquotaFinal += aliqLP.pis;
         } else if (nomesImpostos[i] === 'cofins') {
             custoLP.cofins += aliqLP.cofins * faturamento;
             valorLP += custoLP.cofins;
-            totalAliqLP += aliqLP.cofins;
+            aliquotaFinal += aliqLP.cofins;
         } else if (nomesImpostos[i] === 'irpj') {
             custoLP.irpj += aliqLP.irpj * faturamento;
             valorLP += custoLP.irpj;
-            totalAliqLP += aliqLP.irpj;
+            aliquotaFinal += aliqLP.irpj;
         } else if (nomesImpostos[i] === 'csll') {
             custoLP.csll += aliqLP.csll * faturamento;
             valorLP += custoLP.csll;
-            totalAliqLP += aliqLP.csll;
+            aliquotaFinal += aliqLP.csll;
         } else if (nomesImpostos[i] === 'iss') {
             custoLP.iss += aliqLP.iss * faturamento;
             valorLP += custoLP.iss;
-            totalAliqLP += aliqLP.iss;
+            aliquotaFinal += aliqLP.iss;
         }
     }
 
-    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo);
+    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo, 0);
     valorLP += proLabore.inss + proLabore.patronal;
-    totalAliqLP += (proLabore.inss + proLabore.patronal)/faturamento;
+    aliquotaFinal += (proLabore.inss + proLabore.patronal)/faturamento;
     const { valor, inss, irrf, patronal } = proLabore;
     
-    return { aliqLP, custoLP, valorLP, totalAliqLP, titulo, valor, inss, irrf, patronal, faturamento }
+    return { aliqLP, custoLP, valorLP, aliquotaFinal, titulo, valor, inss, irrf, patronal, faturamento }
 }
 
 const calculaAutonomo = (faturamentoInput, exterior, inputIss, titulo) => {
@@ -247,9 +254,9 @@ const calculaAutonomo = (faturamentoInput, exterior, inputIss, titulo) => {
     let totalAut = inssAut + irrfAut + cppAut + issAut;
     let pagoEmpregador =faturamento + cppAut;
 
-    let aliqFinAut = totalAut / faturamento;
+    let aliquotaFinal = totalAut / faturamento;
     
-    return {faturamento, inssAut, irrfAut, cppAut, issAut, proLabore, titulo, aliqFinAut, totalAut, pagoEmpregador};
+    return {faturamento, inssAut, irrfAut, cppAut, issAut, proLabore, titulo, aliquotaFinal, totalAut, pagoEmpregador};
 }
 
 const gerenciaCalculo = (dados) => {

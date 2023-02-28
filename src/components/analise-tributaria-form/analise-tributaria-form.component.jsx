@@ -7,6 +7,7 @@ import { AnaliseTContainerCheckbox, AnaliseTFormStyled } from './analise-tributa
 import { useContext } from 'react';
 import { CalculoContext } from '../../context/calculo.context';
 import { useRef } from 'react';
+import { Fragment } from 'react';
 
 const marks = {
     2: '2%',
@@ -40,7 +41,8 @@ const AnaliseTForm = ({ ...props }) => {
 
     const onChangeFuncionario = (e) => {
         const { name, value } = e.target;
-        setFormFields({ ...formFields, [name]: value })
+        setFormFields({ ...formFields, [name]: value, fopag:0 });
+        
     }
 
     const onChangeExterior = (e) => {
@@ -65,12 +67,14 @@ const AnaliseTForm = ({ ...props }) => {
         setFormFields({ ...formFields, [name]: checked })
     }
 
+
     const onSubmitForm = (ev) => {
         ev.preventDefault();
         pegaInputECalcula(formFields);
         setScroll(true);
         
     }
+
 
     return (
         
@@ -125,7 +129,7 @@ const AnaliseTForm = ({ ...props }) => {
             </ConfigProvider>
 
             <Button texto={'Calcular'} type='submit' buttonStyle={BUTTON_TYPE_CLASSES.svg} border={'1px solid #c3c8ced4'} 
-            margin={'1.5rem auto 0'} bgColor={'#ffffff'} width={'200px'} hover={'border: 1px solid #a5c017; color:#396600'} />
+            margin={'1.5rem auto 1rem'} bgColor={'#ffffff'} width={'200px'} hover={'border: 1px solid #a5c017; color:#396600'} />
         </AnaliseTFormStyled>
 
     )

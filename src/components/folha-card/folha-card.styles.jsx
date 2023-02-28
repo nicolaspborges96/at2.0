@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const FolhaCardBody = styled.div`
-    //border: solid 1px #3a6600c1;
+    border: solid 1px #3a6600c1;
     border-radius: 0.5rem;
     padding: 0.6rem;
     margin: 2rem 1rem 1rem 1rem;

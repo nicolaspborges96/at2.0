@@ -30,7 +30,7 @@ const defaultFormFields = {
 const FolhaForm = () => {
 
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const { faturamento, regime, planoSaude, valeAlimentacao, valeTransporte, beneficios, atividade, anexoIII, anexoIV, anexoV } = formFields;
+    const { faturamento, faturamentoPJ, planoSaude, valeAlimentacao, valeTransporte, beneficios } = formFields;
     const { pegaInputECalcula } = useContext(CalculoContext);
 
     const onSubmitForm = (ev) => {
@@ -64,14 +64,15 @@ const FolhaForm = () => {
             
             <ConfigProvider theme={{ token: { colorPrimary: '#396600', fontFamily: 'Poppins, sans-serif' } }} >
             <FormFolha onSubmit={onSubmitForm} >
-                <FormInput label={'Salário mensal (bruto):'} name='faturamento' value={faturamento} onChange={handleChange} />
-                <label>
+                <FormInput label={'Salário CLT (bruto):'} name='faturamento' value={faturamento} onChange={handleChange} />
+                <FormInput label={'Salário PJ (bruto):'} name='faturamento' value={faturamentoPJ} onChange={handleChange} />
+                {/*<label>
                     Regime:
                     <SelectInput name='regime' value={regime} onChange={handleChange} >
                         <option onChange={handleChange} name='clt' value={'CLT'}>CLT</option>
                         <option onChange={handleChange} name={'pj'} value={'PJ'} >PJ</option>
                     </SelectInput>
-                </label>
+                </label>*/}
                 <FormInput name='planoSaude' value={planoSaude} label={'Plano de saúde:'} onChange={handleChange} />
                 <FormInput name='valeAlimentacao' value={valeAlimentacao} label={'Vale-refeição/alimentação:'} onChange={handleChange} />
                 <FormInput name='valeTransporte' value={valeTransporte} label={'Vale-transporte:'} onChange={handleChange} />

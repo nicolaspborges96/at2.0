@@ -23,11 +23,9 @@ function converteParaPorcentagem(number) {
 
 const Card = ({ ...props }) => {
     const key = props.key;
-    const { titulo, das, aliquotaEfetiva, faixa, faturamento, proLabore, custoLP, totalAliqLP, 
-            valorLP, valor, inss, irrf, patronal } = props.dados;
-    const totalSN = das + inss + irrf + patronal;
-    const aliquotaFinalSN = totalSN / faturamento;
-
+    const { titulo, das, faturamento, custoLP,
+            valorLP, valor, inss, irrf, patronal, totalSN, aliquotaFinal } = props.dados;
+    
     const { pis, cofins, csll, irpj, adicionalIR, iss } = Object(custoLP);
 
     const { inssAut, irrfAut, cppAut, issAut, aliqFinAut, totalAut, pagoEmpregador } = Object(props.dados);
@@ -84,7 +82,7 @@ const Card = ({ ...props }) => {
                         }
                         <BlocoResultado margin={'auto 0 0 0'} bdRadius={'0.3rem'}  >
                             <CardSegment  bgColor={'#ced4da66'}>
-                                <span>Alíquota Final</span>{converteParaPorcentagem(aliquotaFinalSN)}
+                                <span>Alíquota Final</span>{converteParaPorcentagem(aliquotaFinal)}
                             </CardSegment>
                             <CardSegment bgColor={'#78ce1980'} >
                                 <span>Total </span>{converteNumeroParaMoeda(totalSN)}
@@ -180,7 +178,7 @@ const Card = ({ ...props }) => {
                         }
                         <BlocoResultado margin={'auto 0 0 0'} bdRadius={'0.3rem'}  >
                             <CardSegment  bgColor={'#ced4da66'}>
-                                <span>Alíquota Final</span>{converteParaPorcentagem(totalAliqLP)}
+                                <span>Alíquota Final</span>{converteParaPorcentagem(aliquotaFinal)}
                             </CardSegment>
                             <CardSegment bgColor={'#78ce1980'} >
                                 <span>Total </span>{converteNumeroParaMoeda(valorLP)}
