@@ -7,7 +7,7 @@ import Card from "../card/card.component";
 
 const CardDisplay = ({...props}) => {
 
-    const { resultados, isCardShown, setCardShown, scroll, setScroll } = useContext(CalculoContext);
+    const { resultados, isCardShown, scroll, vencedor } = useContext(CalculoContext);
 
     const CardsRef = useRef(null);
 
@@ -28,7 +28,7 @@ const CardDisplay = ({...props}) => {
         ) : (
             <CardContainer ref={CardsRef}  >
                 {
-                    resultados.map((resultado, index) => (<Card dados={resultado} key={index} />))
+                    resultados.map((resultado, index) => (<Card dados={resultado} key={index} vencedor={vencedor} />))
                     
                 }
                 
