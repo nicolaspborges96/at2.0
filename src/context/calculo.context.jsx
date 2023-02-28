@@ -297,6 +297,15 @@ const gerenciaCalculo = (dados) => {
         respostas.push(resultadoFolha)
     }
     console.log(respostas)
+
+    for(let i = 0, melhor = 100, vencedor; i<respostas.length; i++) {
+        if (respostas[i].aliquotaFinal < melhor) {
+            melhor = respostas[i].aliquotaFinal;
+            vencedor = respostas[i].titulo;
+        }
+        console.log(vencedor)
+    }
+
     return respostas;
 }
 
