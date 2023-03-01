@@ -7,15 +7,20 @@ export const Group =styled.div`
     //width: 70%;
     margin-bottom: 0.3rem;
     font-size: 0.9rem;
+
+    @media (max-width: 700px) {
+        width: 100%;
+    }
     
 `
 
 export const SearchInput = styled.input`
     background-color:transparent;
-    border: 1px solid #ebedf2;
+    border: 1px solid #d1d2d6;
     outline:none;
     padding: 0.4rem;
     border-radius: 5px;
+    //width: 70%;
 
     &:focus {
         border-color: #396600;

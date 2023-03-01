@@ -11,23 +11,27 @@ import FolhaDisplay from '../../components/folha-display/folha-display.component
 
 
 const Folha = () => {
-
-
     return (
         <FolhaContainer>
             <ContainerHeaderAnaliseT>
                 <ContainerLogo>
                     <LogoHorizontal />
                 </ContainerLogo>
-                <StyledSpan color='#000000' fontSize='1.3rem' fontWeight='600' margin={'auto 0'} >CLT x PJ</StyledSpan>
+                <StyledSpan
+                    color="#000000"
+                    fontSize="1.3rem"
+                    fontWeight="600"
+                    margin={"auto 0"}
+                >
+                    CLT x PJ
+                </StyledSpan>
             </ContainerHeaderAnaliseT>
 
             <FolhaForm />
 
             <FolhaDisplay />
-
         </FolhaContainer>
-    )
-}
+    );
+};
 
 export default Folha;

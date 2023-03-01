@@ -1,4 +1,6 @@
-
+import { useContext } from 'react';
+import { CalculoContext } from '../../context/calculo.context';
+import { useEffect } from 'react';
 import { FolhaCardBody } from "./folha-card.styles";
 import { CardSegment } from "../card/card.styles";
 
@@ -8,6 +10,8 @@ const FolhaCard = ({...props}) => {
     const { inssClt, fgts, irrfClt, titulo, faturamento, faturamentoLiquido, valeAlimentacao, valeTransporte, 
             planoSaude, beneficios, decTerceiroProp, remuneracaoLiq, das, inss, irrf, patronal, feriasProp, totalBeneficios } = props.dados;
     
+    const { scroll, setScroll } = useContext(CalculoContext);
+
     const key = props.key;
     const mensalidade = 109.90;
     const calculaPjLiquido = (faturamento, das, inss, irrf, patronal, mensalidade) => {
@@ -23,6 +27,10 @@ const FolhaCard = ({...props}) => {
     function converteParaPorcentagem(number) {
         return Intl.NumberFormat('pt-Br', { style: 'percent', minimumFractionDigits: 2 }).format(number);
     }
+
+    useEffect(() => {
+        setScroll(false);
+    });
 
     return (
         <FolhaCardBody key={key}>

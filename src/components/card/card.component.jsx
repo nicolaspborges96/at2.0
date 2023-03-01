@@ -24,8 +24,8 @@ function converteParaPorcentagem(number) {
 const Card = ({ ...props }) => {
     const key = props.key;
     const { titulo, das, faturamento, custoLP,
-            valorLP, valor, inss, irrf, patronal, totalSN, aliquotaFinal } = props.dados;
-    
+        valorLP, valor, inss, irrf, patronal, totalSN, aliquotaFinal } = props.dados;
+
     const { pis, cofins, csll, irpj, adicionalIR, iss } = Object(custoLP);
 
     const { inssAut, irrfAut, cppAut, issAut, aliqFinAut, totalAut, pagoEmpregador } = Object(props.dados);
@@ -36,11 +36,11 @@ const Card = ({ ...props }) => {
 
     useEffect(() => {
         setScroll(false);
-    })
+    });
 
     return (
         <CardBody key={key} >
-            
+
             {
                 (titulo !== 'LP' && titulo !== 'autonomo') ? (
                     <>
@@ -48,19 +48,19 @@ const Card = ({ ...props }) => {
                             vencedor === titulo ? (
                                 <CardSegment bgColor={'#396600'} color={'#a5c017'} margin={'0 auto 0.3rem'} bdRadius={'0.3rem'} width={'95%'}
                                     fontSize={'0.8rem'} textAlign={'center'} >
-                                    <span style={{margin: 'auto'}}>Opção recomendada para o cliente</span></CardSegment>
+                                    <span style={{ margin: 'auto' }}>Opção recomendada para o cliente</span></CardSegment>
                             ) : (
                                 <></>
                             )
                         }
-                        <CardSegment style={{display: 'block'}} bgColor={'#78ce1980'} padding={'0.5rem'} textAlign={'center'} fontWeight={'600'} bdRadius={'0.3rem'} whiteSpace={'pre-line'} >{TITULOS[titulo]}</CardSegment>
-                        <CardSegment  bgColor={'#ced4da66'} fontWeight={'500'} >
+                        <CardSegment style={{ display: 'block' }} bgColor={'#78ce1980'} padding={'0.5rem'} textAlign={'center'} fontWeight={'600'} bdRadius={'0.3rem'} whiteSpace={'pre-line'} >{TITULOS[titulo]}</CardSegment>
+                        <CardSegment bgColor={'#ced4da66'} fontWeight={'500'} >
                             <span>Faturamento Mensal</span> {converteNumeroParaMoeda(faturamento)}
                         </CardSegment>
                         <CardSegment  >
                             <span>Pró-labore por sócio</span> {converteNumeroParaMoeda(valor)}
                         </CardSegment>
-                        <CardSegment margin={'1rem 0 0'}  bgColor={'#ced4da66'} fontWeight={'500'}>
+                        <CardSegment margin={'1rem 0 0'} bgColor={'#ced4da66'} fontWeight={'500'}>
                             <span>Resumo dos Impostos</span>
                         </CardSegment>
                         <CardSegment >
@@ -89,7 +89,7 @@ const Card = ({ ...props }) => {
                             )
                         }
                         <BlocoResultado margin={'auto 0 0 0'} bdRadius={'0.3rem'}  >
-                            <CardSegment  bgColor={'#ced4da66'}>
+                            <CardSegment bgColor={'#ced4da66'}>
                                 <span>Alíquota Final</span>{converteParaPorcentagem(aliquotaFinal)}
                             </CardSegment>
                             <CardSegment bgColor={'#78ce1980'} >
@@ -103,17 +103,17 @@ const Card = ({ ...props }) => {
                             vencedor === titulo ? (
                                 <CardSegment bgColor={'#396600'} color={'#a5c017'} margin={'0 auto 0.3rem'} bdRadius={'0.3rem'} width={'95%'}
                                     fontSize={'0.8rem'} textAlign={'center'} >
-                                    <span style={{margin: 'auto'}}>Opção recomendada para o cliente</span></CardSegment>
+                                    <span style={{ margin: 'auto' }}>Opção recomendada para o cliente</span></CardSegment>
                             ) : (
                                 <></>
                             )
                         }
-                        <CardSegment style={{display: 'block'}} bgColor={'#78ce1980'} padding={'0.5rem'} textAlign={'center'} fontWeight={'600'} bdRadius={'0.3rem'} whiteSpace={'pre-line'} >{TITULOS[titulo]}</CardSegment>
-                        <CardSegment  bgColor={'#ced4da66'} fontWeight={'500'} >
+                        <CardSegment style={{ display: 'block' }} bgColor={'#78ce1980'} padding={'0.5rem'} textAlign={'center'} fontWeight={'600'} bdRadius={'0.3rem'} whiteSpace={'pre-line'} >{TITULOS[titulo]}</CardSegment>
+                        <CardSegment bgColor={'#ced4da66'} fontWeight={'500'} >
                             <span>Salário Bruto</span> {converteNumeroParaMoeda(faturamento)}
                         </CardSegment>
 
-                        <CardSegment margin={'1rem 0 0'}  bgColor={'#ced4da66'} fontWeight={'500'}>
+                        <CardSegment margin={'1rem 0 0'} bgColor={'#ced4da66'} fontWeight={'500'}>
                             <span>Resumo dos Impostos</span>
                         </CardSegment>
                         <CardSegment >
@@ -135,13 +135,13 @@ const Card = ({ ...props }) => {
                         <CardSegment >
                             <span>ISS </span>{converteNumeroParaMoeda(issAut)}
                         </CardSegment>
-                        <CardSegment  fontSize={'0.6rem'} margin={'0.6rem 0 0.6rem'}>
+                        <CardSegment fontSize={'0.6rem'} margin={'0.6rem 0 0.6rem'}>
                             <span>{`A contribuição patronal não é paga diretamente pelo autonomo, e sim pelo empregador. Contudo, caso o autônomo 
                             receba ${converteNumeroParaMoeda(faturamento)} o empregador estará pagando de fato ${converteNumeroParaMoeda(pagoEmpregador)}.`}</span>
                         </CardSegment>
 
                         <BlocoResultado margin={'auto 0 0 0'} bdRadius={'0.3rem'}  >
-                            <CardSegment  bgColor={'#ced4da66'}>
+                            <CardSegment bgColor={'#ced4da66'}>
                                 <span>Alíquota Final</span>{converteParaPorcentagem(aliquotaFinal)}
                             </CardSegment>
                             <CardSegment bgColor={'#78ce1980'} >
@@ -156,20 +156,20 @@ const Card = ({ ...props }) => {
                             vencedor === titulo ? (
                                 <CardSegment bgColor={'#396600'} color={'#a5c017'} margin={'0 auto 0.3rem'} bdRadius={'0.3rem'} width={'95%'}
                                     fontSize={'0.8rem'} textAlign={'center'} >
-                                    <span style={{margin: 'auto'}}>Opção recomendada para o cliente</span></CardSegment>
+                                    <span style={{ margin: 'auto' }}>Opção recomendada para o cliente</span></CardSegment>
                             ) : (
                                 <></>
                             )
                         }
-                        <CardSegment style={{display: 'block'}} bgColor={'#78ce1980'} padding={'0.5rem'} textAlign={'center'} fontWeight={'600'} bdRadius={'0.3rem'}
+                        <CardSegment style={{ display: 'block' }} bgColor={'#78ce1980'} padding={'0.5rem'} textAlign={'center'} fontWeight={'600'} bdRadius={'0.3rem'}
                             whiteSpace={'pre-line'} >{TITULOS[titulo]}</CardSegment>
-                        <CardSegment  bgColor={'#ced4da66'} fontWeight={'500'} >
+                        <CardSegment bgColor={'#ced4da66'} fontWeight={'500'} >
                             <span>Faturamento Mensal</span> {converteNumeroParaMoeda(faturamento)}
                         </CardSegment>
                         <CardSegment  >
                             <span>Pró-labore por sócio</span> {converteNumeroParaMoeda(valor)}
                         </CardSegment>
-                        <CardSegment margin={'1rem 0 0'}  bgColor={'#ced4da66'} fontWeight={'500'}>
+                        <CardSegment margin={'1rem 0 0'} bgColor={'#ced4da66'} fontWeight={'500'}>
                             <span>Resumo dos Impostos</span>
                         </CardSegment>
                         <CardSegment fontSize={'0.8rem'}  >
@@ -203,7 +203,7 @@ const Card = ({ ...props }) => {
                         )
                         }
                         <BlocoResultado margin={'auto 0 0 0'} bdRadius={'0.3rem'}  >
-                            <CardSegment  bgColor={'#ced4da66'}>
+                            <CardSegment bgColor={'#ced4da66'}>
                                 <span>Alíquota Final</span>{converteParaPorcentagem(aliquotaFinal)}
                             </CardSegment>
                             <CardSegment bgColor={'#78ce1980'} >

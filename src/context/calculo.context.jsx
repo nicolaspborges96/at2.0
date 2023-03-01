@@ -375,35 +375,61 @@ const calculaPJ = (faturamento, anexos, exterior) => {
  
 const calculaFolha = (dados, titulo) => {
     const { beneficios, planoSaude, valeAlimentacao, valeTransporte } = dados;
-    const anexo = 3;//dados.atividade;
-    const faturamento  = Number(dados.faturamento);
+    const anexo = 3; //dados.atividade;
+    const faturamento = Number(dados.faturamento);
     const faturamentoFerias = faturamento * 1.3;
-    
+
     const inssClt = calculaInssClt(faturamento);
     let irrfClt = calculaIRRF(faturamento - inssClt);
-    if(irrfClt <= 10) {
+    if (irrfClt <= 10) {
         irrfClt = 0;
     }
-    const fgts = faturamento*0.08;
+    const fgts = faturamento * 0.08;
     const faturamentoLiquido = faturamento - inssClt - irrfClt;
-    
-    const decTerceiroProp = faturamentoLiquido/12;
-    const feriasProp = (faturamentoFerias - calculaInssClt(faturamentoFerias) - calculaIRRF(faturamentoFerias))/12;
-    const fgtsExtras = (faturamentoFerias + faturamento)*0.08;
 
-    const totalBeneficios = Number(planoSaude) + Number(valeAlimentacao) + Number(valeTransporte) + Number(beneficios);
-    const remuneracaoLiq = faturamentoLiquido + fgts + decTerceiroProp + totalBeneficios + feriasProp;
+    const decTerceiroProp = faturamentoLiquido / 12;
+    const feriasProp =
+        (faturamentoFerias -
+            calculaInssClt(faturamentoFerias) -
+            calculaIRRF(faturamentoFerias)) /
+        12;
+    const fgtsExtras = (faturamentoFerias + faturamento) * 0.08;
+
+    const totalBeneficios =
+        Number(planoSaude) +
+        Number(valeAlimentacao) +
+        Number(valeTransporte) +
+        Number(beneficios);
+    const remuneracaoLiq =
+        faturamentoLiquido +
+        fgts +
+        decTerceiroProp +
+        totalBeneficios +
+        feriasProp;
     const valoresPJ = calculaPJ(remuneracaoLiq, anexo, false);
-    const { das  } = valoresPJ;
-    
-    
-    const folha = { inssClt, irrfClt, fgts, titulo, faturamento, faturamentoLiquido, beneficios, planoSaude, 
-                    valeAlimentacao, valeTransporte, decTerceiroProp, remuneracaoLiq, feriasProp, fgtsExtras,
-                    das, totalBeneficios }
+    const { das } = valoresPJ;
 
-    
+    const folha = {
+        inssClt,
+        irrfClt,
+        fgts,
+        titulo,
+        faturamento,
+        faturamentoLiquido,
+        beneficios,
+        planoSaude,
+        valeAlimentacao,
+        valeTransporte,
+        decTerceiroProp,
+        remuneracaoLiq,
+        feriasProp,
+        fgtsExtras,
+        das,
+        totalBeneficios,
+    };
+
     return folha;
-}
+};
 
 
 

@@ -7,7 +7,7 @@ export const FolhaCardBody = styled.div`
     margin: 2rem 1rem 1rem 1rem;
     display: flex;
     flex-direction: column;
-    min-height: 310px;
+    min-height: 200px;
     min-width: 270px;
     background-color: #ffffff;
     box-shadow: 0px 0px 5px 5px rgb(38 41 33 / 25%);

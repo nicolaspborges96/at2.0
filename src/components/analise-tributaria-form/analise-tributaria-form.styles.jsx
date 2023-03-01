@@ -2,7 +2,8 @@ import styled from 'styled-components'
 
 export const AnaliseTFormStyled = styled.form`
     border: solid 1px #3a6600c1;
-    margin: auto ;
+    margin: 0 auto ;
+    
     display: flex;
     flex-direction: column;
     width: 400px;
@@ -14,6 +15,15 @@ export const AnaliseTFormStyled = styled.form`
 
     label {
         margin: 0.7rem 0 0.3rem;
+    }
+
+    @media (max-width: 450px) {
+        width: 305px;
+        
+    }
+    @media (min-width: 1368px) {
+        width: 650px;
+        //margin-top: 6rem;
     }
     
 `

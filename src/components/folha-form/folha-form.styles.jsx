@@ -3,11 +3,16 @@ import styled from "styled-components";
 export const FolhaContainerBody = styled.div`
     border: solid 1px #3a6600c1;
     background-color: #ffffff;
-    width: 55%;
+    //width: 55%;
     margin: 0 auto;
     padding-bottom: 2rem;
     box-shadow: 0px 0px 10px 5px rgb(38 41 33 / 25%);
     border-radius: 0.5rem;
+    
+    
+    @media (max-width: 450px) {
+        width: 100%;
+    }
 `
 
 export const FormFolha = styled.form`
@@ -26,4 +31,16 @@ export const FormFolha = styled.form`
         grid-column: span 2;
         margin-top: 0.4rem;
     }
+
+    @media (max-width: 900px) {
+        display: flex;
+        flex-wrap: wrap;
+    }
+`;
+
+export const LabelFormFolha = styled.label`
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    
 `
