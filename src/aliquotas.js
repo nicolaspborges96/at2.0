@@ -1,5 +1,83 @@
 const ALIQUOTAS = [
     {
+        title: 'anexoI',
+        items: [{
+            "nome": "Faixa 1",
+            "aliquota": 0.04,
+            "deducao": 0,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 2",
+            "aliquota": 0.073,
+            "deducao": 5940,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 3",
+            "aliquota": 0.095,
+            "deducao": 13860,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 4",
+            "aliquota": 0.107,
+            "deducao": 22500,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 5",
+            "aliquota": 0.143,
+            "deducao": 87300,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 6",
+            "aliquota": 0.19,
+            "deducao": 378000,
+            "percentualExterior": 1
+        }],
+    },
+    {
+        title: 'anexoII',
+        items: [{
+            "nome": "Faixa 1",
+            "aliquota": 0.045,
+            "deducao": 0,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 2",
+            "aliquota": 0.078,
+            "deducao": 5940,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 3",
+            "aliquota": 0.1,
+            "deducao": 13860,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 4",
+            "aliquota": 0.112,
+            "deducao": 22500,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 5",
+            "aliquota": 0.147,
+            "deducao": 85500,
+            "percentualExterior": 1
+        },
+        {
+            "nome": "Faixa 6",
+            "aliquota": 0.30,
+            "deducao": 720000,
+            "percentualExterior": 1
+        }],
+    },
+    {
         title: 'anexoIII',
         items: [{
             "nome": "Faixa 1",

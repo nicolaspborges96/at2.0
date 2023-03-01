@@ -35,7 +35,6 @@ const FolhaCard = ({...props}) => {
 
     return (
         <FolhaCardBody key={key}>
-            {console.log(props.dados)}
             {
                 titulo === 'folha' ? (
                     <>  

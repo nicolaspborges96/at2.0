@@ -386,10 +386,12 @@ const calculaFolha = (dados, titulo) => {
     const salarioLiquido = salario - inssClt - irrfClt;
 
     const decTerceiroProp = salarioLiquido / 12;
+    const inssFerias = calculaInssClt(salarioFerias);
+    const irrfFerias = calculaIRRF(salarioFerias);
     const feriasProp =
         (salarioFerias -
-            calculaInssClt(salarioFerias) -
-            calculaIRRF(salarioFerias)) /
+            inssFerias -
+            irrfFerias) /
         12;
     const fgtsExtras = (salarioFerias + salario) * 0.08;
 

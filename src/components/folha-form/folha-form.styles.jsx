@@ -18,7 +18,7 @@ export const FolhaContainerBody = styled.div`
 export const FormFolha = styled.form`
     display: grid;
     grid-column-gap: 3rem;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     width: 90%;
     margin: 2rem auto;
     
@@ -27,14 +27,14 @@ export const FormFolha = styled.form`
     }
 
     label:last-of-type {
-        grid-column: span 3;
+        grid-column: span 2;
         margin-top: 0.4rem;
     }
 
     @media (max-width: 1070px) {
         display: flex;
         flex-wrap: wrap;
-        
+        justify-content: center;
     }
 `;
 
