@@ -7,8 +7,9 @@ import { CardSegment } from "../card/card.styles";
 
 const FolhaCard = ({...props}) => {
 
-    const { inssClt, fgts, irrfClt, titulo, faturamento, faturamentoLiquido, valeAlimentacao, valeTransporte, 
-            planoSaude, beneficios, decTerceiroProp, remuneracaoLiq, das, inss, irrf, patronal, feriasProp, totalBeneficios } = props.dados;
+    const { inssClt, fgts, irrfClt, titulo, salario, salarioLiquido, valeAlimentacao, valeTransporte, 
+            planoSaude, beneficios, decTerceiroProp, remuneracaoLiq, das, inss, irrf, patronal, feriasProp, 
+            totalBeneficios, faturamento } = props.dados;
     
     const { scroll, setScroll } = useContext(CalculoContext);
 
@@ -34,6 +35,7 @@ const FolhaCard = ({...props}) => {
 
     return (
         <FolhaCardBody key={key}>
+            {console.log(props.dados)}
             {
                 titulo === 'folha' ? (
                     <>  
@@ -41,7 +43,7 @@ const FolhaCard = ({...props}) => {
                             <span>CLT</span>
                         </CardSegment>
                         <CardSegment>
-                            <span>Salário</span> {converteNumeroParaMoeda(faturamento)}
+                            <span>Salário</span> {converteNumeroParaMoeda(salario)}
                         </CardSegment>
                         <CardSegment color={'#ac0202'} >
                             <span>(-) INSS</span> {converteNumeroParaMoeda(inssClt)}
@@ -50,7 +52,7 @@ const FolhaCard = ({...props}) => {
                             <span>(-) IRRF</span> {converteNumeroParaMoeda(irrfClt)}
                         </CardSegment>
                         <CardSegment style={{backgroundColor:'#ced4da66', marginBottom:'0.5rem'}}>
-                            <span>Salario Liquido</span> {converteNumeroParaMoeda(faturamentoLiquido)}
+                            <span>Salario Liquido</span> {converteNumeroParaMoeda(salarioLiquido)}
                         </CardSegment>
                         <CardSegment>
                             <span>FGTS</span> {converteNumeroParaMoeda(fgts)}

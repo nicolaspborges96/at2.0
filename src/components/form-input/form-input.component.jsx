@@ -1,8 +1,8 @@
 import { Group, SearchInput } from "./form-input.styles";
 
-const FormInput = ({label, ...otherProps}) => {
+const FormInput = ({label, width, ...otherProps}) => {
     return (
-        <Group >
+        <Group width={width} >
             <label>{label}</label>
             <SearchInput className='search-input' {...otherProps}></SearchInput>
         </Group>

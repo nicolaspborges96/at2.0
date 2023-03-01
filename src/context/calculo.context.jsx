@@ -261,7 +261,7 @@ const calculaAutonomo = (faturamentoInput, exterior, inputIss, titulo) => {
 
 const gerenciaCalculo = (dados) => {
     let respostas = [];
-
+    
     if (dados.anexoIII) {
         const titulo = 'anexoIII';
         const resultadoIII = calculaSimples(dados.faturamento, dados.exterior, dados.socios, dados.fopag, titulo);
@@ -295,10 +295,7 @@ const gerenciaCalculo = (dados) => {
         const titulo = 'folha';
         const resultadoFolha = calculaFolha(dados, titulo);
         respostas.push(resultadoFolha)
-    }
-    console.log(respostas)
-
-    
+    } 
 
     return respostas;
 }
@@ -376,24 +373,25 @@ const calculaPJ = (faturamento, anexos, exterior) => {
 const calculaFolha = (dados, titulo) => {
     const { beneficios, planoSaude, valeAlimentacao, valeTransporte } = dados;
     const anexo = 3; //dados.atividade;
-    const faturamento = Number(dados.faturamento);
-    const faturamentoFerias = faturamento * 1.3;
+    const salario = Number(dados.salario);
+    
+    const salarioFerias = salario * 1.3;
 
-    const inssClt = calculaInssClt(faturamento);
-    let irrfClt = calculaIRRF(faturamento - inssClt);
+    const inssClt = calculaInssClt(salario);
+    let irrfClt = calculaIRRF(salario - inssClt);
     if (irrfClt <= 10) {
         irrfClt = 0;
     }
-    const fgts = faturamento * 0.08;
-    const faturamentoLiquido = faturamento - inssClt - irrfClt;
+    const fgts = salario * 0.08;
+    const salarioLiquido = salario - inssClt - irrfClt;
 
-    const decTerceiroProp = faturamentoLiquido / 12;
+    const decTerceiroProp = salarioLiquido / 12;
     const feriasProp =
-        (faturamentoFerias -
-            calculaInssClt(faturamentoFerias) -
-            calculaIRRF(faturamentoFerias)) /
+        (salarioFerias -
+            calculaInssClt(salarioFerias) -
+            calculaIRRF(salarioFerias)) /
         12;
-    const fgtsExtras = (faturamentoFerias + faturamento) * 0.08;
+    const fgtsExtras = (salarioFerias + salario) * 0.08;
 
     const totalBeneficios =
         Number(planoSaude) +
@@ -401,21 +399,19 @@ const calculaFolha = (dados, titulo) => {
         Number(valeTransporte) +
         Number(beneficios);
     const remuneracaoLiq =
-        faturamentoLiquido +
+        salarioLiquido +
         fgts +
         decTerceiroProp +
         totalBeneficios +
         feriasProp;
-    const valoresPJ = calculaPJ(remuneracaoLiq, anexo, false);
-    const { das } = valoresPJ;
 
     const folha = {
         inssClt,
         irrfClt,
         fgts,
         titulo,
-        faturamento,
-        faturamentoLiquido,
+        salario,
+        salarioLiquido,
         beneficios,
         planoSaude,
         valeAlimentacao,
@@ -424,8 +420,7 @@ const calculaFolha = (dados, titulo) => {
         remuneracaoLiq,
         feriasProp,
         fgtsExtras,
-        das,
-        totalBeneficios,
+        totalBeneficios
     };
 
     return folha;

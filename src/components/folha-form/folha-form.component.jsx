@@ -10,6 +10,7 @@ import { Radio, ConfigProvider } from 'antd';
 const defaultFormFields = {
     folha: true,
     faturamento: '',
+    salario: '',
     regime: 'CLT',
     planoSaude: '',
     valeAlimentacao: '',
@@ -30,7 +31,7 @@ const defaultFormFields = {
 const FolhaForm = () => {
 
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const { faturamento, faturamentoPJ, planoSaude, valeAlimentacao, valeTransporte, beneficios } = formFields;
+    const { faturamento, salario, planoSaude, valeAlimentacao, valeTransporte, beneficios } = formFields;
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
 
     const onSubmitForm = (ev) => {
@@ -65,8 +66,8 @@ const FolhaForm = () => {
             
             <ConfigProvider theme={{ token: { colorPrimary: '#396600', fontFamily: 'Poppins, sans-serif' } }} >
             <FormFolha onSubmit={onSubmitForm} >
-                <FormInput label={'Salário CLT (bruto):'} name='faturamento' value={faturamento} onChange={handleChange} />
-                <FormInput label={'Salário PJ (bruto):'} name='faturamento' value={faturamentoPJ} onChange={handleChange} />
+                <FormInput width={'210px'} label={'Salário CLT (bruto):'} name='salario' value={salario} onChange={handleChange} />
+                <FormInput width={'210px'} label={'Salário PJ (bruto):'} name='faturamento' value={faturamento} onChange={handleChange} />
                 {/*<label>
                     Regime:
                     <SelectInput name='regime' value={regime} onChange={handleChange} >
@@ -74,12 +75,12 @@ const FolhaForm = () => {
                         <option onChange={handleChange} name={'pj'} value={'PJ'} >PJ</option>
                     </SelectInput>
                 </label>*/}
-                <FormInput name='planoSaude' value={planoSaude} label={'Plano de saúde:'} onChange={handleChange} />
-                <FormInput name='valeAlimentacao' value={valeAlimentacao} label={'Vale-refeição/alimentação:'} onChange={handleChange} />
-                <FormInput name='valeTransporte' value={valeTransporte} label={'Vale-transporte:'} onChange={handleChange} />
-                <FormInput name='beneficios' value={beneficios} label={'Outros benefícios:'} onChange={handleChange} />
+                <FormInput width={'210px'} name='planoSaude' value={planoSaude} label={'Plano de saúde:'} onChange={handleChange} />
+                <FormInput width={'210px'} name='valeAlimentacao' value={valeAlimentacao} label={'Vale-refeição/alimentação:'} onChange={handleChange} />
+                <FormInput width={'210px'} name='valeTransporte' value={valeTransporte} label={'Vale-transporte:'} onChange={handleChange} />
+                <FormInput width={'210px'} name='beneficios' value={beneficios} label={'Outros benefícios:'} onChange={handleChange} />
                 <LabelFormFolha>
-                    <span>Atividade: </span>
+                    <span style={{margin: 'auto 0.5rem auto 0'}} >Atividade: </span>
                     <Radio.Group onChange={handleRadioChange} name='anexo' >
                         <Radio.Button value={3} name='anexoIII' >Anexo III</Radio.Button>
                         <Radio.Button value={4} name='anexoIV' >Anexo IV</Radio.Button>

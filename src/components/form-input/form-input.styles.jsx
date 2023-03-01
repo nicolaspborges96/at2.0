@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Group =styled.div`
     display:flex;
     flex-direction: column;
-    //width: 70%;
+    width: ${props => props.width};
     margin-bottom: 0.3rem;
     font-size: 0.9rem;
 
@@ -12,6 +12,10 @@ export const Group =styled.div`
         width: 100%;
     }
     
+    @media (min-width: 1250px) {
+        width: 100%;
+    }
+
 `
 
 export const SearchInput = styled.input`
