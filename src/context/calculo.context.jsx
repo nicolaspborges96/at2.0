@@ -372,8 +372,6 @@ const gerenciaCalculo = (dados) => {
 const verificaVencedor = (respostas) => {
     let melhorOp = "";
 
-    console.log(respostas);
-
     for (let i = 0, melhor = 100, vencedor; i < respostas.length; i++) {
         if (respostas[i].aliquotaFinal < melhor) {
             if (
@@ -483,35 +481,47 @@ export const CalculoContext = createContext({
     pegaInputECalcula: () => { },
     isCardShown: false,
     setCardShown: () => { },
-    setVencedor: () => { }
+    setVencedor: () => { },
+    setFaturamentoMes: () => {}
 
 });
 
 
 export const CalculoProvider = ({ children }) => {
-
     const [isCardShown, setCardShown] = useState(false);
     const [resultados, setResultados] = useState([]);
     const [scroll, setScroll] = useState(false);
     const [vencedor, setVencedor] = useState([]);
     const [detalhar, setDetalhar] = useState(false);
+    const [faturamentoMes, setFaturamentoMes] = useState([]);
 
     const pegaInputECalcula = (dados) => {
         setCardShown(true);
         setDetalhar(dados.detalhar);
         const output = gerenciaCalculo(dados);
         setResultados(output);
-        const vencedor = verificaVencedor(output)
+        const vencedor = verificaVencedor(output);
         setVencedor(vencedor);
 
         return;
-    }
+    };
 
-
-    const value = { pegaInputECalcula, isCardShown, setCardShown, resultados, scroll, setScroll , vencedor, detalhar}
+    const value = {
+        pegaInputECalcula,
+        isCardShown,
+        setCardShown,
+        resultados,
+        scroll,
+        setScroll,
+        vencedor,
+        detalhar,
+        faturamentoMes,
+        setFaturamentoMes,
+    };
 
     return (
-        <CalculoContext.Provider value={value}>{children}</CalculoContext.Provider>
-    )
-
-}
+        <CalculoContext.Provider value={value}>
+            {children}
+        </CalculoContext.Provider>
+    );
+};

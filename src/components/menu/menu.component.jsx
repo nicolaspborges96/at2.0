@@ -17,6 +17,10 @@ const Menu = () => {
         navigate("/ic");
     };
 
+    const goToEfetiva = () => {
+        navigate("/ae")
+    }
+
     return (
         <MenuContainer>
             <Button
@@ -65,6 +69,7 @@ const Menu = () => {
                 border={"2px solid #dbdfcb"}
                 color={"#396600"}
                 hover={"border: 2px solid #a5c017; color:#a5c017"}
+                onClick={goToEfetiva}
             />
         </MenuContainer>
     );

@@ -3,6 +3,7 @@ import Home from "./routes/home/home.component";
 import AnaliseT from "./routes/analise-tributaria/analise-tributaria.component";
 import Folha from "./routes/folha/folha.component";
 import IndCom from "./routes/ind-com/ind-com.component";
+import Efetiva from "./routes/efetiva/efetiva.component";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path='at' element={<AnaliseT />} />
       <Route path='folha' element={<Folha/>} />
       <Route path='ic' element={<IndCom />} />
+      <Route path='ae' element={<Efetiva />} />
     </Routes>
 
   );
