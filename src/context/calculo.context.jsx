@@ -246,65 +246,142 @@ const calculaAutonomo = (faturamentoInput, exterior, inputIss, titulo) => {
     let baseIr = faturamento - inssAut;
     let irrfAut = calculaIRRF(baseIr);
     let cppAut = faturamento * 0.2;
-    let issAut = faturamento * (inputIss/100);
+    let issAut = faturamento * (inputIss / 100);
     if (exterior) {
         issAut = 0;
     }
-    let proLabore = { };
+    let proLabore = {};
     let totalAut = inssAut + irrfAut + cppAut + issAut;
-    let pagoEmpregador =faturamento + cppAut;
+    let pagoEmpregador = faturamento + cppAut;
 
     let aliquotaFinal = totalAut / faturamento;
-    
-    return {faturamento, inssAut, irrfAut, cppAut, issAut, proLabore, titulo, aliquotaFinal, totalAut, pagoEmpregador};
-}
+
+    return {
+        faturamento,
+        inssAut,
+        irrfAut,
+        cppAut,
+        issAut,
+        proLabore,
+        titulo,
+        aliquotaFinal,
+        totalAut,
+        pagoEmpregador,
+    };
+};
 
 const gerenciaCalculo = (dados) => {
     let respostas = [];
-    
+
     if (dados.anexoIII) {
-        const titulo = 'anexoIII';
-        const resultadoIII = calculaSimples(dados.faturamento, dados.exterior, dados.socios, dados.fopag, titulo);
+        const titulo = "anexoIII";
+        const resultadoIII = calculaSimples(
+            dados.faturamento,
+            dados.exterior,
+            dados.socios,
+            dados.fopag,
+            titulo
+        );
         respostas.push(resultadoIII);
     }
 
     if (dados.anexoIV) {
-        const titulo = 'anexoIV';
-        const resultadoIV = calculaSimples(dados.faturamento, dados.exterior, dados.socios, dados.fopag, titulo);
-        respostas.push(resultadoIV)
+        const titulo = "anexoIV";
+        const resultadoIV = calculaSimples(
+            dados.faturamento,
+            dados.exterior,
+            dados.socios,
+            dados.fopag,
+            titulo
+        );
+        respostas.push(resultadoIV);
     }
     if (dados.anexoV) {
-        const titulo = 'anexoV';
-        const tituloComR = 'anexoIII'
-        const resultadoV = calculaSimples(dados.faturamento, dados.exterior, dados.socios, dados.fopag, titulo);
-        const resultadoVComR = calculaFatorR(dados.faturamento, dados.exterior, dados.socios, dados.fopag, tituloComR);
+        const titulo = "anexoV";
+        const tituloComR = "anexoIII";
+        const resultadoV = calculaSimples(
+            dados.faturamento,
+            dados.exterior,
+            dados.socios,
+            dados.fopag,
+            titulo
+        );
+        const resultadoVComR = calculaFatorR(
+            dados.faturamento,
+            dados.exterior,
+            dados.socios,
+            dados.fopag,
+            tituloComR
+        );
         respostas.push(resultadoV);
         respostas.push(resultadoVComR);
     }
     if (dados.lucroP) {
-        const titulo = 'LP';
-        const resultadoLP = calculaLucroPresumido(dados.faturamento, dados.exterior, dados.iss, dados.socios, dados.fopag, titulo);
+        const titulo = "LP";
+        const resultadoLP = calculaLucroPresumido(
+            dados.faturamento,
+            dados.exterior,
+            dados.iss,
+            dados.socios,
+            dados.fopag,
+            titulo
+        );
         respostas.push(resultadoLP);
     }
     if (dados.autonomo) {
-        const titulo = 'autonomo';
-        const resultadoAutonomo = calculaAutonomo(dados.faturamento, dados.exterior, dados.iss, titulo);
-        respostas.push(resultadoAutonomo)
+        const titulo = "autonomo";
+        const resultadoAutonomo = calculaAutonomo(
+            dados.faturamento,
+            dados.exterior,
+            dados.iss,
+            titulo
+        );
+        respostas.push(resultadoAutonomo);
     }
-    if(dados.folha) {
-        const titulo = 'folha';
+    if (dados.folha) {
+        const titulo = "folha";
         const resultadoFolha = calculaFolha(dados, titulo);
-        respostas.push(resultadoFolha)
-    } 
+        respostas.push(resultadoFolha);
+    }
+    if (dados.anexoI) { //Os calculos de comercio e industria (I e II) não tem a hipotese de ser para o exterior,
+        // e a informação sobre fopag não é necessária. Por isso o parametros foram passados diretamente
+        const titulo = "anexoI";
+        const resultadoI = calculaSimples(dados.faturamento,
+            false,
+            dados.socios,
+            0,
+            titulo
+        );
+        respostas.push(resultadoI);
+    }
+    if (dados.anexoII) {
+        const titulo = "anexoII";
+        const resultadoII = calculaSimples(dados.faturamento,
+            false,
+            dados.socios,
+            0,
+            titulo
+        );
+        respostas.push(resultadoII);
+    }
+    
 
     return respostas;
-}
+};
 
 const verificaVencedor = (respostas) => {
-    let melhorOp = '';
+    let melhorOp = "";
 
-    for(let i = 0, melhor = 100, vencedor; i<respostas.length; i++) {
+    console.log(respostas);
+
+    for (let i = 0, melhor = 100, vencedor; i < respostas.length; i++) {
         if (respostas[i].aliquotaFinal < melhor) {
+            if (
+                respostas[i].titulo === "anexoI" ||
+                respostas[i].titulo === "anexoII"
+            ) {
+                return melhorOp;
+            }
             melhor = respostas[i].aliquotaFinal;
             vencedor = respostas[i].titulo;
         }
@@ -312,28 +389,26 @@ const verificaVencedor = (respostas) => {
     }
 
     return melhorOp;
-}
+};
 
 const calculaInssClt = (salario) => {
-    
     let inss = 0;
-    
-    if(salario < 1302) {
-        
+
+    if (salario < 1302) {
     } else if (salario === 1302) {
-        inss = 1302*0.075;
+        inss = 1302 * 0.075;
     } else if (salario > 1302 && salario <= 2571.29) {
-        inss = 1302*0.075;
-        inss += (salario-1302)*0.09;
+        inss = 1302 * 0.075;
+        inss += (salario - 1302) * 0.09;
     } else if (salario > 2571.29 && salario <= 3856.94) {
-        inss = 1302*0.075;
-        inss += (2571.29-1302)*0.09;
-        inss += (salario - 2571.29)*0.12;
+        inss = 1302 * 0.075;
+        inss += (2571.29 - 1302) * 0.09;
+        inss += (salario - 2571.29) * 0.12;
     } else if (salario > 3856.95 && salario <= 7507.49) {
-        inss = 1302*0.075;
-        inss += (2571.29-1302)*0.09;
-        inss += (3856.95 - 2571.29)*0.12;
-        inss += (salario - 3856.95)*0.14;
+        inss = 1302 * 0.075;
+        inss += (2571.29 - 1302) * 0.09;
+        inss += (3856.95 - 2571.29) * 0.12;
+        inss += (salario - 3856.95) * 0.14;
     } else {
         inss = 877.24;
     }
@@ -341,38 +416,10 @@ const calculaInssClt = (salario) => {
     inss = parseFloat(inss.toFixed(2));
 
     return inss;
-}
-
-const calculaPJ = (faturamento, anexos, exterior) => {
-    const faixa = verificaFaixa(faturamento);
-    let titulo;
-    if (anexos === 3) {
-        titulo = 'anexoIII';
-    } else if (anexos === 4) {
-        titulo = 'anexoIV';
-    } else if (anexos === 5) {
-        titulo = 'anexoV';
-    }
-
-    const anexo = ALIQUOTAS.find((item, index) => {
-        return item.title === titulo;
-    });
-
-    const aliquotas = anexo.items.find((item, index) => {
-        return item.nome === faixa;
-    });
-
-    const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
-
-    const das = aliquotaEfetiva * faturamento;
-
-    return { das, faixa, aliquotaEfetiva, titulo }
-
-}
+};
  
 const calculaFolha = (dados, titulo) => {
     const { beneficios, planoSaude, valeAlimentacao, valeTransporte } = dados;
-    const anexo = 3; //dados.atividade;
     const salario = Number(dados.salario);
     
     const salarioFerias = salario * 1.3;
@@ -393,7 +440,8 @@ const calculaFolha = (dados, titulo) => {
             inssFerias -
             irrfFerias) /
         12;
-    const fgtsExtras = (salarioFerias + salario) * 0.08;
+    const fgtsFerias = (salarioFerias * 0.08) / 12;
+    const fgtsDecimo = (salario * 0.08) / 12;
 
     const totalBeneficios =
         Number(planoSaude) +
@@ -421,7 +469,8 @@ const calculaFolha = (dados, titulo) => {
         decTerceiroProp,
         remuneracaoLiq,
         feriasProp,
-        fgtsExtras,
+        fgtsDecimo,
+        fgtsFerias,
         totalBeneficios
     };
 
@@ -445,9 +494,11 @@ export const CalculoProvider = ({ children }) => {
     const [resultados, setResultados] = useState([]);
     const [scroll, setScroll] = useState(false);
     const [vencedor, setVencedor] = useState([]);
+    const [detalhar, setDetalhar] = useState(false);
 
     const pegaInputECalcula = (dados) => {
         setCardShown(true);
+        setDetalhar(dados.detalhar);
         const output = gerenciaCalculo(dados);
         setResultados(output);
         const vencedor = verificaVencedor(output)
@@ -457,7 +508,7 @@ export const CalculoProvider = ({ children }) => {
     }
 
 
-    const value = { pegaInputECalcula, isCardShown, setCardShown, resultados, scroll, setScroll , vencedor}
+    const value = { pegaInputECalcula, isCardShown, setCardShown, resultados, scroll, setScroll , vencedor, detalhar}
 
     return (
         <CalculoContext.Provider value={value}>{children}</CalculoContext.Provider>

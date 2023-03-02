@@ -4,7 +4,7 @@ import { SelectInput } from '../../components/form-input/form-input.styles';
 import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
 import { useState, useContext } from 'react';
 import { CalculoContext } from '../../context/calculo.context';
-import { Radio, ConfigProvider } from 'antd';
+import { Radio, ConfigProvider, Checkbox } from 'antd';
 
 
 const defaultFormFields = {
@@ -23,7 +23,8 @@ const defaultFormFields = {
     exterior: false,
     socios: 1,
     fopag: 0,
-    anexo: 3
+    anexo: 3,
+    detalhar: false
 
 }
 
@@ -31,7 +32,7 @@ const defaultFormFields = {
 const FolhaForm = () => {
 
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const { faturamento, salario, planoSaude, valeAlimentacao, valeTransporte, beneficios } = formFields;
+    const { faturamento, salario, planoSaude, valeAlimentacao, valeTransporte, beneficios, detalhar } = formFields;
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
     const [ value, setValue ] = useState(3);
 
@@ -46,6 +47,12 @@ const FolhaForm = () => {
         const { name, value } = event.target;
         
         setFormFields({ ...formFields, [name]: value })
+    }
+
+    const handleChangeCheck = (event) => {
+        const { name, checked } = event.target;
+
+        setFormFields({ ...formFields, [name]: checked })
     }
 
     const handleRadioChange = (event) => {
@@ -68,7 +75,7 @@ const FolhaForm = () => {
         
         <FolhaContainerBody>
             
-            <ConfigProvider theme={{ token: { colorPrimary: '#396600', fontFamily: 'Poppins, sans-serif' } }} >
+            <ConfigProvider theme={{ token: { colorPrimary: '#396600', fontFamily: 'Poppins, sans-serif', fontSize: '0.9rem' } }} >
             <FormFolha onSubmit={onSubmitForm} >
                 <FormInput width={'210px'} label={'Salário CLT (bruto):'} name='salario' value={salario} onChange={handleChange} />
                 <FormInput width={'210px'} label={'Salário PJ (bruto):'} name='faturamento' value={faturamento} onChange={handleChange} />
@@ -84,6 +91,7 @@ const FolhaForm = () => {
                         <Radio.Button value={5} name='anexoV' >Anexo V</Radio.Button>
                     </Radio.Group>
                 </LabelFormFolha>
+                <Checkbox name='detalhar' onChange={handleChangeCheck} checked={detalhar} > Exibir versão detalhada</Checkbox>
 
             </FormFolha>
 

@@ -8,7 +8,7 @@ export const Group =styled.div`
     margin-bottom: 0.3rem;
     font-size: 0.9rem;
 
-    @media (max-width: 700px) {
+    @media (max-width: 900px) {
         width: 100%;
     }
     

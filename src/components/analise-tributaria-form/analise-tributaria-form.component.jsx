@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { AnaliseTContainerCheckbox, AnaliseTFormStyled } from './analise-tributaria-form.styles';
 import { useContext } from 'react';
 import { CalculoContext } from '../../context/calculo.context';
-import { useRef } from 'react';
-import { Fragment } from 'react';
+
 
 const marks = {
     2: '2%',
@@ -52,7 +51,6 @@ const AnaliseTForm = ({ ...props }) => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-
         setFormFields({ ...formFields, [name]: value })
     }
 

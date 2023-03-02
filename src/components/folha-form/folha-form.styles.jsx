@@ -27,11 +27,11 @@ export const FormFolha = styled.form`
     }
 
     label:last-of-type {
-        grid-column: span 2;
+        //grid-column: span 2;
         margin-top: 0.4rem;
     }
 
-    @media (max-width: 1070px) {
+    @media (max-width: 900px) {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
