@@ -20,6 +20,7 @@ const marks = {
 
 const defaultFormFields = {
     faturamento: "",
+    faturamentoMoeda: "",
     socios: 1,
     funcionarios: 0,
     exterior: 0,
@@ -37,6 +38,7 @@ const slider = [2, 3, 4, 5];
 const AnaliseTForm = ({ ...props }) => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {
+        faturamentoMoeda,
         faturamento,
         socios,
         funcionarios,
@@ -51,6 +53,14 @@ const AnaliseTForm = ({ ...props }) => {
     } = formFields;
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
+
+    const formatarMoeda = (valor) => {
+        const regex = /^(\d+)(,\d{0,2})?$/;
+        const valorFormatado = valor.replace(regex, (p1) => {
+            return "R$ " + p1.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        });
+        return valorFormatado.replace(/(,\d{2})\d+?$/, "$1");
+    };
 
     const onChangeFuncionario = (e) => {
         const { name, value } = e.target;
@@ -77,9 +87,31 @@ const AnaliseTForm = ({ ...props }) => {
         setFormFields({ ...formFields, [name]: checked });
     };
 
+    const handleChangeMoeda = (event) => {
+        const { name, value } = event.target;
+        const valorDigitado = value;
+        const valorFormatado = formatarMoeda(valorDigitado);
+        setFormFields({ ...formFields, [name]: valorFormatado, faturamento: value });
+    };
+
+    const handleBlurInput = (event) => {
+        const { value } = event.target;
+        const valorCru = removerFormatacaoMoeda(value);
+        console.log(valorCru)
+        setFormFields({...formFields, faturamento: valorCru});
+    }
+
+    function removerFormatacaoMoeda(valor) {
+        const regex = /[^\d,.]/g;
+        return parseFloat(valor.replace(regex, '').replace(',', '.'));
+    }
+
+
     const onSubmitForm = (ev) => {
         ev.preventDefault();
+    
         pegaInputECalcula(formFields);
+        
         setScroll(true);
     };
 
@@ -95,9 +127,10 @@ const AnaliseTForm = ({ ...props }) => {
             >
                 <FormInput
                     label={"Qual o faturamento médio da empresa?"}
-                    name="faturamento"
-                    value={faturamento}
-                    onChange={handleChange}
+                    name="faturamentoMoeda"
+                    value={faturamentoMoeda}
+                    onChange={handleChangeMoeda}
+                    onBlur={handleBlurInput}
                 />
                 <FormInput
                     label={"Quantos sócios tem a empresa?"}
