@@ -7,13 +7,14 @@ export const EfetivaCardBody = styled.div`
     margin: 2rem 1rem 1rem 1rem;
     display: flex;
     flex-direction: column;
-    min-height: 200px;
+    
     min-width: 270px;
     background-color: #ffffff;
     box-shadow: 0px 0px 5px 5px rgb(38 41 33 / 25%);
     overflow-wrap: break-word;
     inline-size: 240px;
     text-align: justify;
+    justify-content: space-between;
 
     div:last-of-type {
         align-self: bottom;

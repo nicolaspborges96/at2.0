@@ -1,4 +1,3 @@
-
 import FormInput from "../../components/form-input/form-input.component";
 import Button, {
     BUTTON_TYPE_CLASSES,

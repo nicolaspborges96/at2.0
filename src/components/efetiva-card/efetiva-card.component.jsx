@@ -1,5 +1,7 @@
 import { CardSegment } from "../card/card.styles";
 import { EfetivaCardBody } from "./efetiva-card.styles";
+import { useEffect, useContext } from "react";
+import { CalculoContext } from "../../context/calculo.context";
 
 const TITULOS = {
     anexoIII: `Simples Nacional \n Anexo III`,
@@ -12,10 +14,14 @@ const TITULOS = {
     anexoII: `Simples Nacional \n Anexo II \n Indústria`,
 };
 
+
+
 const EfetivaCard = ({ ...props }) => {
     const { titulo, faixa, aliquotaEfetiva } = props.dados;
+    const key = props.key;
+    const { scroll, setScroll } = useContext(CalculoContext);
 
-    const { faturamentoMes } = props.faturamentoMes;
+    const faturamentoMes  = props.faturamentoMes;
 
     function converteNumeroParaMoeda(number) {
         return Intl.NumberFormat('pt-Br', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(number);
@@ -23,13 +29,17 @@ const EfetivaCard = ({ ...props }) => {
     
     function converteParaPorcentagem(number) {
         return Intl.NumberFormat('pt-Br', { style: 'percent', minimumFractionDigits: 2 }).format(number);
-    }
+    };
 
-    const dasMes = Number(faturamentoMes)*aliquotaEfetiva;
+    useEffect(() => {
+        setScroll(false);
+    });
+    
+    const dasMes = Number(faturamentoMes)*Number(aliquotaEfetiva);
 
     return (
-        <EfetivaCardBody>
-            {console.log(faturamentoMes)}
+        <EfetivaCardBody key={key} >
+            
             <CardSegment
                 style={{ display: "block" }}
                 bgColor={"#78ce1980"}
@@ -41,14 +51,14 @@ const EfetivaCard = ({ ...props }) => {
             >
             {TITULOS[titulo]}
             </CardSegment>
-            <CardSegment bgColor={"#ced4da66"} fontWeight={"500"} style={{ display: "block" }}>
+            <CardSegment  fontWeight={"500"} style={{ display: "block" }}>
                 <span>{faixa}</span>
             </CardSegment>
-            <CardSegment bgColor={"#ced4da66"} fontWeight={"500"} style={{ display: "block" }}>
-                <span>DAS</span>
-                {converteNumeroParaMoeda(faturamentoMes*aliquotaEfetiva)}
+            <CardSegment  fontWeight={"500"} >
+                <span>DAS</span> {converteNumeroParaMoeda(dasMes)}
+                
             </CardSegment>
-            <CardSegment bgColor={"#ced4da66"} fontWeight={"500"} style={{ display: "block" }}>
+            <CardSegment bgColor={"#78ce1980"} fontWeight={"500"} >
                 <span>Alíquota Efetiva</span>
                 {converteParaPorcentagem(aliquotaEfetiva)}
             </CardSegment>

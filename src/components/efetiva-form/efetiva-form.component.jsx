@@ -40,7 +40,7 @@ const EfetivaForm = () => {
         atividade,
     } = formFields;
 
-    const { pegaInputECalcula, setFaturamentoMes } = useContext(CalculoContext);
+    const { pegaInputECalcula, setFaturamentoMes, setScroll } = useContext(CalculoContext);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -56,6 +56,7 @@ const EfetivaForm = () => {
         ev.preventDefault();
         setFaturamentoMes(faturamentoMes);
         pegaInputECalcula(formFields);
+        setScroll(true);
         
     };
 

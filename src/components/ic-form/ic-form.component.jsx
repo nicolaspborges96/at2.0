@@ -31,7 +31,9 @@ const IcForm = () => {
 
     const onSubmitForm = (ev) => {
         ev.preventDefault();
+        setScroll(true);
         pegaInputECalcula(formFields);
+        
     }
 
     const handleChange = (event) => {
