@@ -497,7 +497,6 @@ export const CalculoProvider = ({ children }) => {
     const pegaInputECalcula = (dados) => {
         setCardShown(true);
         setDetalhar(dados.detalhar);
-        console.log(dados)
         const output = gerenciaCalculo(dados);
         setResultados(output);
         const vencedor = verificaVencedor(output);
@@ -511,6 +510,7 @@ export const CalculoProvider = ({ children }) => {
         isCardShown,
         setCardShown,
         resultados,
+        setResultados,
         scroll,
         setScroll,
         vencedor,

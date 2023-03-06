@@ -5,32 +5,40 @@ import { useState, useRef } from "react";
 import Card from "../card/card.component";
 
 const CardDisplay = ({ ...props }) => {
-  const { resultados, isCardShown, scroll, vencedor } =
-    useContext(CalculoContext);
+    const { resultados, isCardShown, scroll, vencedor, setResultados } =
+        useContext(CalculoContext);
 
-  const CardsRef = useRef(null);
+    useEffect(() => {
+        setResultados([]);
+    }, []);
+    
+    const CardsRef = useRef(null);
 
-  const scrollToCards = () => {
-    CardsRef.current?.lastElementChild?.scrollIntoView();
-  };
+    const scrollToCards = () => {
+        CardsRef.current?.lastElementChild?.scrollIntoView();
+    };
 
-  useEffect(() => {
-    scrollToCards();
-  }, [scroll]);
+    useEffect(() => {
+        scrollToCards();
+    }, [scroll]);
 
-  return (
-    <>
-      {isCardShown === false ? (
-        <></>
-      ) : (
-        <CardContainer ref={CardsRef}>
-          {resultados.map((resultado, index) => (
-            <Card dados={resultado} key={index} vencedor={vencedor} />
-          ))}
-        </CardContainer>
-      )}
-    </>
-  );
+    return (
+        <>
+            {isCardShown === false ? (
+                <></>
+            ) : (
+                <CardContainer ref={CardsRef}>
+                    {resultados.map((resultado, index) => (
+                        <Card
+                            dados={resultado}
+                            key={index}
+                            vencedor={vencedor}
+                        />
+                    ))}
+                </CardContainer>
+            )}
+        </>
+    );
 };
 
 export default CardDisplay;

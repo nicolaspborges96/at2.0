@@ -25,7 +25,8 @@ const defaultFormFields = {
     socios: 1,
     funcionarios: 0,
     exterior: 0,
-    fopag: 0,
+    fopag: "",
+    fopagMoeda: "", 
     iss: 3,
     anexoIII: false,
     anexoIV: false,
@@ -45,6 +46,7 @@ const AnaliseTForm = ({ ...props }) => {
         funcionarios,
         exterior,
         fopag,
+        fopagMoeda,
         iss,
         anexoIII,
         anexoIV,
@@ -87,15 +89,21 @@ const AnaliseTForm = ({ ...props }) => {
         value = value.replace(/(\d)(\d{2})$/, "$1,$2");
         value = value.replace(/(?=(\d{3})+(\D))\B/g, ".");
 
-        
         setFormFields({ ...formFields, [name]: value });
     };
 
     const handleBlurInput = (event) => {
         const { value } = event.target;
         const valorCru = removerFormatacaoMoeda(value);
-        console.log(valorCru)
+
         setFormFields({...formFields, faturamento: valorCru});
+    }
+
+    const handleBlurInputFopag = (event) => {
+        const { value } = event.target;
+        const valorCru = removerFormatacaoMoeda(value);
+        
+        setFormFields({...formFields, fopag: valorCru});
     }
 
     function removerFormatacaoMoeda(valor) {
@@ -156,9 +164,12 @@ const AnaliseTForm = ({ ...props }) => {
                 {funcionarios ? (
                     <FormInput
                         label={"Valor da folha de pagamento (bruto):"}
-                        name="fopag"
-                        value={fopag}
-                        onChange={handleChange}
+                        name="fopagMoeda"
+                        value={fopagMoeda}
+                        width={'40%'}
+                        prefix={'R$'}
+                        onChange={handleChangeMoeda}
+                        onBlur={handleBlurInputFopag}
                     />
                 ) : (
                     <></>

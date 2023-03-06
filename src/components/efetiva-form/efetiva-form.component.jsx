@@ -71,7 +71,6 @@ const EfetivaForm = () => {
         const { name, value } = event.target;
         const valorCru = removerFormatacaoMoeda(value);
         const nomeSemMoeda = name.replace("Moeda", "");
-        console.log(valorCru)
         if (nomeSemMoeda === 'faturamentoMes')
         setFormFields({...formFields, [nomeSemMoeda]: valorCru });
 
@@ -92,7 +91,6 @@ const EfetivaForm = () => {
     const onSubmitForm = (ev) => {
         ev.preventDefault();
         setFaturamentoMes(faturamentoMes);
-        console.log(faturamento)
         pegaInputECalcula(formFields);
         setScroll(true);
         
