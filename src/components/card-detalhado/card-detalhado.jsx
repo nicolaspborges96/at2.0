@@ -126,10 +126,15 @@ const CardDetalhado = ({ ...props }) => {
                                 {converteNumeroParaMoeda(cppDas)}
                             </CardSegment>
                             {fgtsFatorR ? (
+                                <>
+                                <CardSegment>
+                                    <span></span>
+                                </CardSegment>
                                 <CardSegment color={"#ac0202"}>
                                     <span>(-) FGTS Funcionário</span>{" "}
                                     {converteNumeroParaMoeda(fgtsFatorR)}
                                 </CardSegment>
+                                </>
                             ) : (
                                 <></>
                             )}
