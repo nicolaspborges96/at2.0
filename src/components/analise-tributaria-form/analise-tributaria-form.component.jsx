@@ -33,6 +33,7 @@ const defaultFormFields = {
     anexoV: false,
     lucroP: false,
     autonomo: false,
+    cardDetalhado: false
 };
 
 const slider = [2, 3, 4, 5];
@@ -53,6 +54,7 @@ const AnaliseTForm = ({ ...props }) => {
         anexoV,
         lucroP,
         autonomo,
+        cardDetalhado
     } = formFields;
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
@@ -60,7 +62,7 @@ const AnaliseTForm = ({ ...props }) => {
 
     const onChangeFuncionario = (e) => {
         const { name, value } = e.target;
-        setFormFields({ ...formFields, [name]: value, fopag: 0 });
+        setFormFields({ ...formFields, [name]: value, fopagMoeda: '' });
     };
 
     const onChangeExterior = (e) => {
@@ -239,6 +241,14 @@ const AnaliseTForm = ({ ...props }) => {
                         Autonômo
                     </Checkbox>
                 </AnaliseTContainerCheckbox>
+
+                <Checkbox
+                    onChange={handleChangeCheck}
+                    name='cardDetalhado'
+                    checked={cardDetalhado}
+                >
+                    Exibir card detalhado
+                </Checkbox>
             </ConfigProvider>
 
             <Button

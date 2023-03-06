@@ -1,8 +1,8 @@
 import { useEffect, useContext } from "react";
 import { CalculoContext } from "../../context/calculo.context";
 
-import { BlocoResultado, CardBody, CardSegment } from "./card.styles";
-
+import { BlocoResultado, CardSegment } from "../card/card.styles";
+import { CardDetalhadoBody } from './card-detalhado.styles';
 
 const TITULOS = {
     anexoIII: `Simples Nacional \n Anexo III`,
@@ -23,7 +23,7 @@ function converteParaPorcentagem(number) {
     return Intl.NumberFormat('pt-Br', { style: 'percent', minimumFractionDigits: 2 }).format(number);
 }
 
-const Card = ({ ...props }) => {
+const CardDetalhado = ({ ...props }) => {
     const key = props.key;
     const {
         titulo,
@@ -37,7 +37,11 @@ const Card = ({ ...props }) => {
         patronal,
         totalSN,
         aliquotaFinal,
-        socios
+        socios,
+        aliquotaNominal,
+        aliquotaEfetiva,
+        cppDas,
+        fgtsFatorR
     } = props.dados;
 
     const { pis, cofins, csll, irpj, adicionalIR, iss } = Object(custoLP);
@@ -61,7 +65,8 @@ const Card = ({ ...props }) => {
     });
 
     return (
-        <CardBody key={key}>
+        <CardDetalhadoBody key={key}>
+            {console.log(props.dados)}
             {titulo !== "LP" && titulo !== "autonomo" ? (
                 <>
                     {vencedor === titulo ? (
@@ -97,8 +102,44 @@ const Card = ({ ...props }) => {
                         {converteNumeroParaMoeda(faturamento)}
                     </CardSegment>
                     <CardSegment>
-                        <span>Sócios</span>{" "}
-                        {(socios)}
+                        <span>Alíquota Nominal</span>
+                        {converteParaPorcentagem(aliquotaNominal)}
+                    </CardSegment>
+                    <CardSegment>
+                        <span>Alíquota Efetiva</span>
+                        {converteParaPorcentagem(aliquotaEfetiva)}
+                    </CardSegment>
+                    <CardSegment>
+                        <span>Sócios</span> {socios}
+                    </CardSegment>
+                    {titulo === "anexoVR" ? (
+                        <>
+                            <CardSegment
+                                bgColor={"#ced4da66"}
+                                fontWeight={"500"}
+                            >
+                                <span>Cálculo Fator R</span>{" "}
+                                {converteNumeroParaMoeda(faturamento * 0.28)}
+                            </CardSegment>
+                            <CardSegment color={"#ac0202"}>
+                                <span>(-) CPP DAS</span>{" "}
+                                {converteNumeroParaMoeda(cppDas)}
+                            </CardSegment>
+                            {fgtsFatorR ? (
+                                <CardSegment color={"#ac0202"}>
+                                    <span>(-) FGTS Funcionário</span>{" "}
+                                    {converteNumeroParaMoeda(fgtsFatorR)}
+                                </CardSegment>
+                            ) : (
+                                <></>
+                            )}
+                        </>
+                    ) : (
+                        <></>
+                    )}
+                    <CardSegment>
+                        <span>Pró-labore por sócio</span>{" "}
+                        {converteNumeroParaMoeda(valor)}
                     </CardSegment>
                     <CardSegment
                         margin={"1rem 0 0"}
@@ -219,7 +260,6 @@ const Card = ({ ...props }) => {
                             {converteNumeroParaMoeda(totalAut)}
                         </CardSegment>
                         <CardSegment bgColor={"#78ce1980"}>
-                            
                             <span>Alíquota Final</span>
                             {converteParaPorcentagem(aliquotaFinal)}
                         </CardSegment>
@@ -260,8 +300,8 @@ const Card = ({ ...props }) => {
                         {converteNumeroParaMoeda(faturamento)}
                     </CardSegment>
                     <CardSegment>
-                        <span>Sócios</span>{" "}
-                        {(socios)}
+                        <span>Pró-labore por sócio</span>{" "}
+                        {converteNumeroParaMoeda(valor)}
                     </CardSegment>
                     <CardSegment
                         margin={"1rem 0 0"}
@@ -313,8 +353,9 @@ const Card = ({ ...props }) => {
                     </BlocoResultado>
                 </>
             )}
-        </CardBody>
+        </CardDetalhadoBody>
     );
-};
 
-export default Card;
+}
+
+export default CardDetalhado;

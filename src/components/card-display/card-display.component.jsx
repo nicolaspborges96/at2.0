@@ -3,15 +3,22 @@ import { CalculoContext } from "../../context/calculo.context";
 import { CardContainer } from "./card-display.styles";
 import { useState, useRef } from "react";
 import Card from "../card/card.component";
+import CardDetalhado from "../card-detalhado/card-detalhado";
 
 const CardDisplay = ({ ...props }) => {
-    const { resultados, isCardShown, scroll, vencedor, setResultados } =
-        useContext(CalculoContext);
+    const {
+        resultados,
+        isCardShown,
+        scroll,
+        vencedor,
+        setResultados,
+        cardDetalhado,
+    } = useContext(CalculoContext);
 
     useEffect(() => {
         setResultados([]);
     }, []);
-    
+
     const CardsRef = useRef(null);
 
     const scrollToCards = () => {
@@ -28,13 +35,27 @@ const CardDisplay = ({ ...props }) => {
                 <></>
             ) : (
                 <CardContainer ref={CardsRef}>
-                    {resultados.map((resultado, index) => (
-                        <Card
-                            dados={resultado}
-                            key={index}
-                            vencedor={vencedor}
-                        />
-                    ))}
+                    {cardDetalhado === true ? (
+                        <>
+                            {resultados.map((resultado, index) => (
+                                <CardDetalhado
+                                    dados={resultado}
+                                    key={index}
+                                    vencedor={vencedor}
+                                />
+                            ))}
+                        </>
+                    ) : (
+                        <>
+                            {resultados.map((resultado, index) => (
+                                <Card
+                                    dados={resultado}
+                                    key={index}
+                                    vencedor={vencedor}
+                                />
+                            ))}
+                        </>
+                    )}
                 </CardContainer>
             )}
         </>

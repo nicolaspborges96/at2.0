@@ -1,13 +1,12 @@
 import { createContext, useState } from "react";
-import ALIQUOTAS from '../aliquotas.js';
-
+import ALIQUOTAS from "../aliquotas.js";
 
 const calculaIRRF = (baseDeCalculoIR) => {
     let irrf = 0;
-    if ((baseDeCalculoIR) > 1903.98 && (baseDeCalculoIR) <= 2826.65) {
+    if (baseDeCalculoIR > 1903.98 && baseDeCalculoIR <= 2826.65) {
         irrf = baseDeCalculoIR * 0.075 - 142.8;
     } else if (baseDeCalculoIR > 2826.65 && baseDeCalculoIR <= 3751.05) {
-        irrf = baseDeCalculoIR * 0.15 - 354.80;
+        irrf = baseDeCalculoIR * 0.15 - 354.8;
     } else if (baseDeCalculoIR > 3751.05 && baseDeCalculoIR <= 4664.68) {
         irrf = baseDeCalculoIR * 0.225 - 636.13;
     } else if (baseDeCalculoIR > 4664.68) {
@@ -16,32 +15,39 @@ const calculaIRRF = (baseDeCalculoIR) => {
     irrf = parseFloat(irrf.toFixed(2));
 
     return irrf;
-}
+};
 
-const calculaProlabore = (faturamentoMensal, quantidadeSocios, valorFolha, tipoTributario, cppDas) => {
+const calculaProlabore = (
+    faturamentoMensal,
+    quantidadeSocios,
+    valorFolha,
+    tipoTributario,
+    cppDas
+) => {
+    console.log(faturamentoMensal)
     let proLabore = {
         valor: 1302,
         inss: 143.22,
         irrf: 0,
-        patronal: 0
+        patronal: 0,
+        fgtsFatorR: 0
     };
 
-    if (tipoTributario === 'anexoVR') {
-        const fgtsFatoR = valorFolha*0.08;
-    
-        let fatorR = ((faturamentoMensal * 0.28) - cppDas - fgtsFatoR).toFixed(2);
+    if (tipoTributario === "anexoVR") {
+        const fgtsFunc = valorFolha * 0.08;
+        proLabore.fgtsFatorR = fgtsFunc;
+
+        let fatorR = (faturamentoMensal * 0.28 - cppDas - fgtsFunc).toFixed(2);
         let baseDeCalculoIR;
         let tetoInss = 7507.49;
-
 
         if (valorFolha > 0) {
             fatorR = fatorR - valorFolha;
         }
-        if ((fatorR / quantidadeSocios) < 1302) {
+        if (fatorR / quantidadeSocios < 1302) {
             proLabore.valor = 1302;
         } else {
             proLabore.valor = fatorR / quantidadeSocios;
-
         }
 
         if (proLabore.valor > tetoInss) {
@@ -52,51 +58,53 @@ const calculaProlabore = (faturamentoMensal, quantidadeSocios, valorFolha, tipoT
 
         baseDeCalculoIR = proLabore.valor - proLabore.inss;
 
-        
         proLabore.irrf = calculaIRRF(baseDeCalculoIR);
 
         if (quantidadeSocios > 1) {
             proLabore.inss *= quantidadeSocios;
             proLabore.irrf *= quantidadeSocios;
         }
-
+        console.log(fatorR)
         return proLabore;
-
-    } else if (tipoTributario === 'anexoIV' || tipoTributario === 'LP') {
+    } else if (tipoTributario === "anexoIV" || tipoTributario === "LP") {
         proLabore.patronal = 260.4;
         if (quantidadeSocios > 1) {
             proLabore.inss *= quantidadeSocios;
             proLabore.patronal *= quantidadeSocios;
         }
         return proLabore;
-
     } else {
         if (quantidadeSocios > 1) {
             proLabore.inss *= quantidadeSocios;
         }
         return proLabore;
     }
+};
 
-}
-
-const calculaAliquotaEfetiva = (faturamento, aliqNominal, deducao, percentExt, exterior) => {
+const calculaAliquotaEfetiva = (
+    faturamento,
+    aliqNominal,
+    deducao,
+    percentExt,
+    exterior
+) => {
     const fatDoze = faturamento * 12;
     let aliqEfetiva = 0;
     if (exterior) {
-        aliqEfetiva = (((fatDoze * aliqNominal) - deducao) / fatDoze) * percentExt;
+        aliqEfetiva =
+            ((fatDoze * aliqNominal - deducao) / fatDoze) * percentExt;
     } else {
-        aliqEfetiva = ((fatDoze * aliqNominal) - deducao) / fatDoze;
+        aliqEfetiva = (fatDoze * aliqNominal - deducao) / fatDoze;
     }
 
     return aliqEfetiva;
-}
+};
 
 const verificaFaixa = (faturamento) => {
-
     let faturamentoDozeMeses = faturamento * 12;
     let faixa = "";
     if (faturamentoDozeMeses < 0 || faturamentoDozeMeses > 4800000) {
-        console.log("Faturamento Inválido")
+        console.log("Faturamento Inválido");
     } else if (faturamentoDozeMeses >= 0 && faturamentoDozeMeses <= 180000) {
         faixa = "Faixa 1";
     } else if (faturamentoDozeMeses <= 360000) {
@@ -108,13 +116,19 @@ const verificaFaixa = (faturamento) => {
     } else if (faturamentoDozeMeses <= 3600000) {
         faixa = "Faixa 5";
     } else if (faturamentoDozeMeses <= 4800000) {
-        faixa = "Faixa 6"
+        faixa = "Faixa 6";
     }
 
     return faixa;
-}
+};
 
-const calculaSimples = (faturamento, exterior, socios, folhaFuncionario, titulo) => {
+const calculaSimples = (
+    faturamento,
+    exterior,
+    socios,
+    folhaFuncionario,
+    titulo
+) => {
     const faixa = verificaFaixa(faturamento);
 
     const anexo = ALIQUOTAS.find((item, index) => {
@@ -125,46 +139,112 @@ const calculaSimples = (faturamento, exterior, socios, folhaFuncionario, titulo)
         return item.nome === faixa;
     });
 
-    const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
+    const aliquotaEfetiva = calculaAliquotaEfetiva(
+        faturamento,
+        aliquotas.aliquota,
+        aliquotas.deducao,
+        aliquotas.percentualExterior,
+        exterior
+    );
+    const aliquotaNominal = aliquotas.aliquota;
 
     const das = aliquotaEfetiva * faturamento;
 
-    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo, 0);
+    const proLabore = calculaProlabore(
+        faturamento,
+        socios,
+        folhaFuncionario,
+        titulo,
+        0
+    );
     const { valor, inss, irrf, patronal } = proLabore;
     const totalSN = das + inss + irrf + patronal;
     const aliquotaFinal = totalSN / faturamento;
 
-    return { das, faixa, aliquotaEfetiva, titulo, faturamento, valor, inss, irrf, patronal, totalSN, aliquotaFinal }
-}
+    return {
+        das,
+        faixa,
+        aliquotaEfetiva,
+        titulo,
+        faturamento,
+        valor,
+        inss,
+        irrf,
+        patronal,
+        totalSN,
+        aliquotaFinal,
+        socios,
+        aliquotaNominal,
+    };
+};
 
-const calculaFatorR = (faturamento, exterior, socios, folhaFuncionario, infoAnexo) => {
+const calculaFatorR = (
+    faturamento,
+    exterior,
+    socios,
+    folhaFuncionario,
+    infoAnexo
+) => {
     const faixa = verificaFaixa(faturamento);
-    const titulo = 'anexoVR';
+    const titulo = "anexoVR";
 
     const anexo = ALIQUOTAS.find((item, index) => {
         return item.title === infoAnexo;
     });
 
-    
     const aliquotas = anexo.items.find((item, index) => {
         return item.nome === faixa;
     });
 
-    const aliquotaEfetiva = calculaAliquotaEfetiva(faturamento, aliquotas.aliquota, aliquotas.deducao, aliquotas.percentualExterior, exterior);
+    const aliquotaEfetiva = calculaAliquotaEfetiva(
+        faturamento,
+        aliquotas.aliquota,
+        aliquotas.deducao,
+        aliquotas.percentualExterior,
+        exterior
+    );
+    const aliquotaNominal = aliquotas.aliquota;
 
-    const das = aliquotaEfetiva * faturamento;  
-    const cppDas = das*0.434;
+    const das = aliquotaEfetiva * faturamento;
+    const cppDas = das * 0.434;
 
-    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo, cppDas);
-    const { valor, inss, irrf, patronal } = proLabore;
+    const proLabore = calculaProlabore(
+        faturamento,
+        socios,
+        folhaFuncionario,
+        titulo,
+        cppDas
+    );
+    const { valor, inss, irrf, patronal, fgtsFatorR } = proLabore;
     const totalSN = das + inss + irrf + patronal;
     const aliquotaFinal = totalSN / faturamento;
 
-    return { das, faixa, aliquotaEfetiva, titulo, faturamento, valor, inss, irrf, patronal, totalSN, aliquotaFinal }
-}
+    return {
+        das,
+        faixa,
+        aliquotaEfetiva,
+        titulo,
+        faturamento,
+        valor,
+        inss,
+        irrf,
+        patronal,
+        totalSN,
+        aliquotaFinal,
+        socios,
+        aliquotaNominal,
+        cppDas, fgtsFatorR
+    };
+};
 
-const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFuncionario, titulo) => {
-    
+const calculaLucroPresumido = (
+    faturamento,
+    exterior,
+    inputIss,
+    socios,
+    folhaFuncionario,
+    titulo
+) => {
     let aliqLP = {
         pis: 0.0065,
         cofins: 0.03,
@@ -180,12 +260,12 @@ const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFun
         irpj: 0,
         csll: 0,
         iss: 0,
-        adicionalIR: 0
-    }
+        adicionalIR: 0,
+    };
 
     let valorLP = 0;
     let aliquotaFinal = 0;
-    let nomesImpostos = Object.keys(aliqLP)
+    let nomesImpostos = Object.keys(aliqLP);
 
     if (exterior) {
         aliqLP.pis = 0;
@@ -201,41 +281,59 @@ const calculaLucroPresumido = (faturamento, exterior, inputIss, socios, folhaFun
         const limiteIsencao = 60000;
         const bCIRPJ = fatTri * 0.32;
         custoLP.adicionalIR = ((bCIRPJ - limiteIsencao) * 0.1) / 3;
-        aliqLP.addIR = (custoLP.adicionalIR / fatTri);
+        aliqLP.addIR = custoLP.adicionalIR / fatTri;
         valorLP += custoLP.adicionalIR;
     }
 
     for (let i = 0; i < nomesImpostos.length; i++) {
-        if (nomesImpostos[i] === 'pis') {
+        if (nomesImpostos[i] === "pis") {
             custoLP.pis += aliqLP.pis * faturamento;
             valorLP += custoLP.pis;
             aliquotaFinal += aliqLP.pis;
-        } else if (nomesImpostos[i] === 'cofins') {
+        } else if (nomesImpostos[i] === "cofins") {
             custoLP.cofins += aliqLP.cofins * faturamento;
             valorLP += custoLP.cofins;
             aliquotaFinal += aliqLP.cofins;
-        } else if (nomesImpostos[i] === 'irpj') {
+        } else if (nomesImpostos[i] === "irpj") {
             custoLP.irpj += aliqLP.irpj * faturamento;
             valorLP += custoLP.irpj;
             aliquotaFinal += aliqLP.irpj;
-        } else if (nomesImpostos[i] === 'csll') {
+        } else if (nomesImpostos[i] === "csll") {
             custoLP.csll += aliqLP.csll * faturamento;
             valorLP += custoLP.csll;
             aliquotaFinal += aliqLP.csll;
-        } else if (nomesImpostos[i] === 'iss') {
+        } else if (nomesImpostos[i] === "iss") {
             custoLP.iss += aliqLP.iss * faturamento;
             valorLP += custoLP.iss;
             aliquotaFinal += aliqLP.iss;
         }
     }
 
-    const proLabore = calculaProlabore(faturamento, socios, folhaFuncionario, titulo, 0);
+    const proLabore = calculaProlabore(
+        faturamento,
+        socios,
+        folhaFuncionario,
+        titulo,
+        0
+    );
     valorLP += proLabore.inss + proLabore.patronal;
-    aliquotaFinal += (proLabore.inss + proLabore.patronal)/faturamento;
+    aliquotaFinal += (proLabore.inss + proLabore.patronal) / faturamento;
     const { valor, inss, irrf, patronal } = proLabore;
-    
-    return { aliqLP, custoLP, valorLP, aliquotaFinal, titulo, valor, inss, irrf, patronal, faturamento }
-}
+
+    return {
+        aliqLP,
+        custoLP,
+        valorLP,
+        aliquotaFinal,
+        titulo,
+        valor,
+        inss,
+        irrf,
+        patronal,
+        faturamento,
+        socios,
+    };
+};
 
 const calculaAutonomo = (faturamentoInput, exterior, inputIss, titulo) => {
     let faturamento = Number(faturamentoInput);
@@ -343,10 +441,12 @@ const gerenciaCalculo = (dados) => {
         const resultadoFolha = calculaFolha(dados, titulo);
         respostas.push(resultadoFolha);
     }
-    if (dados.anexoI) { //Os calculos de comercio e industria (I e II) não tem a hipotese de ser para o exterior,
+    if (dados.anexoI) {
+        //Os calculos de comercio e industria (I e II) não tem a hipotese de ser para o exterior,
         // e a informação sobre fopag não é necessária. Por isso o parametros foram passados diretamente
         const titulo = "anexoI";
-        const resultadoI = calculaSimples(dados.faturamento,
+        const resultadoI = calculaSimples(
+            dados.faturamento,
             false,
             dados.socios,
             0,
@@ -356,7 +456,8 @@ const gerenciaCalculo = (dados) => {
     }
     if (dados.anexoII) {
         const titulo = "anexoII";
-        const resultadoII = calculaSimples(dados.faturamento,
+        const resultadoII = calculaSimples(
+            dados.faturamento,
             false,
             dados.socios,
             0,
@@ -414,11 +515,11 @@ const calculaInssClt = (salario) => {
 
     return inss;
 };
- 
+
 const calculaFolha = (dados, titulo) => {
     const { beneficios, planoSaude, valeAlimentacao, valeTransporte } = dados;
     const salario = Number(dados.salario);
-    
+
     const salarioFerias = salario * 1.3;
 
     const inssClt = calculaInssClt(salario);
@@ -432,11 +533,7 @@ const calculaFolha = (dados, titulo) => {
     const decTerceiroProp = salarioLiquido / 12;
     const inssFerias = calculaInssClt(salarioFerias);
     const irrfFerias = calculaIRRF(salarioFerias);
-    const feriasProp =
-        (salarioFerias -
-            inssFerias -
-            irrfFerias) /
-        12;
+    const feriasProp = (salarioFerias - inssFerias - irrfFerias) / 12;
     const fgtsFerias = (salarioFerias * 0.08) / 12;
     const fgtsDecimo = (salario * 0.08) / 12;
 
@@ -446,11 +543,7 @@ const calculaFolha = (dados, titulo) => {
         Number(valeTransporte) +
         Number(beneficios);
     const remuneracaoLiq =
-        salarioLiquido +
-        fgts +
-        decTerceiroProp +
-        totalBeneficios +
-        feriasProp;
+        salarioLiquido + fgts + decTerceiroProp + totalBeneficios + feriasProp;
 
     const folha = {
         inssClt,
@@ -468,23 +561,19 @@ const calculaFolha = (dados, titulo) => {
         feriasProp,
         fgtsDecimo,
         fgtsFerias,
-        totalBeneficios
+        totalBeneficios,
     };
 
     return folha;
 };
 
-
-
 export const CalculoContext = createContext({
-    pegaInputECalcula: () => { },
+    pegaInputECalcula: () => {},
     isCardShown: false,
-    setCardShown: () => { },
-    setVencedor: () => { },
-    setFaturamentoMes: () => {}
-
+    setCardShown: () => {},
+    setVencedor: () => {},
+    setFaturamentoMes: () => {},
 });
-
 
 export const CalculoProvider = ({ children }) => {
     const [isCardShown, setCardShown] = useState(false);
@@ -493,10 +582,12 @@ export const CalculoProvider = ({ children }) => {
     const [vencedor, setVencedor] = useState([]);
     const [detalhar, setDetalhar] = useState(false);
     const [faturamentoMes, setFaturamentoMes] = useState([]);
+    const [cardDetalhado, setCardDetalhado] = useState(false);
 
     const pegaInputECalcula = (dados) => {
         setCardShown(true);
         setDetalhar(dados.detalhar);
+        setCardDetalhado(dados.cardDetalhado);
         const output = gerenciaCalculo(dados);
         setResultados(output);
         const vencedor = verificaVencedor(output);
@@ -517,6 +608,8 @@ export const CalculoProvider = ({ children }) => {
         detalhar,
         faturamentoMes,
         setFaturamentoMes,
+        cardDetalhado,
+        setCardDetalhado,
     };
 
     return (
