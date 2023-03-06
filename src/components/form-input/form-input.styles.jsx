@@ -24,6 +24,7 @@ export const SearchInput = styled.input`
     outline:none;
     padding: 0.4rem;
     border-radius: 5px;
+    width: ${props => props.width};
     //width: 70%;
 
     &:focus {
@@ -45,4 +46,19 @@ export const SelectInput = styled.select`
     &:focus {
         border-color: #396600;
     }
-`
+`;
+
+export const PrefixSpan = styled.span`
+    text-align: center;
+    margin: auto 0 0;
+    //background-color: ;
+    padding: 0.2rem;
+    border: 1px solid #d1d2d6;
+    border-radius: 5px;
+`;
+
+export const PrefixAndInputContainer = styled.div`
+    display: flex;
+    width: 100%;
+
+`;

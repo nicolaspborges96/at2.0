@@ -65,50 +65,40 @@ const FolhaForm = () => {
         setScroll(true);
     };
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-
-        setFormFields({ ...formFields, [name]: value });
-    };
-
-    const handleChangeCheck = (event) => {
-        const { name, checked } = event.target;
-
-        setFormFields({ ...formFields, [name]: checked });
-    };
-
-    const formatarMoeda = (valor) => {
-        const regex = /^(\d+)(,\d{0,2})?$/;
-        const valorFormatado = valor.replace(regex, (p1) => {
-            return "R$ " + p1.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        });
-        return valorFormatado.replace(/(,\d{2})\d+?$/, "$1");
-    };
+    function removerFormatacaoMoeda(valor) {
+        let value = valor;
+        let numero = value.replace(/[.]/g,"");
+        let numeroLimpo = numero.replace(',','.');
+        
+        return numeroLimpo;
+    }
 
     const handleChangeMoeda = (event) => {
-        const { name, value } = event.target;
-        const valorDigitado = value;
-        const valorFormatado = formatarMoeda(valorDigitado);
+        let { name, value } = event.target;
+        value = value.replace(/\D/g, "");
+        value = value.replace(/(\d)(\d{2})$/, "$1,$2");
+        value = value.replace(/(?=(\d{3})+(\D))\B/g, ".");
         const nomeSemMoeda = name.replace("Moeda", "");
-        setFormFields({
-            ...formFields,
-            [name]: valorFormatado,
-            [nomeSemMoeda]: value,
-        });
+
+        
+        setFormFields({ ...formFields, [name]: value, [nomeSemMoeda]:value });
     };
 
     const handleBlurInput = (event) => {
         const { name, value } = event.target;
         const valorCru = removerFormatacaoMoeda(value);
         const nomeSemMoeda = name.replace("Moeda", "");
-        console.log(nomeSemMoeda);
-        setFormFields({ ...formFields, [nomeSemMoeda]: valorCru });
-    };
-
-    function removerFormatacaoMoeda(valor) {
-        const regex = /[^\d,.]/g;
-        return parseFloat(valor.replace(regex, "").replace(",", "."));
+        console.log(valorCru)
+        setFormFields({...formFields, [nomeSemMoeda]: valorCru});
     }
+
+    
+
+    const handleChangeCheck = (event) => {
+        const { name, checked } = event.target;
+
+        setFormFields({ ...formFields, [name]: checked });
+    };  
 
     const handleRadioChange = (event) => {
         const { name, value } = event.target;
@@ -153,15 +143,18 @@ const FolhaForm = () => {
             >
                 <FormFolha onSubmit={onSubmitForm}>
                     <FormInput
-                        width={"210px"}
+                        
                         label={"Salário PJ (bruto):"}
                         name="faturamentoMoeda"
                         value={faturamentoMoeda}
                         onChange={handleChangeMoeda}
                         onBlur={handleBlurInput}
+                        width={'100%'}
+                        prefix={'R$'}
                     />
                     <FormInput
-                        width={"210px"}
+                        width={'100%'}
+                        prefix={'R$'}
                         label={"Salário CLT (bruto):"}
                         name="salarioMoeda"
                         value={salarioMoeda}
@@ -170,7 +163,8 @@ const FolhaForm = () => {
                     />
 
                     <FormInput
-                        width={"210px"}
+                        width={'100%'}
+                        prefix={'R$'}
                         name="planoSaudeMoeda"
                         value={planoSaudeMoeda}
                         label={"Plano de saúde:"}
@@ -178,7 +172,8 @@ const FolhaForm = () => {
                         onBlur={handleBlurInput}
                     />
                     <FormInput
-                        width={"210px"}
+                        width={'100%'}
+                        prefix={'R$'}
                         name="valeAlimentacaoMoeda"
                         value={valeAlimentacaoMoeda}
                         label={"Vale-refeição/alimentação:"}
@@ -186,7 +181,8 @@ const FolhaForm = () => {
                         onBlur={handleBlurInput}
                     />
                     <FormInput
-                        width={"210px"}
+                        width={'100%'}
+                        prefix={'R$'}
                         name="valeTransporteMoeda"
                         value={valeTransporteMoeda}
                         label={"Vale-transporte:"}
@@ -194,7 +190,8 @@ const FolhaForm = () => {
                         onBlur={handleBlurInput}
                     />
                     <FormInput
-                        width={"210px"}
+                        width={'100%'}
+                        prefix={'R$'}
                         name="beneficiosMoeda"
                         value={beneficiosMoeda}
                         label={"Outros benefícios:"}

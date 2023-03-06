@@ -364,7 +364,6 @@ const gerenciaCalculo = (dados) => {
         );
         respostas.push(resultadoII);
     }
-    
 
     return respostas;
 };
@@ -498,6 +497,7 @@ export const CalculoProvider = ({ children }) => {
     const pegaInputECalcula = (dados) => {
         setCardShown(true);
         setDetalhar(dados.detalhar);
+        console.log(dados)
         const output = gerenciaCalculo(dados);
         setResultados(output);
         const vencedor = verificaVencedor(output);

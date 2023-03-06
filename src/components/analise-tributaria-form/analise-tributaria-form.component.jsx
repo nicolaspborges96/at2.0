@@ -11,6 +11,7 @@ import {
 import { useContext } from "react";
 import { CalculoContext } from "../../context/calculo.context";
 
+
 const marks = {
     2: "2%",
     3: "3%",
@@ -54,13 +55,6 @@ const AnaliseTForm = ({ ...props }) => {
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
 
-    const formatarMoeda = (valor) => {
-        const regex = /^(\d+)(,\d{0,2})?$/;
-        const valorFormatado = valor.replace(regex, (p1) => {
-            return "R$ " + p1.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        });
-        return valorFormatado.replace(/(,\d{2})\d+?$/, "$1");
-    };
 
     const onChangeFuncionario = (e) => {
         const { name, value } = e.target;
@@ -88,10 +82,13 @@ const AnaliseTForm = ({ ...props }) => {
     };
 
     const handleChangeMoeda = (event) => {
-        const { name, value } = event.target;
-        const valorDigitado = value;
-        const valorFormatado = formatarMoeda(valorDigitado);
-        setFormFields({ ...formFields, [name]: valorFormatado, faturamento: value });
+        let { name, value } = event.target;
+        value = value.replace(/\D/g, "");
+        value = value.replace(/(\d)(\d{2})$/, "$1,$2");
+        value = value.replace(/(?=(\d{3})+(\D))\B/g, ".");
+
+        
+        setFormFields({ ...formFields, [name]: value });
     };
 
     const handleBlurInput = (event) => {
@@ -102,8 +99,11 @@ const AnaliseTForm = ({ ...props }) => {
     }
 
     function removerFormatacaoMoeda(valor) {
-        const regex = /[^\d,.]/g;
-        return parseFloat(valor.replace(regex, '').replace(',', '.'));
+        let value = valor;
+        let numero = value.replace(/[.]/g,"");
+        let numeroLimpo = numero.replace(',','.');
+        
+        return numeroLimpo;
     }
 
 
@@ -129,6 +129,8 @@ const AnaliseTForm = ({ ...props }) => {
                     label={"Qual o faturamento médio da empresa?"}
                     name="faturamentoMoeda"
                     value={faturamentoMoeda}
+                    width={'100%'}
+                    prefix={'R$'}
                     onChange={handleChangeMoeda}
                     onBlur={handleBlurInput}
                 />
@@ -136,6 +138,7 @@ const AnaliseTForm = ({ ...props }) => {
                     label={"Quantos sócios tem a empresa?"}
                     name="socios"
                     value={socios}
+                    width={'100%'}
                     onChange={handleChange}
                 />
 

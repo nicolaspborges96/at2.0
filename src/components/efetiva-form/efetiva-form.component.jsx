@@ -21,7 +21,9 @@ const defaultFormFields = {
     anexoV: false,
     anexoI: false,
     anexoII: false,
-    atividade: 3
+    atividade: 3,
+    faturamentoDozeMoeda: '',
+    faturamentoMesMoeda: ''
 };
 
 const EfetivaForm = () => {
@@ -30,7 +32,9 @@ const EfetivaForm = () => {
         faturamento,
         anoCompleto,
         faturamentoDoze,
+        faturamentoDozeMoeda,
         faturamentoMes,
+        faturamentoMesMoeda,
         anexoI,
         anexoII,
         anexoIII,
@@ -52,9 +56,43 @@ const EfetivaForm = () => {
             
     };
 
+    const handleChangeMoeda = (event) => {
+        let { name, value } = event.target;
+        value = value.replace(/\D/g, "");
+        value = value.replace(/(\d)(\d{2})$/, "$1,$2");
+        value = value.replace(/(?=(\d{3})+(\D))\B/g, ".");
+        const nomeSemMoeda = name.replace("Moeda", "");
+
+        setFormFields({ ...formFields, [name]: value });
+
+    };
+
+    const handleBlurInput = (event) => {
+        const { name, value } = event.target;
+        const valorCru = removerFormatacaoMoeda(value);
+        const nomeSemMoeda = name.replace("Moeda", "");
+        console.log(valorCru)
+        if (nomeSemMoeda === 'faturamentoMes')
+        setFormFields({...formFields, [nomeSemMoeda]: valorCru });
+
+        if (nomeSemMoeda === 'faturamentoDoze') {
+            setFormFields({...formFields, [nomeSemMoeda]: valorCru, faturamento: (valorCru/12)})
+        }
+
+    }
+
+    function removerFormatacaoMoeda(valor) {
+        let value = valor;
+        let numero = value.replace(/[.]/g,"");
+        let numeroLimpo = numero.replace(',','.');
+        
+        return numeroLimpo;
+    }
+
     const onSubmitForm = (ev) => {
         ev.preventDefault();
         setFaturamentoMes(faturamentoMes);
+        console.log(faturamento)
         pegaInputECalcula(formFields);
         setScroll(true);
         
@@ -131,9 +169,12 @@ const EfetivaForm = () => {
             >
                 <FormInput
                     label={"Qual o faturamento do mês?"}
-                    name="faturamentoMes"
-                    value={faturamentoMes}
-                    onChange={handleChange}
+                    name="faturamentoMesMoeda"
+                    value={faturamentoMesMoeda}
+                    onChange={handleChangeMoeda}
+                    width={'100%'}
+                    prefix={'R$'}
+                    onBlur={handleBlurInput}
                 />
 
                 <label>A empresa tem 12 ou mais meses de funcionamento?</label>
@@ -148,9 +189,12 @@ const EfetivaForm = () => {
                 {anoCompleto ? (
                     <FormInput
                         label={"Qual a receita dos últimos 12 meses (RBT12) ?"}
-                        name="faturamentoDoze"
-                        value={faturamentoDoze}
-                        onChange={handleChange}
+                        name="faturamentoDozeMoeda"
+                        value={faturamentoDozeMoeda}
+                        onChange={handleChangeMoeda}
+                        width={'100%'}
+                        prefix={'R$'}
+                        onBlur={handleBlurInput}
                     />
                 ) : (
                     <>
@@ -158,9 +202,12 @@ const EfetivaForm = () => {
                             label={
                                 "Qual a receita proporcionalizada (RBT12p) ?"
                             }
-                            name="faturamentoDoze"
-                            value={faturamentoDoze}
-                            onChange={handleChange}
+                            name="faturamentoDozeMoeda"
+                            value={faturamentoDozeMoeda}
+                            onChange={handleChangeMoeda}
+                            onBlur={handleBlurInput}
+                            width={'100%'}
+                            prefix={'R$'}
                         />
                         
                     </>
