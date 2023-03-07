@@ -28,6 +28,12 @@ export const ContainerHeaderAnaliseT = styled.div`
 export const ContainerLogo = styled.div`
     width: 200px;
     margin: auto 0;
+    padding: 0.3rem;
+    :hover{
+        cursor: pointer;
+        border: 1px solid #c3c8ced4;
+        border-radius: 5px;
+    }
 `
 export const StyledSpan = styled.span`
     color: ${props => props.color};

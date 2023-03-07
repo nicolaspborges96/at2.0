@@ -3,14 +3,19 @@ import { ContainerHeaderAnaliseT, ContainerLogo, StyledSpan } from '../analise-t
 import { ReactComponent as LogoHorizontal } from '../../assets/logo-horizontal.svg';
 import EfetivaForm from "../../components/efetiva-form/efetiva-form.component";
 import EfetivaDisplay from "../../components/efetiva-display/efetiva-display.component";
-
+import { useNavigate } from "react-router-dom";
 
 const Efetiva = () => {
+    const navigate = useNavigate();
+
+    const goToHome = () => {
+        navigate("/");
+    };
 
     return (
     <EfetivaContainer>
             <ContainerHeaderAnaliseT>
-                <ContainerLogo>
+                <ContainerLogo onClick={goToHome} >
                     <LogoHorizontal />
                 </ContainerLogo>
                 <StyledSpan
