@@ -89,12 +89,19 @@ const calculaAliquotaEfetiva = (
 ) => {
     const fatDoze = faturamento * 12;
     let aliqEfetiva = 0;
-    if (exterior) {
-        aliqEfetiva =
-            ((fatDoze * aliqNominal - deducao) / fatDoze) * percentExt;
+    if (fatDoze === 0) {
+        aliqEfetiva = aliqNominal;
     } else {
-        aliqEfetiva = (fatDoze * aliqNominal - deducao) / fatDoze;
+        if (exterior) {
+            aliqEfetiva =
+                ((fatDoze * aliqNominal - deducao) / fatDoze) * percentExt;
+        } else {
+            aliqEfetiva = (fatDoze * aliqNominal - deducao) / fatDoze;
+        }
     }
+    
+
+    console.log(aliqEfetiva)
 
     return aliqEfetiva;
 };

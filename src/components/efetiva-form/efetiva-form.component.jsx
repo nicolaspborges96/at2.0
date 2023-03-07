@@ -2,14 +2,16 @@ import { useContext, useState } from "react";
 import { EfetivaFormStyled } from "./efetiva-form.styles";
 import FormInput from "../form-input/form-input.component";
 import { ConfigProvider, Radio, Checkbox } from "antd";
-import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
+import Button, {
+    BUTTON_TYPE_CLASSES,
+} from "../../components/button/button.component";
 import { CalculoContext } from "../../context/calculo.context";
 
 const defaultFormFields = {
     faturamento: "",
     faturamentoDoze: "",
     faturamentoMes: "",
-    meses: '',
+    meses: "",
     anoCompleto: true,
     socios: 1,
     funcionarios: 0,
@@ -22,8 +24,9 @@ const defaultFormFields = {
     anexoI: false,
     anexoII: false,
     atividade: 3,
-    faturamentoDozeMoeda: '',
-    faturamentoMesMoeda: ''
+    faturamentoDozeMoeda: "",
+    faturamentoMesMoeda: "",
+    primeiroMes: false,
 };
 
 const EfetivaForm = () => {
@@ -42,18 +45,27 @@ const EfetivaForm = () => {
         anexoV,
         meses,
         atividade,
+        primeiroMes,
     } = formFields;
 
-    const { pegaInputECalcula, setFaturamentoMes, setScroll } = useContext(CalculoContext);
+    const { pegaInputECalcula, setFaturamentoMes, setScroll } =
+        useContext(CalculoContext);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        if(name === 'faturamentoDoze') {
-            setFormFields({ ...formFields, [name]: value, faturamento: (value/12) });
+        if (name === 'primeiroMes') {
+            setFormFields({...formFields, [name]:value, faturamento: faturamentoMes})
+        } else {
+        if (name === "faturamentoDoze") {
+            setFormFields({
+                ...formFields,
+                [name]: value,
+                faturamento: value / 12,
+            });
         } else {
             setFormFields({ ...formFields, [name]: value });
         }
-            
+        }
     };
 
     const handleChangeMoeda = (event) => {
@@ -64,27 +76,29 @@ const EfetivaForm = () => {
         const nomeSemMoeda = name.replace("Moeda", "");
 
         setFormFields({ ...formFields, [name]: value });
-
     };
 
     const handleBlurInput = (event) => {
         const { name, value } = event.target;
         const valorCru = removerFormatacaoMoeda(value);
         const nomeSemMoeda = name.replace("Moeda", "");
-        if (nomeSemMoeda === 'faturamentoMes')
-        setFormFields({...formFields, [nomeSemMoeda]: valorCru });
+        if (nomeSemMoeda === "faturamentoMes")
+            setFormFields({ ...formFields, [nomeSemMoeda]: valorCru });
 
-        if (nomeSemMoeda === 'faturamentoDoze') {
-            setFormFields({...formFields, [nomeSemMoeda]: valorCru, faturamento: (valorCru/12)})
+        if (nomeSemMoeda === "faturamentoDoze") {
+            setFormFields({
+                ...formFields,
+                [nomeSemMoeda]: valorCru,
+                faturamento: valorCru / 12,
+            });
         }
-
-    }
+    };
 
     function removerFormatacaoMoeda(valor) {
         let value = valor;
-        let numero = value.replace(/[.]/g,"");
-        let numeroLimpo = numero.replace(',','.');
-        
+        let numero = value.replace(/[.]/g, "");
+        let numeroLimpo = numero.replace(",", ".");
+
         return numeroLimpo;
     }
 
@@ -93,7 +107,6 @@ const EfetivaForm = () => {
         setFaturamentoMes(faturamentoMes);
         pegaInputECalcula(formFields);
         setScroll(true);
-        
     };
 
     const handleRadioChange = (event) => {
@@ -118,7 +131,6 @@ const EfetivaForm = () => {
                 anexoIV: false,
                 anexoV: false,
             });
-           
         } else if (value === 3) {
             setFormFields({
                 ...formFields,
@@ -129,7 +141,6 @@ const EfetivaForm = () => {
                 anexoIV: false,
                 anexoV: false,
             });
-            
         } else if (value === 4) {
             setFormFields({
                 ...formFields,
@@ -140,7 +151,6 @@ const EfetivaForm = () => {
                 anexoIV: true,
                 anexoV: false,
             });
-           
         } else if (value === 5) {
             setFormFields({
                 ...formFields,
@@ -153,7 +163,6 @@ const EfetivaForm = () => {
             });
         }
     };
-
 
     return (
         <EfetivaFormStyled onSubmit={onSubmitForm}>
@@ -170,8 +179,8 @@ const EfetivaForm = () => {
                     name="faturamentoMesMoeda"
                     value={faturamentoMesMoeda}
                     onChange={handleChangeMoeda}
-                    width={'100%'}
-                    prefix={'R$'}
+                    width={"100%"}
+                    prefix={"R$"}
                     onBlur={handleBlurInput}
                 />
 
@@ -184,33 +193,46 @@ const EfetivaForm = () => {
                     <Radio value={true}>Sim</Radio>
                     <Radio value={false}>Não</Radio>
                 </Radio.Group>
+
                 {anoCompleto ? (
                     <FormInput
                         label={"Qual a receita dos últimos 12 meses (RBT12) ?"}
                         name="faturamentoDozeMoeda"
                         value={faturamentoDozeMoeda}
                         onChange={handleChangeMoeda}
-                        width={'100%'}
-                        prefix={'R$'}
+                        width={"100%"}
+                        prefix={"R$"}
                         onBlur={handleBlurInput}
                     />
                 ) : (
                     <>
-                        <FormInput
-                            label={
-                                "Qual a receita proporcionalizada (RBT12p) ?"
-                            }
-                            name="faturamentoDozeMoeda"
-                            value={faturamentoDozeMoeda}
-                            onChange={handleChangeMoeda}
-                            onBlur={handleBlurInput}
-                            width={'100%'}
-                            prefix={'R$'}
-                        />
-                        
+                        <label>É o primeiro mês de atividade?</label>
+                        <Radio.Group
+                            name="primeiroMes"
+                            onChange={handleChange}
+                            value={primeiroMes}
+                        >
+                            <Radio value={true}>Sim</Radio>
+                            <Radio value={false}>Não</Radio>
+                        </Radio.Group>
+                        {primeiroMes ? (
+                            <></>
+                        ) : (
+                            <FormInput
+                                label={
+                                    "Qual a receita proporcionalizada (RBT12p) ?"
+                                }
+                                name="faturamentoDozeMoeda"
+                                value={faturamentoDozeMoeda}
+                                onChange={handleChangeMoeda}
+                                onBlur={handleBlurInput}
+                                width={"100%"}
+                                prefix={"R$"}
+                            />
+                        )}
                     </>
                 )}
-                
+
                 <label>Qual a atividade exercida?</label>
                 <Radio.Group
                     name="atividade"
@@ -223,17 +245,17 @@ const EfetivaForm = () => {
                     <Radio value={4}>Anexo IV</Radio>
                     <Radio value={5}>Anexo V</Radio>
                 </Radio.Group>
-                
+
                 <Button
-                texto={"Calcular"}
-                type="submit"
-                buttonStyle={BUTTON_TYPE_CLASSES.svg}
-                border={"1px solid #c3c8ced4"}
-                margin={"1.5rem auto 1rem"}
-                bgColor={"#ffffff"}
-                width={"200px"}
-                hover={"border: 1px solid #a5c017; color:#396600"}
-            />
+                    texto={"Calcular"}
+                    type="submit"
+                    buttonStyle={BUTTON_TYPE_CLASSES.svg}
+                    border={"1px solid #c3c8ced4"}
+                    margin={"1.5rem auto 1rem"}
+                    bgColor={"#ffffff"}
+                    width={"200px"}
+                    hover={"border: 1px solid #a5c017; color:#396600"}
+                />
             </ConfigProvider>
         </EfetivaFormStyled>
     );
