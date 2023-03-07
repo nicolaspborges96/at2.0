@@ -232,7 +232,7 @@ const FolhaForm = () => {
                     texto={"Calcular"}
                     type="submit"
                     buttonStyle={BUTTON_TYPE_CLASSES.svg}
-                    border={"1px solid #c3c8ced4"}
+                    border={"1px solid #396600"}
                     margin={"1.5rem auto 0"}
                     bgColor={"#ffffff"}
                     width={"200px"}

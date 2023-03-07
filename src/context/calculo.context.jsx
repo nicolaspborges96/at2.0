@@ -64,7 +64,6 @@ const calculaProlabore = (
             proLabore.inss *= quantidadeSocios;
             proLabore.irrf *= quantidadeSocios;
         }
-        console.log(fatorR)
         return proLabore;
     } else if (tipoTributario === "anexoIV" || tipoTributario === "LP") {
         proLabore.patronal = 260.4;
@@ -470,17 +469,20 @@ const gerenciaCalculo = (dados) => {
     return respostas;
 };
 
+
+
 const verificaVencedor = (respostas) => {
     let melhorOp = "";
 
     for (let i = 0, melhor = 100, vencedor; i < respostas.length; i++) {
         if (respostas[i].aliquotaFinal < melhor) {
-            if (
+            /*if (
                 respostas[i].titulo === "anexoI" ||
                 respostas[i].titulo === "anexoII"
             ) {
                 return melhorOp;
-            }
+            } invalida opcao de retornar comparacao para anexo I e II
+            */
             melhor = respostas[i].aliquotaFinal;
             vencedor = respostas[i].titulo;
         }
@@ -574,6 +576,8 @@ export const CalculoContext = createContext({
     setCardShown: () => {},
     setVencedor: () => {},
     setFaturamentoMes: () => {},
+    setCardDetalhado: () => {},
+   
 });
 
 export const CalculoProvider = ({ children }) => {
@@ -584,6 +588,7 @@ export const CalculoProvider = ({ children }) => {
     const [detalhar, setDetalhar] = useState(false);
     const [faturamentoMes, setFaturamentoMes] = useState([]);
     const [cardDetalhado, setCardDetalhado] = useState(false);
+    
 
     const pegaInputECalcula = (dados) => {
         setCardShown(true);
@@ -593,6 +598,7 @@ export const CalculoProvider = ({ children }) => {
         setResultados(output);
         const vencedor = verificaVencedor(output);
         setVencedor(vencedor);
+        
 
         return;
     };
@@ -610,7 +616,8 @@ export const CalculoProvider = ({ children }) => {
         faturamentoMes,
         setFaturamentoMes,
         cardDetalhado,
-        setCardDetalhado,
+        setCardDetalhado
+        
     };
 
     return (

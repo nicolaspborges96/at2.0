@@ -4,6 +4,7 @@ import { CardContainer } from "./card-display.styles";
 import { useState, useRef } from "react";
 import Card from "../card/card.component";
 import CardDetalhado from "../card-detalhado/card-detalhado";
+import TextContainer from "../text-container/text-container.component";
 
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
@@ -14,7 +15,7 @@ const CardDisplay = ({ ...props }) => {
         scroll,
         vencedor,
         setResultados,
-        cardDetalhado,
+        cardDetalhado
     } = useContext(CalculoContext);
 
     useEffect(() => {
@@ -37,7 +38,7 @@ const CardDisplay = ({ ...props }) => {
                 <></>
             ) : (
                 <>
-
+                
                 <CardContainer ref={CardsRef}>
                     {cardDetalhado === true ? (
                         <>

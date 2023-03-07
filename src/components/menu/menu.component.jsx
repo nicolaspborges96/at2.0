@@ -47,18 +47,7 @@ const Menu = () => {
                 hover={"border: 2px solid #a5c017; color:#a5c017"}
                 onClick={goToFolha}
             />
-            <Button
-                buttonStyle={BUTTON_TYPE_CLASSES.svg}
-                width={"80%"}
-                height={"80%"}
-                bgColor={"#f0f0f0"}
-                margin={"auto"}
-                texto={"Indústria & Comércio"}
-                border={"2px solid #dbdfcb"}
-                color={"#396600"}
-                hover={"border: 2px solid #a5c017; color:#a5c017"}
-                onClick={goToIndCom}
-            />
+           
             <Button
                 buttonStyle={BUTTON_TYPE_CLASSES.svg}
                 width={"80%"}

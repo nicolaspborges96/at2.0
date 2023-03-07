@@ -3,7 +3,7 @@ import Button, {
     BUTTON_TYPE_CLASSES,
 } from "../../components/button/button.component";
 import { ConfigProvider, Radio, Slider, Checkbox } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     AnaliseTContainerCheckbox,
     AnaliseTFormStyled,
@@ -11,7 +11,7 @@ import {
 } from "./analise-tributaria-form.styles";
 import { useContext } from "react";
 import { CalculoContext } from "../../context/calculo.context";
-
+import TextContainer from "../text-container/text-container.component";
 
 const marks = {
     2: "2%",
@@ -35,8 +35,8 @@ const defaultFormFields = {
     lucroP: false,
     autonomo: false,
     cardDetalhado: false,
-    industria: false,
-    comercio: false
+    anexoI: false,
+    anexoII: false
 };
 
 const slider = [2, 3, 4, 5];
@@ -58,12 +58,12 @@ const AnaliseTForm = ({ ...props }) => {
         lucroP,
         autonomo,
         cardDetalhado,
-        comercio,
-        industria
+        anexoI,
+        anexoII
     } = formFields;
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
-
+    const [compara, setCompara] = useState(false);
 
     const onChangeFuncionario = (e) => {
         const { name, value } = e.target;
@@ -121,6 +121,32 @@ const AnaliseTForm = ({ ...props }) => {
         return numeroLimpo;
     }
 
+    const verificaIndCom = (
+        anexoI,
+        anexoII,
+        anexoIII,
+        anexoIV,
+        anexoV,
+        lucroP,
+        autonomo
+    ) => {
+        if (
+            (anexoI && (anexoIII || anexoIV || anexoV || lucroP || autonomo))
+        ) {
+            return true;
+        }else if (anexoII && (anexoIII || anexoIV || anexoV || lucroP || autonomo)) {
+            return true;
+        } else if (anexoI&&anexoII) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    useEffect(()=> {
+        setCompara(verificaIndCom(anexoI, anexoII, anexoIII, anexoIV, anexoV, lucroP, autonomo));
+    }, [anexoI, anexoII, anexoIII, anexoIV, anexoV, lucroP, autonomo]);
+    
 
     const onSubmitForm = (ev) => {
         ev.preventDefault();
@@ -233,8 +259,8 @@ const AnaliseTForm = ({ ...props }) => {
                     </Checkbox>
                     <Checkbox
                         onChange={handleChangeCheck}
-                        name="comercio"
-                        checked={comercio}
+                        name="anexoI"
+                        checked={anexoI}
                     >
                         Comércio
                     </Checkbox>
@@ -248,8 +274,8 @@ const AnaliseTForm = ({ ...props }) => {
                     
                     <Checkbox
                         onChange={handleChangeCheck}
-                        name="industria"
-                        checked={industria}
+                        name="anexoII"
+                        checked={anexoII}
                     >
                         Indústria
                     </Checkbox>
@@ -263,20 +289,18 @@ const AnaliseTForm = ({ ...props }) => {
                     
                     
                 </AnaliseTContainerCheckbox>
+                { compara ? (
+                    <TextContainer
+                    texto={
+                        "Não é correto comparar comércio, indústria e os demais(prestação de serviço), uma vez que são atividades diferentes!"
+                    }
+                    
+                />
+                ) : (
+                    <></>
+                )
                 
-                <CheckBoxDetalharCard>
-                <Checkbox
-                    onChange={handleChangeCheck}
-                    name='cardDetalhado'
-                    checked={cardDetalhado}
-                    
-                >
-                    <span style={{color: '#396600'}} >
-                    Exibir card detalhado
-                    </span>
-                    
-                </Checkbox>
-                </CheckBoxDetalharCard>
+                }
                 
             </ConfigProvider>
 
@@ -284,7 +308,7 @@ const AnaliseTForm = ({ ...props }) => {
                 texto={"Calcular"}
                 type="submit"
                 buttonStyle={BUTTON_TYPE_CLASSES.svg}
-                border={"1px solid #c3c8ced4"}
+                border={"1px solid #396600"}
                 margin={"1.5rem auto 1rem"}
                 bgColor={"#ffffff"}
                 width={"200px"}

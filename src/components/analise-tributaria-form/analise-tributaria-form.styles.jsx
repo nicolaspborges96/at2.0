@@ -82,7 +82,7 @@ export const AnaliseTContainerCheckbox = styled.div`
         margin-right: 0.7rem;
         }
         & label:nth-child(7){
-        margin-left: -0.3rem;
+        margin-left: 0rem;
     }
     }
     
