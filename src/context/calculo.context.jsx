@@ -233,7 +233,8 @@ const calculaFatorR = (
         aliquotaFinal,
         socios,
         aliquotaNominal,
-        cppDas, fgtsFatorR
+        cppDas, fgtsFatorR,
+        folhaFuncionario
     };
 };
 

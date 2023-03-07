@@ -41,7 +41,8 @@ const CardDetalhado = ({ ...props }) => {
         aliquotaNominal,
         aliquotaEfetiva,
         cppDas,
-        fgtsFatorR
+        fgtsFatorR,
+        folhaFuncionario
     } = props.dados;
 
     const { pis, cofins, csll, irpj, adicionalIR, iss } = Object(custoLP);
@@ -121,16 +122,17 @@ const CardDetalhado = ({ ...props }) => {
                                 <span>Cálculo Fator R</span>{" "}
                                 {converteNumeroParaMoeda(faturamento * 0.28)}
                             </CardSegment>
-                            <CardSegment color={"#ac0202"}>
+                            <CardSegment color={"#396600"}>
                                 <span>(-) CPP DAS</span>{" "}
                                 {converteNumeroParaMoeda(cppDas)}
                             </CardSegment>
                             {fgtsFatorR ? (
                                 <>
-                                <CardSegment>
-                                    <span></span>
+                                <CardSegment color={"#396600"}>
+                                    <span>(-) Folha Funcionário</span>
+                                    {converteNumeroParaMoeda(folhaFuncionario)}
                                 </CardSegment>
-                                <CardSegment color={"#ac0202"}>
+                                <CardSegment color={"#396600"}>
                                     <span>(-) FGTS Funcionário</span>{" "}
                                     {converteNumeroParaMoeda(fgtsFatorR)}
                                 </CardSegment>
@@ -142,7 +144,7 @@ const CardDetalhado = ({ ...props }) => {
                     ) : (
                         <></>
                     )}
-                    <CardSegment>
+                    <CardSegment bgColor={"#ced4da66"}>
                         <span>Pró-labore por sócio</span>{" "}
                         {converteNumeroParaMoeda(valor)}
                     </CardSegment>

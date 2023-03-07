@@ -35,4 +35,4 @@ export const StyledSpan = styled.span`
     margin: ${props => props.margin};
     font-weight: ${props => props.fontWeight}
 
-`
+`;

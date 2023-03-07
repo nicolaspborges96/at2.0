@@ -7,6 +7,7 @@ import { useState } from "react";
 import {
     AnaliseTContainerCheckbox,
     AnaliseTFormStyled,
+    CheckBoxDetalharCard,
 } from "./analise-tributaria-form.styles";
 import { useContext } from "react";
 import { CalculoContext } from "../../context/calculo.context";
@@ -33,7 +34,9 @@ const defaultFormFields = {
     anexoV: false,
     lucroP: false,
     autonomo: false,
-    cardDetalhado: false
+    cardDetalhado: false,
+    industria: false,
+    comercio: false
 };
 
 const slider = [2, 3, 4, 5];
@@ -54,7 +57,9 @@ const AnaliseTForm = ({ ...props }) => {
         anexoV,
         lucroP,
         autonomo,
-        cardDetalhado
+        cardDetalhado,
+        comercio,
+        industria
     } = formFields;
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
@@ -228,10 +233,10 @@ const AnaliseTForm = ({ ...props }) => {
                     </Checkbox>
                     <Checkbox
                         onChange={handleChangeCheck}
-                        name="lucroP"
-                        checked={lucroP}
+                        name="comercio"
+                        checked={comercio}
                     >
-                        Lucro Presumido
+                        Comércio
                     </Checkbox>
                     <Checkbox
                         onChange={handleChangeCheck}
@@ -240,15 +245,39 @@ const AnaliseTForm = ({ ...props }) => {
                     >
                         Autonômo
                     </Checkbox>
+                    
+                    <Checkbox
+                        onChange={handleChangeCheck}
+                        name="industria"
+                        checked={industria}
+                    >
+                        Indústria
+                    </Checkbox>
+                    <Checkbox
+                        onChange={handleChangeCheck}
+                        name="lucroP"
+                        checked={lucroP}
+                    >
+                        Lucro Presumido
+                    </Checkbox>
+                    
+                    
                 </AnaliseTContainerCheckbox>
-
+                
+                <CheckBoxDetalharCard>
                 <Checkbox
                     onChange={handleChangeCheck}
                     name='cardDetalhado'
                     checked={cardDetalhado}
+                    
                 >
+                    <span style={{color: '#396600'}} >
                     Exibir card detalhado
+                    </span>
+                    
                 </Checkbox>
+                </CheckBoxDetalharCard>
+                
             </ConfigProvider>
 
             <Button

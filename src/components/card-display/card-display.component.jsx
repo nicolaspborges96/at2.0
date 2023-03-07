@@ -5,6 +5,8 @@ import { useState, useRef } from "react";
 import Card from "../card/card.component";
 import CardDetalhado from "../card-detalhado/card-detalhado";
 
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
+
 const CardDisplay = ({ ...props }) => {
     const {
         resultados,
@@ -34,6 +36,8 @@ const CardDisplay = ({ ...props }) => {
             {isCardShown === false ? (
                 <></>
             ) : (
+                <>
+
                 <CardContainer ref={CardsRef}>
                     {cardDetalhado === true ? (
                         <>
@@ -57,6 +61,8 @@ const CardDisplay = ({ ...props }) => {
                         </>
                     )}
                 </CardContainer>
+                </>
+                
             )}
         </>
     );
