@@ -67,7 +67,6 @@ const CardDetalhado = ({ ...props }) => {
 
     return (
         <CardDetalhadoBody key={key}>
-            {console.log(props.dados)}
             {titulo !== "LP" && titulo !== "autonomo" ? (
                 <>
                     {vencedor === titulo ? (

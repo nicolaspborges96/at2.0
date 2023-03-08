@@ -24,7 +24,7 @@ const calculaProlabore = (
     tipoTributario,
     cppDas
 ) => {
-    console.log(faturamentoMensal)
+    
     let proLabore = {
         valor: 1302,
         inss: 143.22,
@@ -100,8 +100,6 @@ const calculaAliquotaEfetiva = (
         }
     }
     
-
-    console.log(aliqEfetiva)
 
     return aliqEfetiva;
 };

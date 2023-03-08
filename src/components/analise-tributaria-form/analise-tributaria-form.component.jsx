@@ -67,7 +67,8 @@ const AnaliseTForm = ({ ...props }) => {
 
     const onChangeFuncionario = (e) => {
         const { name, value } = e.target;
-        setFormFields({ ...formFields, [name]: value, fopagMoeda: '' });
+        
+        setFormFields({ ...formFields, [name]: value, fopagMoeda: '', fopag: 0 });
     };
 
     const onChangeExterior = (e) => {
