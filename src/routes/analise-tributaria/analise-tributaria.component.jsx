@@ -6,6 +6,7 @@ import { useContext, useEffect } from 'react';
 import { CalculoContext } from '../../context/calculo.context';
 import ContainerBtnDetalhar from '../../components/container-btn-detalhar/container-btn-detalhar.component';
 import { useNavigate } from "react-router-dom";
+import ContabilidadeDisplay from '../../components/contabilidade-display/contabilidade-display.component';
 
 const AnaliseT = () => {
 
@@ -27,6 +28,7 @@ const AnaliseT = () => {
                 <AnaliseTForm  />
                 <ContainerBtnDetalhar />
                 <CardDisplay />
+                <ContabilidadeDisplay />
             </AnaliseTContainer>
 
             

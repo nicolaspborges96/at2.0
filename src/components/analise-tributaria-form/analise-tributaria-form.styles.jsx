@@ -98,7 +98,14 @@ export const CheckBoxDetalharCard = styled.div`
     border-radius: 5px;
     //border: 1px solid #c3c8ced4;
     //box-shadow: 0px 0px 10px 5px rgb(38 41 33 / 25%);
-    align-self: end;
-    
+    align-self: end; 
+
+`
+export const ContainerSwitch = styled.div`
+    margin-top: 1.5rem;
+
+    span {
+        margin-left: 0.5rem;
+    }
 
 `

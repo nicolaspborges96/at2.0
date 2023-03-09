@@ -2,12 +2,13 @@ import FormInput from "../../components/form-input/form-input.component";
 import Button, {
     BUTTON_TYPE_CLASSES,
 } from "../../components/button/button.component";
-import { ConfigProvider, Radio, Slider, Checkbox } from "antd";
+import { ConfigProvider, Radio, Slider, Checkbox, Switch } from "antd";
 import { useEffect, useState } from "react";
 import {
     AnaliseTContainerCheckbox,
     AnaliseTFormStyled,
     CheckBoxDetalharCard,
+    ContainerSwitch,
 } from "./analise-tributaria-form.styles";
 import { useContext } from "react";
 import { CalculoContext } from "../../context/calculo.context";
@@ -36,7 +37,8 @@ const defaultFormFields = {
     autonomo: false,
     cardDetalhado: false,
     anexoI: false,
-    anexoII: false
+    anexoII: false,
+    contabilidades: false
 };
 
 const slider = [2, 3, 4, 5];
@@ -59,7 +61,8 @@ const AnaliseTForm = ({ ...props }) => {
         autonomo,
         cardDetalhado,
         anexoI,
-        anexoII
+        anexoII,
+        contabilidades
     } = formFields;
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
@@ -90,6 +93,10 @@ const AnaliseTForm = ({ ...props }) => {
         const { name, checked } = event.target;
         setFormFields({ ...formFields, [name]: checked });
     };
+
+    const handleSwitchChange = (checked) => {
+        setFormFields({...formFields, contabilidades: checked})
+    }
 
     const handleChangeMoeda = (event) => {
         let { name, value } = event.target;
@@ -171,8 +178,8 @@ const AnaliseTForm = ({ ...props }) => {
                     label={"Qual o faturamento médio da empresa?"}
                     name="faturamentoMoeda"
                     value={faturamentoMoeda}
-                    width={'100%'}
-                    prefix={'R$'}
+                    width={"100%"}
+                    prefix={"R$"}
                     onChange={handleChangeMoeda}
                     onBlur={handleBlurInput}
                 />
@@ -180,7 +187,7 @@ const AnaliseTForm = ({ ...props }) => {
                     label={"Quantos sócios tem a empresa?"}
                     name="socios"
                     value={socios}
-                    width={'100%'}
+                    width={"100%"}
                     onChange={handleChange}
                 />
 
@@ -200,8 +207,8 @@ const AnaliseTForm = ({ ...props }) => {
                         label={"Valor da folha de pagamento (bruto):"}
                         name="fopagMoeda"
                         value={fopagMoeda}
-                        width={'40%'}
-                        prefix={'R$'}
+                        width={"40%"}
+                        prefix={"R$"}
                         onChange={handleChangeMoeda}
                         onBlur={handleBlurInputFopag}
                     />
@@ -272,7 +279,7 @@ const AnaliseTForm = ({ ...props }) => {
                     >
                         Autonômo
                     </Checkbox>
-                    
+
                     <Checkbox
                         onChange={handleChangeCheck}
                         name="anexoII"
@@ -287,22 +294,25 @@ const AnaliseTForm = ({ ...props }) => {
                     >
                         Lucro Presumido
                     </Checkbox>
-                    
-                    
                 </AnaliseTContainerCheckbox>
-                { compara ? (
+                {compara ? (
                     <TextContainer
-                    texto={
-                        "Não é correto comparar comércio, indústria e os demais(prestação de serviço), uma vez que são atividades diferentes!"
-                    }
-                    
-                />
+                        texto={
+                            "Não é correto comparar comércio, indústria e os demais(prestação de serviço), uma vez que são atividades diferentes!"
+                        }
+                    />
                 ) : (
                     <></>
-                )
-                
-                }
-                
+                )}
+                {anexoV ? (
+                    <ContainerSwitch>
+                        <Switch defaultChecked onChange={handleSwitchChange} name='contabilidades' />
+                        <span>Comparar com outras contabilidades</span>
+                        
+                    </ContainerSwitch>
+                ) : (
+                    <></>
+                )}
             </ConfigProvider>
 
             <Button

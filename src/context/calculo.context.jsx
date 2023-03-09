@@ -575,6 +575,23 @@ const calculaFolha = (dados, titulo) => {
     return folha;
 };
 
+const comparaContabilidade = (respostas) => {
+    let comparacao = null;
+    
+    for (let i = 0; i < respostas.length; i++) {
+        if (respostas[i].titulo === 'anexoVR') {
+            const { valor, irrf, inss, faturamento, titulo} = respostas[i];
+            const valorProLaboreDois = faturamento * 0.28;
+            const irrfDois = calculaIRRF(valorProLaboreDois);
+            const inssDois = valorProLaboreDois*0.11;
+
+            comparacao = { faturamento, valor, irrf, inss, valorProLaboreDois, irrfDois, inssDois }
+        }
+    }
+    
+    return comparacao;
+}
+
 export const CalculoContext = createContext({
     pegaInputECalcula: () => {},
     isCardShown: false,
@@ -582,8 +599,11 @@ export const CalculoContext = createContext({
     setVencedor: () => {},
     setFaturamentoMes: () => {},
     setCardDetalhado: () => {},
+    setComparacaoCont: () => {}
    
 });
+
+
 
 export const CalculoProvider = ({ children }) => {
     const [isCardShown, setCardShown] = useState(false);
@@ -593,6 +613,7 @@ export const CalculoProvider = ({ children }) => {
     const [detalhar, setDetalhar] = useState(false);
     const [faturamentoMes, setFaturamentoMes] = useState([]);
     const [cardDetalhado, setCardDetalhado] = useState(false);
+    const [comparacaoCont, setComparacaoCont] = useState(false);
     
 
     const pegaInputECalcula = (dados) => {
@@ -603,6 +624,9 @@ export const CalculoProvider = ({ children }) => {
         setResultados(output);
         const vencedor = verificaVencedor(output);
         setVencedor(vencedor);
+        const contabilidade = comparaContabilidade(output);
+        setComparacaoCont(contabilidade);
+        
         
 
         return;
@@ -621,7 +645,9 @@ export const CalculoProvider = ({ children }) => {
         faturamentoMes,
         setFaturamentoMes,
         cardDetalhado,
-        setCardDetalhado
+        setCardDetalhado,
+        comparacaoCont,
+        setComparacaoCont
         
     };
 
