@@ -37,7 +37,11 @@ export const CardSegment = styled.div`
     color: ${props => props.color};
     display: flex;
     justify-content: space-between;   
-    visibility: ${props => props.visibility} 
+    visibility: ${props => props.visibility};
+    border-top-left-radius: ${props => props.bdRadiusTopLeft};
+    border-top-right-radius: ${props => props.bdRadiusTopRight};
+    border-bottom-left-radius: ${props => props.bdRadiusBotLeft};
+    border-bottom-right-radius: ${props => props.bdRadiusBotRight};
 `;
 
 export const BlocoResultado = styled.div`

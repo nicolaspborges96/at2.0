@@ -38,7 +38,7 @@ const defaultFormFields = {
     cardDetalhado: false,
     anexoI: false,
     anexoII: false,
-    contabilidades: false
+    contabilidades: true
 };
 
 const slider = [2, 3, 4, 5];
@@ -306,7 +306,7 @@ const AnaliseTForm = ({ ...props }) => {
                 )}
                 {anexoV ? (
                     <ContainerSwitch>
-                        <Switch defaultChecked onChange={handleSwitchChange} name='contabilidades' />
+                        <Switch checked={contabilidades} onChange={handleSwitchChange} name='contabilidades' />
                         <span>Comparar com outras contabilidades</span>
                         
                     </ContainerSwitch>

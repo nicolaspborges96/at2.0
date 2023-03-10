@@ -19,6 +19,9 @@ const ContabilidadeCard = () => {
         inssDois,
     } = comparacaoCont;
 
+    const totalOutraCont = inssDois + irrfDois;
+    const totalContaJa = inss + irrf;
+
     function converteNumeroParaMoeda(number) {
         return Intl.NumberFormat("pt-Br", {
             style: "currency",
@@ -31,15 +34,23 @@ const ContabilidadeCard = () => {
         <ContCardBody className="asdasdasd">
             <ContainerContCardBloco>
                 <ContCardBloco>
-                    <CardSegment>
+                    <CardSegment
+                        style={{ display: "block" }}
+                        bgColor={"#ced4da66"}
+                        padding={"0.5rem"}
+                        textAlign={"center"}
+                        fontWeight={"600"}
+                        bdRadius={"0.3rem"}
+                        whiteSpace={"pre-line"}
+                    >
                         <span>Fator R outra contabilidade</span>
                     </CardSegment>
                     <CardSegment>
-                        <span>Prolabore:</span>
+                        <span>Pró-labore:</span>
                         {converteNumeroParaMoeda(valorProLaboreDois)}
                     </CardSegment>
                     <CardSegment>
-                        <span>Inss</span>
+                        <span>INSS</span>
                         {converteNumeroParaMoeda(inssDois)}
                     </CardSegment>
                     <CardSegment>
@@ -48,17 +59,28 @@ const ContabilidadeCard = () => {
                     </CardSegment>
                     <CardSegment>
                         <span>Total</span>
-                        {converteNumeroParaMoeda(inssDois + irrfDois)}
+                        {converteNumeroParaMoeda(totalOutraCont)}
                     </CardSegment>
                 </ContCardBloco>
                 <ContCardBloco>
-                    <span>Fator R ContaJá</span>
+                    <CardSegment
+                        style={{ display: "block" }}
+                        bgColor={"#78ce1980"}
+                        padding={"0.5rem"}
+                        textAlign={"center"}
+                        fontWeight={"600"}
+                        bdRadius={"0.3rem"}
+                        whiteSpace={"pre-line"}
+                    >
+                        <span>Fator R ContaJá</span>
+                    </CardSegment>
+
                     <CardSegment>
-                        <span>Prolabore:</span>
+                        <span>Pró-labore:</span>
                         {converteNumeroParaMoeda(valor)}
                     </CardSegment>
                     <CardSegment>
-                        <span>Inss</span>
+                        <span>INSS</span>
                         {converteNumeroParaMoeda(inss)}
                     </CardSegment>
                     <CardSegment>
@@ -67,12 +89,60 @@ const ContabilidadeCard = () => {
                     </CardSegment>
                     <CardSegment>
                         <span>Total</span>
-                        {converteNumeroParaMoeda(inss + irrf)}
+                        {converteNumeroParaMoeda(totalContaJa)}
                     </CardSegment>
                 </ContCardBloco>
             </ContainerContCardBloco>
-            <span> Economia com a ContaJá</span>
-            {converteNumeroParaMoeda(inssDois + irrfDois - (inss + irrf))}
+            <div style={{display: 'flex', flexDirection: 'column', margin: '0 0.2rem 0.5rem 0.2rem'}} >
+            <CardSegment
+                bgColor={"#396600"}
+                color={"#a5c017"}
+                margin={"0 auto 0.3rem"}
+                bdRadius={"0.3rem"}
+                width={"97%"}
+                fontSize={"0.9rem"}
+                textAlign={"center"}
+                fontWeight={"600"}
+                style={{justifyContent: 'flex-start'}}
+            >
+                <span style={{margin: '0 0 0 0.8rem'}} > Economia com a ContaJá </span>
+            </CardSegment>
+            <CardSegment
+                style={{ display: "flex", justifyContent: 'space-between', padding: '0 0.2rem 0 0.2rem' }}
+                bgColor={"#78ce1980"}
+                textAlign={"center"}
+                fontWeight={"600"}
+                bdRadiusTopLeft={'0.3rem'}
+                bdRadiusTopRight={'0.3rem'}
+                whiteSpace={"pre-line"}
+                margin={"0 auto "}
+                width={"97%"}
+            >
+                <span style={{margin: '0 0 0 0.8rem'}} > Mensal</span>
+                <span style={{margin: '0 0.8rem 0 0'}} >
+                {converteNumeroParaMoeda(totalOutraCont - totalContaJa)}
+                </span>
+                
+            </CardSegment>
+            <CardSegment
+                style={{ display: "flex", justifyContent: 'space-between', padding: '0 0.2rem 0 0.2rem' }}
+                bgColor={"#78ce1980"}
+                textAlign={"center"}
+                fontWeight={"600"}
+                bdRadiusBotLeft={'0.3rem'}
+                bdRadiusBotRight={'0.3rem'}
+                whiteSpace={"pre-line"}
+                margin={"0 auto "}
+                width={"97%"}
+            >
+                <span style={{margin: '0 0 0 0.8rem'}} > Anual</span>
+                <span style={{margin: '0 0.8rem 0 0'}} >
+                {converteNumeroParaMoeda((totalOutraCont - totalContaJa)*12)}
+                </span>
+                
+            </CardSegment>
+            </div>
+            
         </ContCardBody>
     );
 };

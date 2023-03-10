@@ -613,7 +613,8 @@ export const CalculoProvider = ({ children }) => {
     const [detalhar, setDetalhar] = useState(false);
     const [faturamentoMes, setFaturamentoMes] = useState([]);
     const [cardDetalhado, setCardDetalhado] = useState(false);
-    const [comparacaoCont, setComparacaoCont] = useState(false);
+    const [comparacaoCont, setComparacaoCont] = useState([]);
+    const [versusContabilidades, setVersusContabilidades] = useState(false);
     
 
     const pegaInputECalcula = (dados) => {
@@ -624,10 +625,9 @@ export const CalculoProvider = ({ children }) => {
         setResultados(output);
         const vencedor = verificaVencedor(output);
         setVencedor(vencedor);
+        setVersusContabilidades(dados.contabilidades)
         const contabilidade = comparaContabilidade(output);
         setComparacaoCont(contabilidade);
-        
-        
 
         return;
     };
@@ -647,7 +647,9 @@ export const CalculoProvider = ({ children }) => {
         cardDetalhado,
         setCardDetalhado,
         comparacaoCont,
-        setComparacaoCont
+        setComparacaoCont,
+        versusContabilidades,
+        setVersusContabilidades
         
     };
 
