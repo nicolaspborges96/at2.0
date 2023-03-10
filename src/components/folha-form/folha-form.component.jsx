@@ -1,4 +1,5 @@
 import {
+    ContainerSwitchFolha,
     FolhaContainerBody,
     FormFolha,
     LabelFormFolha,
@@ -11,6 +12,9 @@ import Button, {
 import { useState, useContext } from "react";
 import { CalculoContext } from "../../context/calculo.context";
 import { Radio, ConfigProvider, Checkbox } from "antd";
+
+import { Switch } from "antd";
+import { useEffect } from "react";
 
 const defaultFormFields = {
     folha: true,
@@ -36,6 +40,9 @@ const defaultFormFields = {
     valeAlimentacaoMoeda: "",
     valeTransporteMoeda: "",
     beneficiosMoeda: "",
+    moduloProlabore: false,
+    valorProlabore: "",
+    valorProlaboreMoeda: ""
 };
 
 const FolhaForm = () => {
@@ -54,6 +61,9 @@ const FolhaForm = () => {
         valeAlimentacaoMoeda,
         valeTransporteMoeda,
         beneficiosMoeda,
+        moduloProlabore,
+        valorProlabore,
+        valorProlaboreMoeda
     } = formFields;
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
     const [value, setValue] = useState(3);
@@ -61,14 +71,15 @@ const FolhaForm = () => {
     const onSubmitForm = (ev) => {
         ev.preventDefault();
         pegaInputECalcula(formFields);
+        
         setScroll(true);
     };
 
     function removerFormatacaoMoeda(valor) {
         let value = valor;
-        let numero = value.replace(/[.]/g,"");
-        let numeroLimpo = numero.replace(',','.');
-        
+        let numero = value.replace(/[.]/g, "");
+        let numeroLimpo = numero.replace(",", ".");
+
         return numeroLimpo;
     }
 
@@ -79,24 +90,31 @@ const FolhaForm = () => {
         value = value.replace(/(?=(\d{3})+(\D))\B/g, ".");
         const nomeSemMoeda = name.replace("Moeda", "");
 
-        
-        setFormFields({ ...formFields, [name]: value, [nomeSemMoeda]:value });
+        setFormFields({ ...formFields, [name]: value, [nomeSemMoeda]: value });
     };
 
     const handleBlurInput = (event) => {
         const { name, value } = event.target;
         const valorCru = removerFormatacaoMoeda(value);
         const nomeSemMoeda = name.replace("Moeda", "");
-        setFormFields({...formFields, [nomeSemMoeda]: valorCru});
-    }
+        setFormFields({ ...formFields, [nomeSemMoeda]: valorCru });
+        console.log(valorProlabore)
+    };
 
-    
+    const handleSwitchChange = (checked) => {
+        if(checked) {
+            setFormFields({ ...formFields, moduloProlabore: checked });
+        } else {
+            setFormFields({ ...formFields, moduloProlabore: checked, valorProlaboreMoeda: '', valorProlabore: '' });
+            console.log(valorProlabore)
+        }
+    };
 
     const handleChangeCheck = (event) => {
         const { name, checked } = event.target;
 
         setFormFields({ ...formFields, [name]: checked });
-    };  
+    };
 
     const handleRadioChange = (event) => {
         const { name, value } = event.target;
@@ -128,6 +146,8 @@ const FolhaForm = () => {
         }
     };
 
+    
+
     return (
         <FolhaContainerBody>
             <ConfigProvider
@@ -135,24 +155,23 @@ const FolhaForm = () => {
                     token: {
                         colorPrimary: "#396600",
                         fontFamily: "Poppins, sans-serif",
-                        fontSize: "0.9rem",
+                        //fontSize: "0.9rem",
                     },
                 }}
             >
                 <FormFolha onSubmit={onSubmitForm}>
                     <FormInput
-                        
                         label={"Salário PJ (bruto):"}
                         name="faturamentoMoeda"
                         value={faturamentoMoeda}
                         onChange={handleChangeMoeda}
                         onBlur={handleBlurInput}
-                        width={'100%'}
-                        prefix={'R$'}
+                        width={"100%"}
+                        prefix={"R$"}
                     />
                     <FormInput
-                        width={'100%'}
-                        prefix={'R$'}
+                        width={"100%"}
+                        prefix={"R$"}
                         label={"Salário CLT (bruto):"}
                         name="salarioMoeda"
                         value={salarioMoeda}
@@ -161,8 +180,8 @@ const FolhaForm = () => {
                     />
 
                     <FormInput
-                        width={'100%'}
-                        prefix={'R$'}
+                        width={"100%"}
+                        prefix={"R$"}
                         name="planoSaudeMoeda"
                         value={planoSaudeMoeda}
                         label={"Plano de saúde:"}
@@ -170,8 +189,8 @@ const FolhaForm = () => {
                         onBlur={handleBlurInput}
                     />
                     <FormInput
-                        width={'100%'}
-                        prefix={'R$'}
+                        width={"100%"}
+                        prefix={"R$"}
                         name="valeAlimentacaoMoeda"
                         value={valeAlimentacaoMoeda}
                         label={"Vale-refeição/alimentação:"}
@@ -179,8 +198,8 @@ const FolhaForm = () => {
                         onBlur={handleBlurInput}
                     />
                     <FormInput
-                        width={'100%'}
-                        prefix={'R$'}
+                        width={"100%"}
+                        prefix={"R$"}
                         name="valeTransporteMoeda"
                         value={valeTransporteMoeda}
                         label={"Vale-transporte:"}
@@ -188,8 +207,8 @@ const FolhaForm = () => {
                         onBlur={handleBlurInput}
                     />
                     <FormInput
-                        width={'100%'}
-                        prefix={'R$'}
+                        width={"100%"}
+                        prefix={"R$"}
                         name="beneficiosMoeda"
                         value={beneficiosMoeda}
                         label={"Outros benefícios:"}
@@ -224,6 +243,31 @@ const FolhaForm = () => {
                         {" "}
                         Exibir versão detalhada
                     </Checkbox>
+
+                    
+                        <ContainerSwitchFolha >
+                            <Switch
+                                checked={moduloProlabore}
+                                onChange={handleSwitchChange}
+                                name="moduloProlabore"
+                            />
+                            <span>Módulo cálculo de pró-labore</span>
+                        </ContainerSwitchFolha>
+                    
+
+                    {moduloProlabore ? (
+                        <FormInput
+                            width={"100%"}
+                            prefix={"R$"}
+                            name="valorProlaboreMoeda"
+                            value={valorProlaboreMoeda}
+                            label={"Valor Pró-labore:"}
+                            onChange={handleChangeMoeda}
+                            onBlur={handleBlurInput}
+                        />
+                    ) : (
+                        <></>
+                    )}
                 </FormFolha>
 
                 <Button
@@ -231,7 +275,7 @@ const FolhaForm = () => {
                     type="submit"
                     buttonStyle={BUTTON_TYPE_CLASSES.svg}
                     border={"1px solid #396600"}
-                    margin={"1.5rem auto 0"}
+                    margin={"1rem auto 0"}
                     bgColor={"#ffffff"}
                     width={"200px"}
                     hover={"border: 1px solid #a5c017; color:#396600"}

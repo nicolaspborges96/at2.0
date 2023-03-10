@@ -39,8 +39,20 @@ export const FormFolha = styled.form`
 `;
 
 export const LabelFormFolha = styled.label`
-    margin: 0 auto;
+    //margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+
+`
+export const ContainerSwitchFolha = styled.div`
+    margin-top: 0.5rem;
+
+    span {
+        margin-left: 0.5rem;
+    }
+
+    @media (min-width: 900px) {
+        margin-top: 2rem;
+    }
 
 `

@@ -6,7 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { Fragment } from "react";
 
 const FolhaDisplay = ({ ...props }) => {
-    const { resultados, isCardShown, scroll } = useContext(CalculoContext);
+    const { resultados, isCardShown, scroll, valorProLaboreAvulso } = useContext(CalculoContext);
 
     const CardsRef = useRef(null);
 
@@ -22,6 +22,9 @@ const FolhaDisplay = ({ ...props }) => {
         <>
             {isCardShown ? (
                 <FolhaDisplayContainer ref={CardsRef}>
+                    {
+                        console.log(valorProLaboreAvulso)
+                    }
                     {resultados.map((resultado, index) => (
                         <Fragment key={index}>
                             {resultado.titulo === "anexoV" ? (
@@ -31,6 +34,9 @@ const FolhaDisplay = ({ ...props }) => {
                             )}
                         </Fragment>
                     ))}
+                    <>
+                                
+                    </>
                 </FolhaDisplayContainer>
             ) : (
                 <></>

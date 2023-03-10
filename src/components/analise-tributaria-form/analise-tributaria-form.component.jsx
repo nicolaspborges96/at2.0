@@ -305,7 +305,7 @@ const AnaliseTForm = ({ ...props }) => {
                     <></>
                 )}
                 {anexoV ? (
-                    <ContainerSwitch>
+                    <ContainerSwitch marginTop={'1.5rem'} >
                         <Switch checked={comparacaoContabilidades} onChange={handleSwitchChange} name='comparacaoContabilidades' />
                         <span>Comparar com outras contabilidades</span>
                         

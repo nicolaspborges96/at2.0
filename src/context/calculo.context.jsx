@@ -24,13 +24,12 @@ const calculaProlabore = (
     tipoTributario,
     cppDas
 ) => {
-    
     let proLabore = {
         valor: 1302,
         inss: 143.22,
         irrf: 0,
         patronal: 0,
-        fgtsFatorR: 0
+        fgtsFatorR: 0,
     };
 
     if (tipoTributario === "anexoVR") {
@@ -99,7 +98,6 @@ const calculaAliquotaEfetiva = (
             aliqEfetiva = (fatDoze * aliqNominal - deducao) / fatDoze;
         }
     }
-    
 
     return aliqEfetiva;
 };
@@ -237,8 +235,9 @@ const calculaFatorR = (
         aliquotaFinal,
         socios,
         aliquotaNominal,
-        cppDas, fgtsFatorR,
-        folhaFuncionario
+        cppDas,
+        fgtsFatorR,
+        folhaFuncionario,
     };
 };
 
@@ -474,8 +473,6 @@ const gerenciaCalculo = (dados) => {
     return respostas;
 };
 
-
-
 const verificaVencedor = (respostas) => {
     let melhorOp = "";
 
@@ -577,31 +574,67 @@ const calculaFolha = (dados, titulo) => {
 
 const comparaContabilidade = (respostas) => {
     let comparacao = false;
-    
-    for (let i = 0; i < respostas.length; i++) {
-        if (respostas[i].titulo === 'anexoVR') {
-            console.log(respostas[i])
-            const { valor, irrf, inss, faturamento, titulo, folhaFuncionario, fgtsFatorR } = respostas[i];
-            const valorProLaboreDois = (faturamento * 0.28) - folhaFuncionario - fgtsFatorR;
-            const irrfDois = calculaIRRF(valorProLaboreDois);
-            const inssDois = valorProLaboreDois*0.11;
 
-            comparacao = { faturamento, valor, irrf, inss, valorProLaboreDois, irrfDois, inssDois }
+    for (let i = 0; i < respostas.length; i++) {
+        if (respostas[i].titulo === "anexoVR") {
+            console.log(respostas[i]);
+            const {
+                valor,
+                irrf,
+                inss,
+                faturamento,
+                titulo,
+                folhaFuncionario,
+                fgtsFatorR,
+            } = respostas[i];
+            const valorProLaboreDois =
+                faturamento * 0.28 - folhaFuncionario - fgtsFatorR;
+            const irrfDois = calculaIRRF(valorProLaboreDois);
+            const inssDois = valorProLaboreDois * 0.11;
+
+            comparacao = {
+                faturamento,
+                valor,
+                irrf,
+                inss,
+                valorProLaboreDois,
+                irrfDois,
+                inssDois,
+            };
         }
     }
-    
+
     return comparacao;
-}
+};
 
-const verificaOpcaoComparacaoContabilidade = (output, comparacaoDeContabilidades) => {
-    
-    for( let i = 0; i < output.length; i++) {
-        if (output[i].titulo === 'anexoVR' && comparacaoDeContabilidades !== false) {
+const verificaOpcaoComparacaoContabilidade = (
+    output,
+    comparacaoDeContabilidades
+) => {
+    for (let i = 0; i < output.length; i++) {
+        if (
+            output[i].titulo === "anexoVR" &&
+            comparacaoDeContabilidades !== false
+        ) {
             return true;
-
         }
-    } 
+    }
     return false;
+};
+
+const retornaProlaboreAvulso = (valor, anexoIV) => {
+    const proLaboreAvulso =  valor;
+    const inssProLaboreAvulso = proLaboreAvulso*0.11;
+    const irrfProLaboreAvulso = calculaIRRF(proLaboreAvulso);
+    let patronalProLaboreAvulso = 0;
+    
+    if (anexoIV) {
+       patronalProLaboreAvulso = proLaboreAvulso*0.2
+    }
+
+    const totalProlaboreAvulso = { proLaboreAvulso, inssProLaboreAvulso, irrfProLaboreAvulso, patronalProLaboreAvulso }
+
+    return totalProlaboreAvulso;
 }
 
 export const CalculoContext = createContext({
@@ -611,11 +644,9 @@ export const CalculoContext = createContext({
     setVencedor: () => {},
     setFaturamentoMes: () => {},
     setCardDetalhado: () => {},
-    setComparacaoCont: () => {}
-   
+    setComparacaoCont: () => {},
+    setValorProlaboreAvulso: () => {}
 });
-
-
 
 export const CalculoProvider = ({ children }) => {
     const [isCardShown, setCardShown] = useState(false);
@@ -625,12 +656,16 @@ export const CalculoProvider = ({ children }) => {
     const [detalhar, setDetalhar] = useState(false);
     const [faturamentoMes, setFaturamentoMes] = useState([]);
     const [cardDetalhado, setCardDetalhado] = useState(false);
-    const [enableContabilidadeComparison, setEnableContabilidadeComparison ] = useState(false);
-    const [dadosComparacaoContabilidades, setDadosComparacaoContabilidades] = useState([]);
-    
-    
+    const [enableContabilidadeComparison, setEnableContabilidadeComparison] =
+        useState(false);
+    const [dadosComparacaoContabilidades, setDadosComparacaoContabilidades] =
+        useState([]);
+    const [confirmaProLaboreAvulso, setConfirmaProLaboreAvulso] =
+        useState(false);
+    const [valorProlaboreAvulso, setValorProlaboreAvulso] = useState([]);
 
     const pegaInputECalcula = (dados) => {
+        
         setCardShown(true);
         setDetalhar(dados.detalhar);
         setCardDetalhado(dados.cardDetalhado);
@@ -638,12 +673,19 @@ export const CalculoProvider = ({ children }) => {
         setResultados(output);
         const vencedor = verificaVencedor(output);
         setVencedor(vencedor);
-        const querCompararContabilidade = verificaOpcaoComparacaoContabilidade(output, dados.comparacaoContabilidades);
-        
-        setEnableContabilidadeComparison(querCompararContabilidade);
-        setDadosComparacaoContabilidades(comparaContabilidade(output))
-        
+        const querCompararContabilidade = verificaOpcaoComparacaoContabilidade(
+            output,
+            dados.comparacaoContabilidades
+        );
 
+        setEnableContabilidadeComparison(querCompararContabilidade);
+        setDadosComparacaoContabilidades(comparaContabilidade(output));
+        setConfirmaProLaboreAvulso(dados.moduloProlabore);
+        const retornoProLaboreAvulso = retornaProlaboreAvulso(dados.valorProlabore, dados.anexoIV);
+        
+        setValorProlaboreAvulso(retornoProLaboreAvulso);
+        console.log(valorProlaboreAvulso)
+            
         return;
     };
 
@@ -662,9 +704,9 @@ export const CalculoProvider = ({ children }) => {
         cardDetalhado,
         setCardDetalhado,
         enableContabilidadeComparison,
-        dadosComparacaoContabilidades
-        
-        
+        dadosComparacaoContabilidades,
+        valorProlaboreAvulso,
+
     };
 
     return (

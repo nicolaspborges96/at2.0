@@ -7,6 +7,7 @@ export const Group =styled.div`
     width: ${props => props.width};
     margin-bottom: 0.3rem;
     font-size: 0.9rem;
+    visibility: ${props => props.visibility};
 
     @media (max-width: 900px) {
         width: 100%;

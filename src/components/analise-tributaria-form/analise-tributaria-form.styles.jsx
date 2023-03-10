@@ -102,7 +102,7 @@ export const CheckBoxDetalharCard = styled.div`
 
 `
 export const ContainerSwitch = styled.div`
-    margin-top: 1.5rem;
+    margin-top: ${props => props.marginTop};
 
     span {
         margin-left: 0.5rem;
