@@ -580,8 +580,9 @@ const comparaContabilidade = (respostas) => {
     
     for (let i = 0; i < respostas.length; i++) {
         if (respostas[i].titulo === 'anexoVR') {
-            const { valor, irrf, inss, faturamento, titulo} = respostas[i];
-            const valorProLaboreDois = faturamento * 0.28;
+            console.log(respostas[i])
+            const { valor, irrf, inss, faturamento, titulo, folhaFuncionario, fgtsFatorR } = respostas[i];
+            const valorProLaboreDois = (faturamento * 0.28) - folhaFuncionario - fgtsFatorR;
             const irrfDois = calculaIRRF(valorProLaboreDois);
             const inssDois = valorProLaboreDois*0.11;
 
