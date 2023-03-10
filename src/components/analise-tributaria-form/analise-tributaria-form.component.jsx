@@ -38,7 +38,7 @@ const defaultFormFields = {
     cardDetalhado: false,
     anexoI: false,
     anexoII: false,
-    contabilidades: true
+    comparacaoContabilidades: true
 };
 
 const slider = [2, 3, 4, 5];
@@ -62,7 +62,7 @@ const AnaliseTForm = ({ ...props }) => {
         cardDetalhado,
         anexoI,
         anexoII,
-        contabilidades
+        comparacaoContabilidades
     } = formFields;
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
     const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
@@ -95,7 +95,7 @@ const AnaliseTForm = ({ ...props }) => {
     };
 
     const handleSwitchChange = (checked) => {
-        setFormFields({...formFields, contabilidades: checked})
+        setFormFields({...formFields, comparacaoContabilidades: checked})
     }
 
     const handleChangeMoeda = (event) => {
@@ -306,7 +306,7 @@ const AnaliseTForm = ({ ...props }) => {
                 )}
                 {anexoV ? (
                     <ContainerSwitch>
-                        <Switch checked={contabilidades} onChange={handleSwitchChange} name='contabilidades' />
+                        <Switch checked={comparacaoContabilidades} onChange={handleSwitchChange} name='comparacaoContabilidades' />
                         <span>Comparar com outras contabilidades</span>
                         
                     </ContainerSwitch>

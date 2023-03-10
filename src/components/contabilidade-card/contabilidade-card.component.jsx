@@ -8,7 +8,7 @@ import {
 } from "./contabilidade.card.styles";
 
 const ContabilidadeCard = () => {
-    const { comparacaoCont } = useContext(CalculoContext);
+    const { dadosComparacaoContabilidades } = useContext(CalculoContext);
     const {
         faturamento,
         valor,
@@ -17,7 +17,7 @@ const ContabilidadeCard = () => {
         valorProLaboreDois,
         irrfDois,
         inssDois,
-    } = comparacaoCont;
+    } = dadosComparacaoContabilidades;
 
     const totalOutraCont = inssDois + irrfDois;
     const totalContaJa = inss + irrf;

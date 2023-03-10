@@ -60,7 +60,6 @@ const FolhaForm = () => {
 
     const onSubmitForm = (ev) => {
         ev.preventDefault();
-        console.log(formFields);
         pegaInputECalcula(formFields);
         setScroll(true);
     };
@@ -88,7 +87,6 @@ const FolhaForm = () => {
         const { name, value } = event.target;
         const valorCru = removerFormatacaoMoeda(value);
         const nomeSemMoeda = name.replace("Moeda", "");
-        console.log(valorCru)
         setFormFields({...formFields, [nomeSemMoeda]: valorCru});
     }
 

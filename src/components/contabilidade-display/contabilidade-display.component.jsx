@@ -6,15 +6,15 @@ import { ComparacaoCardContainer } from "./contabilidade-display.styles";
 
 const ContabilidadeDisplay = ({...props}) => {
 
-    const { versusContabilidades } = useContext(CalculoContext);
-
+    const { isCardShown, enableContabilidadeComparison } = useContext(CalculoContext);
+    
     return (
         <>  
         {
-            
-            versusContabilidades ? (
+                     
+            enableContabilidadeComparison&&isCardShown ? (
                 <>
-                    <ComparacaoCardContainer className="alou" >
+                    <ComparacaoCardContainer >
                         <ContabilidadeCard />
                     </ComparacaoCardContainer>
                 

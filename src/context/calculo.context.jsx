@@ -576,7 +576,7 @@ const calculaFolha = (dados, titulo) => {
 };
 
 const comparaContabilidade = (respostas) => {
-    let comparacao = null;
+    let comparacao = false;
     
     for (let i = 0; i < respostas.length; i++) {
         if (respostas[i].titulo === 'anexoVR') {
@@ -590,6 +590,17 @@ const comparaContabilidade = (respostas) => {
     }
     
     return comparacao;
+}
+
+const verificaOpcaoComparacaoContabilidade = (output, comparacaoDeContabilidades) => {
+    
+    for( let i = 0; i < output.length; i++) {
+        if (output[i].titulo === 'anexoVR' && comparacaoDeContabilidades !== false) {
+            return true;
+
+        }
+    } 
+    return false;
 }
 
 export const CalculoContext = createContext({
@@ -613,8 +624,9 @@ export const CalculoProvider = ({ children }) => {
     const [detalhar, setDetalhar] = useState(false);
     const [faturamentoMes, setFaturamentoMes] = useState([]);
     const [cardDetalhado, setCardDetalhado] = useState(false);
-    const [comparacaoCont, setComparacaoCont] = useState([]);
-    const [versusContabilidades, setVersusContabilidades] = useState(false);
+    const [enableContabilidadeComparison, setEnableContabilidadeComparison ] = useState(false);
+    const [dadosComparacaoContabilidades, setDadosComparacaoContabilidades] = useState([]);
+    
     
 
     const pegaInputECalcula = (dados) => {
@@ -625,9 +637,11 @@ export const CalculoProvider = ({ children }) => {
         setResultados(output);
         const vencedor = verificaVencedor(output);
         setVencedor(vencedor);
-        setVersusContabilidades(dados.contabilidades)
-        const contabilidade = comparaContabilidade(output);
-        setComparacaoCont(contabilidade);
+        const querCompararContabilidade = verificaOpcaoComparacaoContabilidade(output, dados.comparacaoContabilidades);
+        
+        setEnableContabilidadeComparison(querCompararContabilidade);
+        setDadosComparacaoContabilidades(comparaContabilidade(output))
+        
 
         return;
     };
@@ -646,10 +660,9 @@ export const CalculoProvider = ({ children }) => {
         setFaturamentoMes,
         cardDetalhado,
         setCardDetalhado,
-        comparacaoCont,
-        setComparacaoCont,
-        versusContabilidades,
-        setVersusContabilidades
+        enableContabilidadeComparison,
+        dadosComparacaoContabilidades
+        
         
     };
 

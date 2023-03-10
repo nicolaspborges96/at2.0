@@ -34,9 +34,9 @@ const FolhaCard = ({ ...props }) => {
 
     const TITULOS = {
         anexoIII: `Simples Nacional \n Anexo III`,
-        anexoIV: "Anexo IV",
-        anexoV: "Anexo V",
-        anexoVR: "Anexo V Fator R",
+        anexoIV: `Simples Nacional \n Anexo IV`,
+        anexoV: `Simples Nacional \n Anexo V`,
+        anexoVR: `Simples Nacional \n Anexo V Fator R`,
         LP: "Lucro Presumido",
         autonomo: "Autonômo",
     };
@@ -206,6 +206,14 @@ const FolhaCard = ({ ...props }) => {
                                 <span>(-) INSS</span>
                                 {converteNumeroParaMoeda(inss)}
                             </CardSegment>
+                            {patronal ? (
+                                <CardSegment color={"#ac0202"}>
+                                    <span>(-) Patronal</span>{" "}
+                                    {converteNumeroParaMoeda(patronal)}
+                                </CardSegment>
+                            ) : (
+                                <></>
+                            )}
                             <CardSegment color={"#ac0202"}>
                                 <span>(-) IRRF</span>
                                 {converteNumeroParaMoeda(irrf)}
