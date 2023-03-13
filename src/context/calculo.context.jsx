@@ -577,7 +577,6 @@ const comparaContabilidade = (respostas) => {
 
     for (let i = 0; i < respostas.length; i++) {
         if (respostas[i].titulo === "anexoVR") {
-            console.log(respostas[i]);
             const {
                 valor,
                 irrf,
@@ -690,7 +689,6 @@ export const CalculoProvider = ({ children }) => {
         setConfirmaProLaboreAvulso(dados.moduloProlabore);
         setValorProlaboreAvulso(retornoProLaboreAvulso);
         setCardShown(true);
-        console.log(retornoProLaboreAvulso)
 
         return;
     };

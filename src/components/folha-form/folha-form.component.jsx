@@ -70,7 +70,6 @@ const FolhaForm = () => {
 
     const onSubmitForm = (ev) => {
         ev.preventDefault();
-        console.log(formFields)
         pegaInputECalcula(formFields);
         
         setScroll(true);

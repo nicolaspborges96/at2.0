@@ -44,7 +44,6 @@ const IcForm = () => {
     const handleBlurInput = (event) => {
         const { value } = event.target;
         const valorCru = removerFormatacaoMoeda(value);
-        console.log(valorCru)
         setFormFields({...formFields, faturamento: valorCru});
     }
 

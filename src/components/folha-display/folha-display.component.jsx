@@ -42,7 +42,6 @@ const FolhaDisplay = ({ ...props }) => {
                     {confirmaProLaboreAvulso ? (
                     <CardProlabore dados={valorProlaboreAvulso} />) : (
                     <></>)}
-                    {console.log(confirmaProLaboreAvulso)}
                     </>
                 </FolhaDisplayContainer>
             ) : (
