@@ -623,19 +623,24 @@ const verificaOpcaoComparacaoContabilidade = (
 };
 
 const retornaProlaboreAvulso = (valor, anexoIV) => {
-    const proLaboreAvulso =  valor;
-    const inssProLaboreAvulso = proLaboreAvulso*0.11;
+    const proLaboreAvulso = valor;
+    const inssProLaboreAvulso = proLaboreAvulso * 0.11;
     const irrfProLaboreAvulso = calculaIRRF(proLaboreAvulso);
     let patronalProLaboreAvulso = 0;
-    
+
     if (anexoIV) {
-       patronalProLaboreAvulso = proLaboreAvulso*0.2
+        patronalProLaboreAvulso = proLaboreAvulso * 0.2;
     }
 
-    const totalProlaboreAvulso = { proLaboreAvulso, inssProLaboreAvulso, irrfProLaboreAvulso, patronalProLaboreAvulso }
+    const totalProlaboreAvulso = {
+        proLaboreAvulso,
+        inssProLaboreAvulso,
+        irrfProLaboreAvulso,
+        patronalProLaboreAvulso,
+    };
 
     return totalProlaboreAvulso;
-}
+};
 
 export const CalculoContext = createContext({
     pegaInputECalcula: () => {},
@@ -645,7 +650,7 @@ export const CalculoContext = createContext({
     setFaturamentoMes: () => {},
     setCardDetalhado: () => {},
     setComparacaoCont: () => {},
-    setValorProlaboreAvulso: () => {}
+    setValorProlaboreAvulso: () => {},
 });
 
 export const CalculoProvider = ({ children }) => {
@@ -662,30 +667,31 @@ export const CalculoProvider = ({ children }) => {
         useState([]);
     const [confirmaProLaboreAvulso, setConfirmaProLaboreAvulso] =
         useState(false);
-    const [valorProlaboreAvulso, setValorProlaboreAvulso] = useState([]);
+    const [valorProlaboreAvulso, setValorProlaboreAvulso] = useState({});
 
     const pegaInputECalcula = (dados) => {
         
-        setCardShown(true);
         setDetalhar(dados.detalhar);
         setCardDetalhado(dados.cardDetalhado);
         const output = gerenciaCalculo(dados);
         setResultados(output);
         const vencedor = verificaVencedor(output);
         setVencedor(vencedor);
+        const retornoProLaboreAvulso = retornaProlaboreAvulso(
+            dados.valorProlabore,
+            dados.anexoIV
+        );
         const querCompararContabilidade = verificaOpcaoComparacaoContabilidade(
             output,
             dados.comparacaoContabilidades
         );
-
         setEnableContabilidadeComparison(querCompararContabilidade);
         setDadosComparacaoContabilidades(comparaContabilidade(output));
         setConfirmaProLaboreAvulso(dados.moduloProlabore);
-        const retornoProLaboreAvulso = retornaProlaboreAvulso(dados.valorProlabore, dados.anexoIV);
-        
         setValorProlaboreAvulso(retornoProLaboreAvulso);
-        console.log(valorProlaboreAvulso)
-            
+        setCardShown(true);
+        console.log(retornoProLaboreAvulso)
+
         return;
     };
 
@@ -706,7 +712,7 @@ export const CalculoProvider = ({ children }) => {
         enableContabilidadeComparison,
         dadosComparacaoContabilidades,
         valorProlaboreAvulso,
-
+        confirmaProLaboreAvulso
     };
 
     return (
