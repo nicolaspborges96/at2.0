@@ -623,7 +623,16 @@ const verificaOpcaoComparacaoContabilidade = (
 
 const retornaProlaboreAvulso = (valor, anexoIV) => {
     const proLaboreAvulso = valor;
-    const inssProLaboreAvulso = proLaboreAvulso * 0.11;
+    const tetoInss = 7507.49;
+    let inssProLaboreAvulso
+
+    if (proLaboreAvulso > tetoInss) {
+        inssProLaboreAvulso = 825.82;
+    } else {
+        inssProLaboreAvulso = proLaboreAvulso * 0.11;
+    }
+
+     
     const irrfProLaboreAvulso = calculaIRRF(proLaboreAvulso);
     let patronalProLaboreAvulso = 0;
 
