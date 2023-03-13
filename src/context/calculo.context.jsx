@@ -14,6 +14,10 @@ const calculaIRRF = (baseDeCalculoIR) => {
     }
     irrf = parseFloat(irrf.toFixed(2));
 
+    if(irrf <= 10) {
+        irrf = 0;
+    }
+
     return irrf;
 };
 
@@ -573,7 +577,6 @@ const calculaFolha = (dados, titulo) => {
 };
 
 const comparaContabilidade = (respostas) => {
-    console.log(respostas);
     let comparacao = false;
 
     for (let i = 0; i < respostas.length; i++) {

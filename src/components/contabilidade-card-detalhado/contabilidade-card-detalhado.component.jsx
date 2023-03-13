@@ -5,9 +5,9 @@ import {
     ContainerContCardBloco,
     ContCardBloco,
     ContCardBody,
-} from "./contabilidade.card.styles";
+} from "../contabilidade-card/contabilidade.card.styles";
 
-const ContabilidadeCard = () => {
+const ContabilidadeCardDetalhado = () => {
     const { dadosComparacaoContabilidades, detalhar } =
         useContext(CalculoContext);
     const {
@@ -49,20 +49,32 @@ const ContabilidadeCard = () => {
                     >
                         <span>Fator R outra contabilidade</span>
                     </CardSegment>
+                    <CardSegment style={{display: 'block'}} 
+                    padding={"0.5rem"}
+                    textAlign={"center"}
+                    fontWeight={"600"}
+                    bdRadius={"0.3rem"}
+                    whiteSpace={"pre-line"}>
+                        <span> Valores por sócio</span>
+                    </CardSegment>
                     <CardSegment>
                         <span>
-                            Pró-labore {socios > 1 ? (<span>por sócio</span>): (<></>)}
+                            Pró-labore
                         </span>
                         {converteNumeroParaMoeda(valorProLaboreDois)}
                     </CardSegment>
 
                     <CardSegment>
                         <span>INSS</span>
-                        {converteNumeroParaMoeda(inssDois)}
+                        {converteNumeroParaMoeda(inssDois/socios)}
                     </CardSegment>
                     <CardSegment>
                         <span>IRRF</span>
-                        {converteNumeroParaMoeda(irrfDois)}
+                        {converteNumeroParaMoeda(irrfDois/socios)}
+                    </CardSegment>
+                    <CardSegment>
+                        <span>Sócios</span>
+                        {socios}
                     </CardSegment>
                     <CardSegment>
                         <span>Total</span>
@@ -83,9 +95,7 @@ const ContabilidadeCard = () => {
                     </CardSegment>
 
                     <CardSegment>
-                    <span>
-                            Pró-labore {socios > 1 ? (<span>por sócio</span>): (<></>)}
-                        </span>
+                        <span>Pró-labore</span>
                         {converteNumeroParaMoeda(valor)}
                     </CardSegment>
 
@@ -171,4 +181,4 @@ const ContabilidadeCard = () => {
     );
 };
 
-export default ContabilidadeCard;
+export default ContabilidadeCardDetalhado;
