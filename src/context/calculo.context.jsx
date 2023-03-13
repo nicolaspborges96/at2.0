@@ -573,6 +573,7 @@ const calculaFolha = (dados, titulo) => {
 };
 
 const comparaContabilidade = (respostas) => {
+    console.log(respostas);
     let comparacao = false;
 
     for (let i = 0; i < respostas.length; i++) {
@@ -585,12 +586,43 @@ const comparaContabilidade = (respostas) => {
                 titulo,
                 folhaFuncionario,
                 fgtsFatorR,
+                socios,
             } = respostas[i];
-            const valorProLaboreDois =
-                faturamento * 0.28 - folhaFuncionario - fgtsFatorR;
-            const irrfDois = calculaIRRF(valorProLaboreDois);
-            const inssDois = valorProLaboreDois * 0.11;
 
+            let valorProLaboreDois;
+            let irrfDois;
+            let inssDois;
+
+            let fatorR = (faturamento * 0.28 ).toFixed(2);
+            let baseDeCalculoIR;
+            let tetoInss = 7507.49;
+
+            if (folhaFuncionario > 0) {
+                fatorR = fatorR - folhaFuncionario - fgtsFatorR;
+            }
+            if (fatorR / socios < 1302) {
+                valorProLaboreDois = 1302;
+            } else {
+                valorProLaboreDois = fatorR / socios;
+            }
+
+            if (valorProLaboreDois > tetoInss) {
+                inssDois = 825.82;
+            } else {
+                inssDois = valorProLaboreDois * 0.11;
+            }
+
+            baseDeCalculoIR = valorProLaboreDois - inssDois;
+
+            irrfDois = calculaIRRF(baseDeCalculoIR);
+
+            if (socios > 1) {
+                inssDois *= socios;
+                irrfDois *= socios;
+            }
+
+            const totalOutraCont = inssDois + irrfDois;
+            const totalContaJa = inss + irrf;
             comparacao = {
                 faturamento,
                 valor,
@@ -599,6 +631,9 @@ const comparaContabilidade = (respostas) => {
                 valorProLaboreDois,
                 irrfDois,
                 inssDois,
+                totalContaJa,
+                totalOutraCont,
+                socios
             };
         }
     }
@@ -624,7 +659,7 @@ const verificaOpcaoComparacaoContabilidade = (
 const retornaProlaboreAvulso = (valor, anexoIV) => {
     const proLaboreAvulso = valor;
     const tetoInss = 7507.49;
-    let inssProLaboreAvulso
+    let inssProLaboreAvulso;
 
     if (proLaboreAvulso > tetoInss) {
         inssProLaboreAvulso = 825.82;
@@ -632,7 +667,6 @@ const retornaProlaboreAvulso = (valor, anexoIV) => {
         inssProLaboreAvulso = proLaboreAvulso * 0.11;
     }
 
-     
     const irrfProLaboreAvulso = calculaIRRF(proLaboreAvulso);
     let patronalProLaboreAvulso = 0;
 
@@ -678,7 +712,6 @@ export const CalculoProvider = ({ children }) => {
     const [valorProlaboreAvulso, setValorProlaboreAvulso] = useState({});
 
     const pegaInputECalcula = (dados) => {
-        
         setDetalhar(dados.detalhar);
         setCardDetalhado(dados.cardDetalhado);
         const output = gerenciaCalculo(dados);
@@ -719,7 +752,7 @@ export const CalculoProvider = ({ children }) => {
         enableContabilidadeComparison,
         dadosComparacaoContabilidades,
         valorProlaboreAvulso,
-        confirmaProLaboreAvulso
+        confirmaProLaboreAvulso,
     };
 
     return (

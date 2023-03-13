@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { EfetivaFormStyled } from "./efetiva-form.styles";
 import FormInput from "../form-input/form-input.component";
 import { ConfigProvider, Radio, Checkbox } from "antd";
@@ -48,23 +48,37 @@ const EfetivaForm = () => {
         primeiroMes,
     } = formFields;
 
-    const { pegaInputECalcula, setFaturamentoMes, setScroll } =
+    const { pegaInputECalcula, setFaturamentoMes, setScroll, setCardShown } =
         useContext(CalculoContext);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        if (name === 'primeiroMes') {
-            setFormFields({...formFields, [name]:value, faturamento: faturamentoMes})
+        if (name === "primeiroMes") {
+            if (value === true) {
+                console.log(faturamentoDozeMoeda);
+                setFormFields({
+                    ...formFields,
+                    [name]: value,
+                    faturamento: faturamentoMes,
+                    faturamentoDozeMoeda: "",
+                });
+            } else {
+                setFormFields({
+                    ...formFields,
+                    [name]: value,
+                    faturamento: faturamentoMes,
+                });
+            }
         } else {
-        if (name === "faturamentoDoze") {
-            setFormFields({
-                ...formFields,
-                [name]: value,
-                faturamento: value / 12,
-            });
-        } else {
-            setFormFields({ ...formFields, [name]: value });
-        }
+            if (name === "faturamentoDoze") {
+                setFormFields({
+                    ...formFields,
+                    [name]: value,
+                    faturamento: value / 12,
+                });
+            } else {
+                setFormFields({ ...formFields, [name]: value });
+            }
         }
     };
 

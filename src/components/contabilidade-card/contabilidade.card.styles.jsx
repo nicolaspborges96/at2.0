@@ -29,7 +29,7 @@ export const ContCardBloco = styled.div`
     display: flex;
     flex-direction: column;
     margin: 0.5rem;
-    width: 210px;
+    width: 240px;
 
     div {
         margin: 0.1rem 0 0.1rem;

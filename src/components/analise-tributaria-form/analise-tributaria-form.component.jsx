@@ -13,6 +13,7 @@ import {
 import { useContext } from "react";
 import { CalculoContext } from "../../context/calculo.context";
 import TextContainer from "../text-container/text-container.component";
+import { useLocation } from "react-router-dom";
 
 const marks = {
     2: "2%",
@@ -65,8 +66,10 @@ const AnaliseTForm = ({ ...props }) => {
         comparacaoContabilidades
     } = formFields;
     const [sliderIndex, setSliderIndex] = useState(slider[1]);
-    const { pegaInputECalcula, setScroll } = useContext(CalculoContext);
+    const { pegaInputECalcula, setScroll, setCardShown } = useContext(CalculoContext);
     const [compara, setCompara] = useState(false);
+
+
 
     const onChangeFuncionario = (e) => {
         const { name, value } = e.target;
@@ -156,6 +159,8 @@ const AnaliseTForm = ({ ...props }) => {
     }, [anexoI, anexoII, anexoIII, anexoIV, anexoV, lucroP, autonomo]);
     
 
+    
+
     const onSubmitForm = (ev) => {
         ev.preventDefault();
     
@@ -164,8 +169,10 @@ const AnaliseTForm = ({ ...props }) => {
         setScroll(true);
     };
 
+
     return (
         <AnaliseTFormStyled onSubmit={onSubmitForm}>
+            
             <ConfigProvider
                 theme={{
                     token: {

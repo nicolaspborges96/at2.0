@@ -83,37 +83,37 @@ const ALIQUOTAS = [
             "nome": "Faixa 1",
             "aliquota": 0.06,
             "deducao": 0,
-            "percentualExterior": 0.508333334
+            "percentualExterior": 0.509
         },
         {
             "nome": "Faixa 2",
             "aliquota": 0.112,
             "deducao": 9360,
-            "percentualExterior": 0.508333334
+            "percentualExterior": 0.509
         },
         {
             "nome": "Faixa 3",
             "aliquota": 0.135,
             "deducao": 17640,
-            "percentualExterior": 0.508333334
+            "percentualExterior": 0.509
         },
         {
             "nome": "Faixa 4",
             "aliquota": 0.16,
             "deducao": 35640,
-            "percentualExterior": 0.508333334
+            "percentualExterior": 0.509
         },
         {
             "nome": "Faixa 5",
             "aliquota": 0.21,
             "deducao": 125640,
-            "percentualExterior": 0.508333334
+            "percentualExterior": 0.509
         },
         {
             "nome": "Faixa 6",
             "aliquota": 0.33,
             "deducao": 648000,
-            "percentualExterior": 0.508333334
+            "percentualExterior": 0.509
         }],
     },
     {

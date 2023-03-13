@@ -17,10 +17,14 @@ const ContabilidadeCard = () => {
         valorProLaboreDois,
         irrfDois,
         inssDois,
+        totalContaJa,
+        totalOutraCont,
+        socios
     } = dadosComparacaoContabilidades;
 
-    const totalOutraCont = inssDois + irrfDois;
-    const totalContaJa = inss + irrf;
+    const economiaMensal = (totalOutraCont - totalContaJa);
+    const economiaAnual = (totalOutraCont - totalContaJa)*12
+    
 
     function converteNumeroParaMoeda(number) {
         return Intl.NumberFormat("pt-Br", {
@@ -46,8 +50,22 @@ const ContabilidadeCard = () => {
                         <span>Fator R outra contabilidade</span>
                     </CardSegment>
                     <CardSegment>
-                        <span>Pró-labore:</span>
+                        <span>Pró-labore: 
+                        {
+                            socios > 1 ? (
+                                <span style={{fontSize: '0.65rem'}} >(por sócio)</span>
+                            ) : (
+                                <></>
+                            )
+                        }   
+                        </span>
                         {converteNumeroParaMoeda(valorProLaboreDois)}
+                    </CardSegment>
+                    <CardSegment>
+                        <span>Sócios
+                            
+                        </span>
+                        {socios}
                     </CardSegment>
                     <CardSegment>
                         <span>INSS</span>
@@ -76,8 +94,22 @@ const ContabilidadeCard = () => {
                     </CardSegment>
 
                     <CardSegment>
-                        <span>Pró-labore:</span>
+                        <span>Pró-labore:
+                        {
+                            socios > 1 ? (
+                                <span style={{fontSize: '0.65rem'}} >(por sócio)</span>
+                            ) : (
+                                <></>
+                            )
+                        }
+                        </span>
                         {converteNumeroParaMoeda(valor)}
+                    </CardSegment>
+                    <CardSegment>
+                        <span>
+                            Pró-labore total
+                        </span>
+                        {converteNumeroParaMoeda(valor*socios)}
                     </CardSegment>
                     <CardSegment>
                         <span>INSS</span>
@@ -120,7 +152,7 @@ const ContabilidadeCard = () => {
             >
                 <span style={{margin: '0 0 0 0.8rem'}} > Mensal</span>
                 <span style={{margin: '0 0.8rem 0 0'}} >
-                {converteNumeroParaMoeda(totalOutraCont - totalContaJa)}
+                {converteNumeroParaMoeda(economiaMensal)}
                 </span>
                 
             </CardSegment>
@@ -137,7 +169,7 @@ const ContabilidadeCard = () => {
             >
                 <span style={{margin: '0 0 0 0.8rem'}} > Anual</span>
                 <span style={{margin: '0 0.8rem 0 0'}} >
-                {converteNumeroParaMoeda((totalOutraCont - totalContaJa)*12)}
+                {converteNumeroParaMoeda(economiaAnual)}
                 </span>
                 
             </CardSegment>

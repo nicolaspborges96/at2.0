@@ -13,10 +13,6 @@ const Menu = () => {
         navigate("/folha");
     };
 
-    const goToIndCom = () => {
-        navigate("/ic");
-    };
-
     const goToEfetiva = () => {
         navigate("/ae")
     }
