@@ -8,16 +8,19 @@ import { ComparacaoCardContainer } from "./contabilidade-display.styles";
 
 const ContabilidadeDisplay = ({...props}) => {
     
-    const { isCardShown, enableContabilidadeComparison, setCardShown, cardDetalhado } = useContext(CalculoContext);
-   
+    const { isCardShown, enableContabilidadeComparison, setCardShown, cardDetalhado, dadosComparacaoContabilidades } = useContext(CalculoContext);
+    const { socios } = dadosComparacaoContabilidades;
+
+
     return (
+
         <>  
         {
             enableContabilidadeComparison&&isCardShown ? (
                 <>
                     <ComparacaoCardContainer >
                         {
-                            cardDetalhado === true ? (
+                            socios > 1 ? (
                                 <ContabilidadeCardDetalhado />
                             ) : (
                                 <ContabilidadeCard />

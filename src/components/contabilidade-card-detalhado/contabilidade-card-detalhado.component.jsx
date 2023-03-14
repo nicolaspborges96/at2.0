@@ -35,7 +35,7 @@ const ContabilidadeCardDetalhado = () => {
     }
 
     return (
-        <ContCardBody >
+        <ContCardBody>
             <ContainerContCardBloco>
                 <ContCardBloco>
                     <CardSegment
@@ -49,28 +49,29 @@ const ContabilidadeCardDetalhado = () => {
                     >
                         <span>Fator R outra contabilidade</span>
                     </CardSegment>
-                    <CardSegment style={{display: 'block'}} 
-                    padding={"0.5rem"}
-                    textAlign={"center"}
-                    fontWeight={"600"}
-                    bdRadius={"0.3rem"}
-                    whiteSpace={"pre-line"}>
+
+                    <CardSegment
+                        style={{ display: "block" }}
+                        padding={"0.5rem"}
+                        textAlign={"center"}
+                        fontWeight={"600"}
+                        bdRadius={"0.3rem"}
+                        whiteSpace={"pre-line"}
+                    >
                         <span> Valores por sócio</span>
                     </CardSegment>
                     <CardSegment>
-                        <span>
-                            Pró-labore
-                        </span>
+                        <span>Pró-labore</span>
                         {converteNumeroParaMoeda(valorProLaboreDois)}
                     </CardSegment>
 
                     <CardSegment>
                         <span>INSS</span>
-                        {converteNumeroParaMoeda(inssDois/socios)}
+                        {converteNumeroParaMoeda(inssDois / socios)}
                     </CardSegment>
                     <CardSegment>
                         <span>IRRF</span>
-                        {converteNumeroParaMoeda(irrfDois/socios)}
+                        {converteNumeroParaMoeda(irrfDois / socios)}
                     </CardSegment>
                     <CardSegment>
                         <span>Sócios</span>
@@ -93,6 +94,16 @@ const ContabilidadeCardDetalhado = () => {
                     >
                         <span>Fator R ContaJá</span>
                     </CardSegment>
+                    <CardSegment
+                        style={{ display: "block" }}
+                        padding={"0.5rem"}
+                        textAlign={"center"}
+                        fontWeight={"600"}
+                        bdRadius={"0.3rem"}
+                        whiteSpace={"pre-line"}
+                    >
+                        <span> Valores por sócio</span>
+                    </CardSegment>
 
                     <CardSegment>
                         <span>Pró-labore</span>
@@ -101,11 +112,15 @@ const ContabilidadeCardDetalhado = () => {
 
                     <CardSegment>
                         <span>INSS</span>
-                        {converteNumeroParaMoeda(inss)}
+                        {converteNumeroParaMoeda(inss / socios)}
                     </CardSegment>
                     <CardSegment>
                         <span>IRRF</span>
-                        {converteNumeroParaMoeda(irrf)}
+                        {converteNumeroParaMoeda(irrf / socios)}
+                    </CardSegment>
+                    <CardSegment>
+                        <span>Sócios</span>
+                        {socios}
                     </CardSegment>
                     <CardSegment>
                         <span>Total</span>
